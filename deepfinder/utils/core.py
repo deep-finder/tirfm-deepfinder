@@ -104,34 +104,6 @@ def retrieve_var_name(x, Vars=vars()):
                 return k
     return None
 
-
-# This functions loads the training set at specified paths.
-# INPUTS:
-#   path_data  : list of strings '/path/to/tomogram.ext'
-#   path_target: list of strings '/path/to/target.ext'
-#                The idx of above lists correspond to each other so that (path_data[idx], path_target[idx]) corresponds
-#                to a (tomog, target) pair
-#   dset_name  : can be usefull if files are stored as .h5
-# OUTPUTS:
-#   data_list  : list of 3D numpy arrays (tomograms)
-#   target_list: list of 3D numpy arrays (annotated tomograms)
-#                In the same way as for the inputs, (data_list[idx],target_list[idx]) corresponds to a (tomo,target) pair
-# TODO: move to common?
-def load_dataset(path_data, path_target, dset_name='dataset'):
-    data_list   = []
-    target_list = []
-    for idx in range(0,len(path_data)):
-        data   = cm.read_array(path_data[idx]  , dset_name)
-        target = cm.read_array(path_target[idx], dset_name)
-
-        if data.shape!=target.shape:
-            print('DeepFinder message: tomogram and target are not of same size!')
-            sys.exit()
-
-        data_list.append(data)
-        target_list.append(target)
-    return data_list, target_list
-
 # This function applies bootstrap (i.e. re-sampling) in case of unbalanced classes.
 # Given an objlist containing objects from various classes, this function outputs an equal amount of objects for each
 # class, each objects being uniformely sampled inside its class set.

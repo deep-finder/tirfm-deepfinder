@@ -6,6 +6,7 @@
 # =============================================================================================
 
 import os
+import sys
 import numpy as np
 import h5py
 
@@ -23,6 +24,111 @@ matplotlib.use('agg') # necessary else: AttributeError: 'NoneType' object has no
 import matplotlib.pyplot as plt
 
 from PIL import Image # for reading tif
+
+import deepfinder.utils.common as cm
+
+
+# Data augmentation function (eml, 27/11/23)
+def random_fliprot(img, mask):
+    axes = [1, 2]
+    perm = tuple(np.concatenate([np.zeros(1, dtype=int), np.random.permutation(axes)]))
+    img = np.transpose(img, axes=perm)
+    mask = np.transpose(mask, axes=perm)
+    for ax in axes:
+        if np.random.rand() > 0.5:
+            img = np.flip(img, axis=ax)
+            mask = np.flip(mask, axis=ax)
+    return img, mask
+
+
+# Below function has been borrowed from: https://cellpose.readthedocs.io/en/latest/_modules/cellpose/transforms.html#
+# (eml, 27/11/23)
+def normalize_img(img, axis=-1, invert=False):
+    """ normalize each channel of the image so that so that 0.0=1st percentile
+    and 1.0=99th percentile of image intensities
+
+    optional inversion
+
+    Parameters
+    ------------
+
+    img: ND-array (at least 3 dimensions)
+
+    axis: channel axis to loop over for normalization
+
+    invert: invert image (useful if cells are dark instead of bright)
+
+    Returns
+    ---------------
+
+    img: ND-array, float32
+        normalized image of same size
+
+    """
+    if img.ndim < 3:
+        error_message = 'Image needs to have at least 3 dimensions'
+        # transforms_logger.critical(error_message)
+        raise ValueError(error_message)
+
+    img = img.astype(np.float32)
+    img = np.moveaxis(img, axis, 0)
+    for k in range(img.shape[0]):
+        # ptp can still give nan's with weird images
+        i99 = np.percentile(img[k], 99)
+        i1 = np.percentile(img[k], 1)
+        if i99 - i1 > +1e-3:  # np.ptp(img[k]) > 1e-3:
+            img[k] = normalize99(img[k])
+            if invert:
+                img[k] = -1 * img[k] + 1
+        else:
+            img[k] = 0
+    img = np.moveaxis(img, 0, axis)
+    return img
+
+
+# Below function has been borrowed from: https://cellpose.readthedocs.io/en/latest/_modules/cellpose/transforms.html#
+# (eml, 27/11/23)
+def normalize99(Y, lower=1, upper=99):
+    """ normalize image so 0.0 is 1st percentile and 1.0 is 99th percentile """
+    X = Y.copy()
+    x01 = np.percentile(X, lower)
+    x99 = np.percentile(X, upper)
+    X = (X - x01) / (x99 - x01)
+    return X
+
+
+# This functions loads the training set at specified paths.
+# INPUTS:
+#   path_data  : list of strings '/path/to/tomogram.ext'
+#   path_target: list of strings '/path/to/target.ext'
+#                The idx of above lists correspond to each other so that (path_data[idx], path_target[idx]) corresponds
+#                to a (tomog, target) pair
+#   dset_name  : can be usefull if files are stored as .h5
+# OUTPUTS:
+#   data_list  : list of 3D numpy arrays (tomograms)
+#   target_list: list of 3D numpy arrays (annotated tomograms)
+#                In the same way as for the inputs, (data_list[idx],target_list[idx]) corresponds
+#                to a (tomo,target) pair
+# In this fork, norm is performed here instead of in the batch generator (eml, 27/11/23)
+def load_dataset(path_data, path_target, dset_name='dataset'):
+    data_list = []
+    target_list = []
+    for idx in range(0, len(path_data)):
+        data = cm.read_array(path_data[idx], dset_name)
+        target = cm.read_array(path_target[idx], dset_name)
+
+        if data.shape != target.shape:
+            print('DeepFinder message: tomogram and target are not of same size!')
+            sys.exit()
+
+        data = data.astype(np.float32)
+        data = normalize_img(data, axis=0)  # normalize
+        data = data.astype(np.float16)
+
+        data_list.append(data)
+        target_list.append(target)
+    return data_list, target_list
+
 
 # Writes an image file containing ortho-slices of the input volume. Generates same visualization as matlab function
 # 'tom_volxyz' from TOM toolbox.
@@ -68,6 +174,7 @@ def plot_volume_orthoslices(vol, filename):
         plt.imshow(img_array, cmap='gray', vmin=mu-5*sig, vmax=mu+5*sig)
     fig.savefig(filename)
 
+
 # Reads data stored in h5 file, from specified h5 dataset.
 # INPUTS:
 #   filename : string '/path/to/file.h5'
@@ -79,6 +186,7 @@ def read_h5array(filename, dset_name='dataset'):
     dataArray = h5file[dset_name][:]
     h5file.close()
     return dataArray
+
 
 # Writes data in h5 file, to specified h5 dataset. Is also adapted for labelmaps: saved as int8 to gain disk space.
 # INPUTS:
@@ -106,6 +214,7 @@ def write_h5array(array, filename, dset_name='dataset'):
         print('/!\ DeepFinder: array needs to be one of following formats: uint8, int8, float16 or float32')
     h5file.close()
 
+
 # Reads array stored as mrc.
 # INPUTS:
 #   filename: string '/path/to/file.mrc'
@@ -116,6 +225,7 @@ def read_mrc(filename):
         array = mrc.data
     return array
 
+
 # Writes array as mrc.
 # INPUTS:
 #   array   : numpy array
@@ -123,6 +233,7 @@ def read_mrc(filename):
 def write_mrc(array, filename):
     with mrcfile.new(filename, overwrite=True) as mrc:
         mrc.set_data(array)
+
 
 def read_tif(filename):
     dataset = Image.open(filename)
@@ -132,6 +243,7 @@ def read_tif(filename):
         dataset.seek(i)
         tiffarray[i, :, :] = np.transpose(np.array(dataset))
     return tiffarray.astype(np.single)
+
 
 # Reads arrays. Handles .h5 and .mrc files, according to what extension the file has.
 # INPUTS:
@@ -160,6 +272,7 @@ def read_array(filename, dset_name='dataset'):
         print('/!\ DeepFinder can only read datasets in .h5 and .mrc formats')
     return array
 
+
 # Writes array. Can write .h5 and .mrc files, according to the extension specified in filename.
 # INPUTS:
 #   array    : numpy array
@@ -181,6 +294,7 @@ def write_array(array, filename, dset_name='dataset'):
     else:
         print('/!\ DeepFinder can only write arrays in .h5 and .mrc formats')
 
+
 # Subsamples a 3D array by a factor 2. Subsampling is performed by averaging voxel values in 2x2x2 tiles.
 # INPUT: numpy array
 # OUTPUT: binned numpy array
@@ -195,6 +309,7 @@ def bin_array(array):
 
     """
     return block_reduce(array, (2,2,2), np.mean)
+
 
 # Rotates a 3D array and uses the same (phi,psi,the) convention as TOM toolbox (matlab) and PyTOM.
 # Code based on: https://nbviewer.jupyter.org/gist/lhk/f05ee20b5a826e4c8b9bb3e528348688
@@ -253,6 +368,7 @@ def rotate_array(array, orient): # TODO move to core_utils?
     # arrayR = scipy.ndimage.rotate(arrayR, new_psi, axes=(0, 1), reshape=False)
     # arrayR = scipy.ndimage.rotate(arrayR, new_the, axes=(1, 2), reshape=False)
     return arrayR
+
 
 # Creates a 3D array containing a full sphere (at center). Is used for target generation.
 # INPUTS:

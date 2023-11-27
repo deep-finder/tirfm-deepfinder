@@ -137,6 +137,13 @@ class TargetBuilder(core.DeepFinder):
         return target_array
 
 
+# [eml, 27/11/23]: 2 changes have been made:
+#    - generate_batch_from_array method:
+#        - normalisation has been removed. I now takes place in the load_dataset function
+#        - a different data augmentation is used
+# remark: generate_batch_direct_read has not been modified. It was originally designed to take advantage
+# of the .h5 format (load patch without loading whole image). So please dont use this method in TIRFm context
+
 # TODO: add method for resuming training. It should load existing weights and train_history. So when restarting, the plot curves show prececedent epochs
 class Train(core.DeepFinder):
     def __init__(self, Ncl, dim_in):
@@ -238,7 +245,7 @@ class Train(core.DeepFinder):
         # Load whole dataset:
         if self.flag_direct_read == False:
             self.display('Loading dataset ...')
-            data_list, target_list = core.load_dataset(path_data, path_target, self.h5_dset_name)
+            data_list, target_list = cm.load_dataset(path_data, path_target, self.h5_dset_name)
 
         self.display('Launch training ...')
 
@@ -447,17 +454,19 @@ class Train(core.DeepFinder):
             patch_target = sample_target[z-p_in:z+p_in, y-p_in:y+p_in, x-p_in:x+p_in]
 
             # Process the patches in order to be used by network:
-            patch_data = (patch_data - np.mean(patch_data)) / np.std(patch_data)  # normalize
+            # patch_data = (patch_data - np.mean(patch_data)) / np.std(patch_data)  # normalize
+            patch_data, patch_target = cm.random_fliprot(patch_data, patch_target)  # Data augmentation (eml, 27/11/23)
+
             patch_target_onehot = to_categorical(patch_target, self.Ncl)
 
             # Store into batch array:
             batch_data[i, :, :, :, 0] = patch_data
             batch_target[i] = patch_target_onehot
 
-            # Data augmentation (180degree rotation around tilt axis):
-            if np.random.uniform() < 0.5:
-                batch_data[i] = np.rot90(batch_data[i], k=2, axes=(0, 2))
-                batch_target[i] = np.rot90(batch_target[i], k=2, axes=(0, 2))
+            # # Data augmentation (180degree rotation around tilt axis):
+            # if np.random.uniform() < 0.5:
+            #     batch_data[i] = np.rot90(batch_data[i], k=2, axes=(0, 2))
+            #     batch_target[i] = np.rot90(batch_target[i], k=2, axes=(0, 2))
 
         return batch_data, batch_target, idx_list
 
