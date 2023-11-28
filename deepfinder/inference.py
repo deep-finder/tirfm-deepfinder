@@ -13,7 +13,9 @@ from sklearn.cluster import MeanShift
 from . import models
 from .utils import objl as ol
 from .utils import core
+from .utils import common as cm
 
+# The only modification here is the normalisation (eml, 28/11/23):
 class Segment(core.DeepFinder):
     def __init__(self, Ncl, path_weights, patch_size=192):
         core.DeepFinder.__init__(self)
@@ -51,7 +53,8 @@ class Segment(core.DeepFinder):
         self.check_attributes()
         self.check_arguments(dataArray, self.P)
 
-        dataArray = (dataArray[:] - np.mean(dataArray[:])) / np.std(dataArray[:])  # normalize
+        # dataArray = (dataArray[:] - np.mean(dataArray[:])) / np.std(dataArray[:])  # normalize
+        dataArray = cm.normalize_img(dataArray, axis=0)  # normalize
         dataArray = np.pad(dataArray, self.pcrop, mode='constant', constant_values=0)  # zeropad
         dim = dataArray.shape
 
