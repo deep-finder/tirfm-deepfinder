@@ -4,12 +4,13 @@ import deepfinder.utils.objl as ol
 
 
 class Dataloader:
-    def __init__(self):
+    def __init__(self, ext='.h5'):
         self.path_data = []
         self.path_target = []
         self.objl_train = []
         self.objl_valid = []
         self.tomo_idx = 0
+        self.ext = ext
 
     def __call__(self, path_dset):
         path_train = os.path.join(path_dset, 'train')
@@ -33,8 +34,8 @@ class Dataloader:
             # if fname does not start with '.' (invisible temporary files) and end with '_objl.xml'
             if fname[0] is not '.' and fname.endswith('_objl.xml'):
                 fprefix = fname[:-9]  # remove '_objl.xml'
-                fname_tomo = fprefix + '.mrc'
-                fname_target = fprefix + '_target.mrc'
+                fname_tomo = fprefix + self.ext
+                fname_target = fprefix + '_target' + self.ext
 
                 fname = os.path.join(path, fname)
                 fname_tomo = os.path.join(path, fname_tomo)
