@@ -1,40 +1,61 @@
-import sys
-sys.path.append('../../') # add parent folder to path
-
 import numpy as np
 from deepfinder.training import TargetBuilder
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 
 path_output = 'out/'
+path_objl = 'in/objl_cell6.xml'  # path to object list containing annotated positions
+data_shape = [1001, 317, 317]  # shape of image sequence [t,y,x]
 
-# First load object list with annotated positions. There are two strategies to generate targets: shapes and spheres
-# If you choose 'shapes', the object list has to contain the orientation (i.e. Euler angles) of the objects.
-objl = ol.read_xml('in/object_list_tomo0.xml')
 
-# Set initial volume: can be used to add segmented structures to target (e.g. membranes). If not, simply initialize with
-# empty volume (zero values)
-tomodim = (200, 512, 512)
-initial_vol = np.zeros(tomodim)
+# First, define the (t,y,x) mask for exocytosis event:
+def get_exo_mask():
+    # Here we construct the mask frame per frame
+    # The mask is a cone whose radius has exponential decay
+    # 1st frame is disk with r=4,
+    # 2nd frame is disk with r=2,
+    # 3rd and last frame is disk with r=1
+    r = 4
+    mask_shape = [2 * r + 1, 2 * r + 1, 2 * r + 1]
 
-# Initialize target generation task:
+    # 1st frame (to create a disk mask we exploit a function that creates spheres)
+    mask_sphere = cm.create_sphere(mask_shape, r)  # result here is a binary map of a 3d sphere
+    mask_t0 = mask_sphere[r, :, :]  # result here is a binary map of a 2D disk
+
+    # 3nd frame
+    mask_sphere = cm.create_sphere(mask_shape, np.round(r / 2))
+    mask_t1 = mask_sphere[r, :, :]
+
+    # 3rd frame
+    mask_t2 = np.zeros((mask_shape[0], mask_shape[1]))
+    mask_t2[r, r] = 1
+
+    # Merge frames
+    mask = np.zeros(mask_shape)
+    mask[r, :, :] = mask_t0
+    mask[r + 1, :, :] = mask_t1
+    mask[r + 2, :, :] = mask_t2
+
+    return mask
+
+
+mask_exo = get_exo_mask()
+
+# Next, read object list:
+objl = ol.read_xml(path_objl)
+
+for idx, obj in enumerate(objl):
+    obj[idx][]
+
+# Then, initialize target generation task:
 tbuild = TargetBuilder()
 
-# Launch target generation:
-# For 'spheres' strategy:
-radius_list = [6, 6, 3, 6, 6, 7, 6, 4, 4, 3, 10, 8]
-target = tbuild.generate_with_spheres(objl, initial_vol, radius_list)
-cm.plot_volume_orthoslices(target, path_output+'orthoslices_target_spheres.png')
+# Initialize target array. Here, we initialize it with an empty array. But it could be initialized with a segmentation map containing other (non-overlapping) classes.
+initial_vol = np.zeros(data_shape)
 
-# # For 'shapes' strategy:
-# pdb_name = ['1bxn', '1qvr', '1s3x', '1u6g', '2cg9', '3cf3', '3d2f', '3gl1', '3h84', '3qm1', '4b4t', '4d8q']
-# ref_list = []
-# for pdb in pdb_name:
-#     mask = cm.read_array('in/masks/'+pdb+'.mrc')
-#     ref_list.append(mask)
-#
-# target = tbuild.generate_with_shapes(objl, initial_vol, ref_list)
-# cm.plot_volume_orthoslices(target, path_output+'orthoslices_target_shapes.png')
+# Run target generation:
+target = tbuild.generate_with_shapes(objl, initial_vol, [mask_exo])
+cm.plot_volume_orthoslices(target, path_output + 'orthoslices_target.png')
 
 # Save target:
-cm.write_array(target, path_output+'target_tomo0.mrc')
+cm.write_array(target, path_output + 'target.mrc')
