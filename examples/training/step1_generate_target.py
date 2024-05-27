@@ -1,12 +1,15 @@
+import sys
+from pathlib import Path
 import numpy as np
 from deepfinder.training import TargetBuilder
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 
-path_output = 'out/'
+path_output = Path('out/')
 path_objl = 'in/objl_cell6.xml'  # path to object list containing annotated positions
 data_shape = [1001, 317, 317]  # shape of image sequence [t,y,x]
 
+path_output.mkdir(exist_ok=True, parents=True)
 
 # First, define the (t,y,x) mask for exocytosis event:
 def get_exo_mask():
@@ -44,8 +47,9 @@ mask_exo = get_exo_mask()
 # Next, read object list:
 objl = ol.read_xml(path_objl)
 
-for idx, obj in enumerate(objl):
-    obj[idx][]
+for i, obj in enumerate(objl):
+    if obj['label']>1:
+        sys.exit(f'Error: object {i} has label greater than 1: ', obj['label'])
 
 # Then, initialize target generation task:
 tbuild = TargetBuilder()
@@ -54,8 +58,9 @@ tbuild = TargetBuilder()
 initial_vol = np.zeros(data_shape)
 
 # Run target generation:
+
 target = tbuild.generate_with_shapes(objl, initial_vol, [mask_exo])
-cm.plot_volume_orthoslices(target, path_output + 'orthoslices_target.png')
+cm.plot_volume_orthoslices(target, str(path_output / 'orthoslices_target.png'))
 
 # Save target:
-cm.write_array(target, path_output + 'target.mrc')
+cm.write_array(target, str(path_output / 'target.mrc'))
