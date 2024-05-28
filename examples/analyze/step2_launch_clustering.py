@@ -1,16 +1,14 @@
+from pathlib import Path
 from deepfinder.inference import Cluster
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 
 # Input parameters:
-path_labelmap = 'out/labelmap.mrc'
+path_labelmap = Path('out/image1/labelmap.mrc')
 cluster_radius = 5  # should correspond to average radius of target objects (in voxels)
 
-# Output parameter:
-path_output = 'out/'
-
 # Load data:
-labelmap = cm.read_array(path_labelmap)
+labelmap = cm.read_array(str(path_labelmap))
 
 # Next, only keep the class of interest. In the experiments of the paper, class 0 is background,
 # class 1 is constant spot (docked vesicle), and class 2 is blinking spot (exocytosis event).
@@ -31,4 +29,4 @@ objlist = clust.launch(labelmap)
 # objlist_thr = ol.above_thr_per_class(objlist, lbl_list, thr_list)
 
 # Save object lists:
-ol.write_xml(objlist    , path_output+'objlist.xml')
+ol.write_xml(objlist    , path_labelmap.parent / 'objl.xml')
