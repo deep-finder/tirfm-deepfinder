@@ -48,16 +48,10 @@ Once these steps have been achieved, the user should be able to run DeepFinder.
 
 ## Instructions for use
 
-Instructions for using Deep Finder are contained in folder examples/. The scripts contain comments on how the tool should be used. To run a script, first place yourself in its folder. 
+Instructions for using Deep Finder are contained in folder examples/. The scripts contain comments on how the tool should be used.
 
 ### Training
 
-
-For example, to run the target generation script:
-```
-cd examples/training/
-python step1_generate_target.py
-```
 
 To run the training, you should have a folder containing your data organised in the following way:
 
@@ -80,16 +74,29 @@ data/
 
 The targets must contain 2 classes:
 - the exocytose events, delineated by experts,
-- the other spots, which are not exocytose events, and are detected by the [Atlas](https://gitlab.inria.fr/serpico/atlas) spot detector.
+- the other brigth spots, which are not exocytose events, and are detected by the [Atlas](https://gitlab.inria.fr/serpico/atlas) spot detector.
 
-Thus, the first step must be to run Atlas to detect bright spots on the training images:
+Once the experts have annotated the training and validation images by creating the `objl.xml` files describing the exocytose events, the corresponding segmentations must be generated with the `step1_generate_target.py` script (`cd examples/training/`, then `python step1_generate_target.py`). This will create a segmentation from all events, each with the predefined exocytose shape.
 
-Then, the experts segemntations must be merged with the resulting detections with the `merge_atlas_targets.py` script:
+Then, the other non-exocytose events must be detected with [Atlas](https://gitlab.inria.fr/serpico/atlas). The installation instructions are detailed in the Atlas repository.
 
-Finally, the training can be started with `step2_launch_training.py`.
+Once Atlas is installed, you can generate the bright spots segmentations and convert them to the h5 format with the following commands:
+- `python compute_segmentations.py -a build/atlas -d path/to/dataset/ -o path/to/output/segmentations/`
+- `python convert_tiff_to_h5.py -s path/to/output/segmentations/ -o path/to/output/segmentations_h5/`
+
+Use `python compute_segmentations.py --help` and `python convert_tiff_to_h5.py --help` for more information about those tools.
+
+Then, the experts segmentations must be merged with the Atlas detections with the `step2_merge_atlas_targets.py` script.
+
+Finally, the training can be launched with `step3_launch_training.py`.
 
 ### Prediction
 
+Predictions can be generated with the `step1_launch_segment.py` script. 
+
+This will generate binary segmentations ; the `step2_launch_clustering.py` script can convert them to distinct spots, so that each event gets a unique label.
+
+Finally, the results can be evaluated with the `step3_launch_evaluation.py` (which will make use of the `evaluate.py` tool).
 
 #### Using the GUI
 
