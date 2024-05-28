@@ -13,7 +13,7 @@ patch_size   = 160 # must be multiple of 4
 path_output = Path('out/')
 image_name = 'image1'
 
-path_output.mkdir(exist_ok=True, parents=True)
+(path_output / image_name).mkdir(exist_ok=True, parents=True)
 
 # Load data:
 data = cm.read_array(str(path_data))
