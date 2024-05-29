@@ -1,29 +1,50 @@
-# This script computes recall, precision and f1-score for each object class, and prints out the result in log files.
-# The evaluation is based on a script used for the challenge "SHREC 2019: Classification in cryo-electron tomograms"
-
-# This script needs python3 and additional packages (see evaluate.py), as it was coded by SHREC'19 organizers. The 
-# scores have been published in Gubins & al., "SHREC'19 track: classification in cryo-electron tomograms", 2019
-
-import sys
-sys.path.append('../../') # add parent folder to path
-
 import os
+from pathlib import Path
+import deepfinder.utils.eval as ev
 import deepfinder.utils.objl as ol
+import pandas
+ 
+# dataset/ and out/ both contain one folder per image, each containing an objl.xml file
+path_ground_truth = Path('dataset/')
+path_pred = Path('out/')
+path_out = Path('evaluation/')
+path_out.mkdir(exist_ok=True, parents=True)
 
-# First, we load the object list produced by DeepFinder:
-objl = ol.read_xml('result/tomo9_objlist_thresholded.xml')
+# Read ground truth and predicted coords:   
+dset_true = {}
+dset_pred = {}
+for fname in path_pred.iterdir():
+    if not fname.is_dir(): continue
+    objl_true = ol.read_xml(str(path_ground_truth / fname.name / 'objl.xml'))
+    objl_pred = ol.read_xml(str(fname / 'objl.xml'))
+    
+    dset_true[fname] = {'object_list': objl_true}
+    dset_pred[fname] = {'object_list': objl_pred}
 
-# Then, we convert the predicted object list into a text file, as needed by the SHREC'19 evaluation script:
-class_name = {0: "0", 1: "1bxn", 2: "1qvr", 3: "1s3x", 4: "1u6g", 5: "2cg9", 6: "3cf3",
-                       7: "3d2f", 8: "3gl1", 9: "3h84", 10: "3qm1", 11: "4b4t", 12: "4d8q"}
-file = open('result/particle_locations_tomo9.txt', 'w')
-for p in range(0,len(objl)):
-    x   = int( objl[p]['x'] )
-    y   = int( objl[p]['y'] )
-    z   = int( objl[p]['z'] )
-    lbl = int( objl[p]['label'] )
-    file.write(class_name[lbl]+' '+str(x)+' '+str(y)+' '+str(z)+'\n')
-file.close()
+# Evaluate and plot global scores:
+dist_thr = 4
+score_thr_list=list(range(0,100,10))
 
-# Finally, we launch the SHREC'19 evaluation script:
-os.system('python3 evaluate.py --gtcoordinates -f result/particle_locations_tomo9.txt -o result/ -tf ../../data/')
+evaluator = ev.Evaluator(dset_true, dset_pred, dist_thr)
+evaluator.get_evaluation_wrt_detection_score(score_thr_list)
+
+fig = ev.plot_eval(evaluator.detect_eval_list, class_label=1, score_thr_list=score_thr_list)
+fig.savefig(str(path_out / 'scores.pdf'))
+
+# Get individual scores
+chosen_thr = 50
+chosen_thr_idx = score_thr_list.index(chosen_thr)
+
+eval_info = evaluator.detect_eval_list[chosen_thr_idx] 
+#del eval_info['global']
+
+pd_data = {'precision': [], 'recall': [], 'f1-score': [],}
+pd_index = []
+for key, value in eval_info.items():
+    pd_data['precision'].append(value['pre'][1])
+    pd_data['recall'].append(value['rec'][1])
+    pd_data['f1-score'].append(value['f1s'][1])
+    pd_index.append(key)
+    
+df = pandas.DataFrame(data=pd_data, index=pd_index)
+df.to_csv(str(path_out / 'scores_per_sequence.csv'))
