@@ -1,3 +1,4 @@
+from pathlib import Path
 from deepfinder.training import Train
 from deepfinder.utils.dataloader import Dataloader
 
@@ -24,6 +25,8 @@ trainer.flag_direct_read     = False
 trainer.flag_batch_bootstrap = True
 trainer.Lrnd             = 32 # random shifts when sampling patches (data augmentation)
 trainer.class_weights = None # keras syntax: class_weights={0:1., 1:10.} every instance of class 1 is treated as 10 instances of class 0
+
+Path(trainer.path_out).mkdir(exist_ok=True, parents=True)
 
 # Use following line if you want to resume a previous training session:
 #trainer.net.load_weights('out/round1/net_weights_FINAL.h5')
