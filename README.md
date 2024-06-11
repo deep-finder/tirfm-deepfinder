@@ -1,4 +1,4 @@
-# Deep Finder
+# ExoDeepFinder
 
 This is a fork of [DeepFinder](https://github.com/deep-finder/cryoet-deepfinder) customized for use in TIRF microscopy, designed for detecting exocytosis events. 
 
