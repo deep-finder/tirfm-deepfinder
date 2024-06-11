@@ -1,9 +1,12 @@
+import argparse
 import sys
 from pathlib import Path
 import numpy as np
 from deepfinder.training import TargetBuilder
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
+
+# parser = argparse.ArgumentParser('Generate targets')
 
 path_output = Path('out/')
 path_objl = 'in/objl_cell6.xml'  # path to object list containing annotated positions

@@ -1,60 +1,86 @@
-#!/usr/bin/env python
-
-# =============================================================================================
-# DeepFinder - a deep learning approach to localize macromolecules in cryo electron tomograms
-# =============================================================================================
-# Copyright (C) Inria,  Emmanuel Moebel, Charles Kervrann, All Rights Reserved, 2015-2021, v1.0
-# License: GPL v3.0. See <https://www.gnu.org/licenses/>
-# =============================================================================================
-
-import os
-import sys
-from os.path import dirname, abspath, join, basename
+#!/usr/bin/python3
 
 import argparse
+import sys
+from pathlib import Path
 import numpy as np
-
-# Set deepfindHome to the location of this file
-deepfindHome = dirname(abspath(__file__))
-deepfindHome = os.path.split(deepfindHome)[0]+'/'
-sys.path.append(deepfindHome)
-
-from deepfinder.utils.params import ParamsGenTarget
 from deepfinder.training import TargetBuilder
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 
+# path_output.mkdir(exist_ok=True, parents=True)
 
-# Define arguments:
-parser = argparse.ArgumentParser(description='Annotate a tomogram.')
-parser.add_argument('-p', action='store', dest='path_params', help = 'path to params file')
-args = parser.parse_args()
+# First, define the (t,y,x) mask for exocytosis event:
+def get_exo_mask():
+    # Here we construct the mask frame per frame
+    # The mask is a cone whose radius has exponential decay
+    # 1st frame is disk with r=4,
+    # 2nd frame is disk with r=2,
+    # 3rd and last frame is disk with r=1
+    r = 4
+    mask_shape = [2 * r + 1, 2 * r + 1, 2 * r + 1]
 
-if args.path_params == None: # if no args are passed, then open GUI
-    gui_folder = 'pyqt/generate_target/'
-    gui_script = 'gui_target.py'
+    # 1st frame (to create a disk mask we exploit a function that creates spheres)
+    mask_sphere = cm.create_sphere(mask_shape, r)  # result here is a binary map of a 3d sphere
+    mask_t0 = mask_sphere[r, :, :]  # result here is a binary map of a 2D disk
 
-    cmd = 'cd '+deepfindHome+gui_folder+' ; python '+gui_script
-    os.system(cmd)
+    # 3nd frame
+    mask_sphere = cm.create_sphere(mask_shape, np.round(r / 2))
+    mask_t1 = mask_sphere[r, :, :]
 
-else:
-    params = ParamsGenTarget()
-    params.read(args.path_params)
-    #params.display()
+    # 3rd frame
+    mask_t2 = np.zeros((mask_shape[0], mask_shape[1]))
+    mask_t2[r, r] = 1
 
-    objl = ol.read_xml(params.path_objl)
+    # Merge frames
+    mask = np.zeros(mask_shape)
+    mask[r, :, :] = mask_t0
+    mask[r + 1, :, :] = mask_t1
+    mask[r + 2, :, :] = mask_t2
 
-    # Initialize target generation task:
+    return mask
+
+def generate_target(image_path, object_list_path, output_path):
+
+    image = cm.read_mrc(str(image_path))
+    data_shape = image.shape  # shape of image sequence [t,y,x]
+
+    mask_exo = get_exo_mask()
+
+    # Next, read object list:
+    objl = ol.read_xml(object_list_path)
+
+    for i, obj in enumerate(objl):
+        if obj['label']>1:
+            sys.exit(f'Error: object {i} has label greater than 1: ', obj['label'])
+
+    # Then, initialize target generation task:
     tbuild = TargetBuilder()
 
-    if params.path_initial_vol != '':
-        vol_initial = cm.read_array(params.path_initial_vol)
-    else:
-        vol_initial = np.zeros(params.tomo_size, dtype=np.int8)
+    # Initialize target array. Here, we initialize it with an empty array. But it could be initialized with a segmentation map containing other (non-overlapping) classes.
+    initial_vol = np.zeros(data_shape)
 
-    if params.strategy == 'shapes':
-        target = tbuild.generate_with_shapes(objl, vol_initial, params.mask_list)
-    else:
-        target = tbuild.generate_with_spheres(objl, vol_initial, params.radius_list)
+    # Run target generation:
 
-    cm.write_array(target, params.path_target)
+    target = tbuild.generate_with_shapes(objl, initial_vol, [mask_exo])
+    # cm.plot_volume_orthoslices(target, str(path_output / 'orthoslices_target.png'))
+
+    # Save target:
+    cm.write_array(target, str(output_path))
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser('Convert annotations to segmentations', description='Convert an annotation file (.xml generated with napari-exodeepfinder) into a segmentation.')
+
+    parser.add_argument('-i', '--input_image', 'Path to the input image. The correponding annotation file (.xml generated with napari-exodeepfinder) must be named "[input_image]_expert_annotations.xml". If the path is a folder, all .mrc images will be processed, expect the ones ending with "_segmentation.mrc". The output segmentation will be named "[input_image]_expert_segmentation.mrc".')
+
+    args = parser.parse_args()
+
+    image_path = Path(args.input_image)
+    image_paths = list(set(image_path.glob('*.mrc')) - set(image_path.glob('*_segmentation.mrc'))) if image_path.is_dir() else [image_path]
+
+    for image_path in image_paths:
+        object_list_path = image_path.parent / f'{image_path.stem}_expert_annotations.xml'  # path to object list containing annotated positions
+        output_path = image_path.parent / f'{image_path.stem}_expert_segmentation.mrc'
+        generate_target(image_path, object_list_path, output_path)
+
