@@ -1,9 +1,6 @@
-#!/usr/bin/python3
-
 from pathlib import Path
 import argparse
 import numpy as np
-import os
 import h5py
 import SimpleITK as sitk
 import xml.etree.ElementTree as ET
@@ -123,7 +120,7 @@ def motl2objlist(motl, filename):
     tree.write(filename)
 
 
-def merge_atlas_targets(atlas_segmentation_path, expert_object_list_path, expert_segmentation_path, output_segmentation_path, output_object_list_path):
+def merge_atlas_expert_segmentation(atlas_segmentation_path, expert_object_list_path, expert_segmentation_path, output_segmentation_path, output_object_list_path):
     
     print('Read inputs')
     motl_exo = objlist2motl(expert_object_list_path)
@@ -253,14 +250,14 @@ def merge_atlas_targets(atlas_segmentation_path, expert_object_list_path, expert
 
 if __name__ == '__main__':
     
-    parser = argparse.ArgumentParser('Merge atlas targets', description='Merge atlas detections and expert annotations.')
+    parser = argparse.ArgumentParser('Merge atlas and experts', description='Merge atlas detections with expert annotations.')
 
-    parser.add_argument('-i', '--input_image', 'Path to the input image. The correponding annotation file (.xml generated with napari-exodeepfinder) must be named "[input_image]_expert_annotations.xml". If the path is a folder, all .mrc images will be processed, expect the ones ending with "_segmentation.mrc". The output segmentation will be named "[input_image]_expert_segmentation.mrc".')
+    parser.add_argument('-i', '--input_image', 'Path to the input image. The correponding annotation file (.xml generated with napari-exodeepfinder) must be named "[input_image]_expert_annotations.xml". If the path is a folder, all .h5 images will be processed, expect the ones ending with "_segmentation.h5". The output segmentation will be named "[input_image]_expert_segmentation.h5".')
 
     args = parser.parse_args()
 
     image_path = Path(args.input_image)
-    image_paths = list(set(image_path.glob('*.mrc')) - set(image_path.glob('*_segmentation.mrc'))) if image_path.is_dir() else [image_path]
+    image_paths = list(set(image_path.glob('*.h5')) - set(image_path.glob('*_segmentation.h5'))) if image_path.is_dir() else [image_path]
     
     for image_path in image_paths:
         atlas_segmentation_path = image_path.parent / f'{image_path.step}_atlas_segmentation.h5'
@@ -269,4 +266,4 @@ if __name__ == '__main__':
         merged_annotations_path = image_path.parent / f'{image_path.step}_merged_annotations.xml'
         merged_segmentation_path = image_path.parent / f'{image_path.step}_merged_segmentation.h5'
 
-        merge_atlas_targets(atlas_segmentation_path, expert_annotations_path, expert_segmentation_path, merged_segmentation_path, merged_annotations_path)
+        merge_atlas_expert_segmentation(atlas_segmentation_path, expert_annotations_path, expert_segmentation_path, merged_segmentation_path, merged_annotations_path)

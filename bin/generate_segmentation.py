@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import argparse
 import sys
 from pathlib import Path
@@ -40,9 +38,9 @@ def get_exo_mask():
 
     return mask
 
-def generate_target(image_path, object_list_path, output_path):
+def generate_segmentation(image_path, object_list_path, output_path):
 
-    image = cm.read_mrc(str(image_path))
+    image = cm.read_array(str(image_path))
     data_shape = image.shape  # shape of image sequence [t,y,x]
 
     mask_exo = get_exo_mask()
@@ -72,15 +70,18 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser('Convert annotations to segmentations', description='Convert an annotation file (.xml generated with napari-exodeepfinder) into a segmentation.')
 
-    parser.add_argument('-i', '--input_image', 'Path to the input image. The correponding annotation file (.xml generated with napari-exodeepfinder) must be named "[input_image]_expert_annotations.xml". If the path is a folder, all .mrc images will be processed, expect the ones ending with "_segmentation.mrc". The output segmentation will be named "[input_image]_expert_segmentation.mrc".')
+    parser.add_argument('-i', '--image', 'Path to the input image. If the path is a folder, all .h5 images will be processed expect the ones ending with "_segmentation.h5" ; and the --annotation and --segmentation inputs will be ignored.')
+    parser.add_argument('-a', '--annotation', 'Path to the corresponding annotation (.xml generated with napari-exodeepfinder). Default is "[input_image]_expert_annotations.xml".', default=None)
+    parser.add_argument('-s', '--segmentation', 'Path to the output segmentation. Default is "[input_image]_expert_segmentation.h5".', default=None)
 
     args = parser.parse_args()
 
-    image_path = Path(args.input_image)
-    image_paths = list(set(image_path.glob('*.mrc')) - set(image_path.glob('*_segmentation.mrc'))) if image_path.is_dir() else [image_path]
+    image_path = Path(args.image)
+    image_paths = list(set(image_path.glob('*.h5')) - set(image_path.glob('*_segmentation.h5'))) if image_path.is_dir() else [image_path]
 
     for image_path in image_paths:
-        object_list_path = image_path.parent / f'{image_path.stem}_expert_annotations.xml'  # path to object list containing annotated positions
-        output_path = image_path.parent / f'{image_path.stem}_expert_segmentation.mrc'
-        generate_target(image_path, object_list_path, output_path)
+        # path to object list containing annotated positions
+        object_list_path = image_path.parent / f'{image_path.stem}_expert_annotations.xml' if args.annotation is None or image_path.is_dir() else args.annotation
+        output_path = image_path.parent / f'{image_path.stem}_expert_segmentation.h5' if args.segmentation is None or image_path.is_dir() else args.segmentation
+        generate_segmentation(image_path, object_list_path, output_path)
 
