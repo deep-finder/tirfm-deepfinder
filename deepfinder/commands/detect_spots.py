@@ -6,7 +6,7 @@ import subprocess
 from deepfinder.commands.convert_tiff_to_h5 import convert_tiff_to_h5
 
 def detect_spots(tiffs_path, detector_path, command, output_path):
-    output_folder = output_path.with_suffix('.h5')
+    output_folder = output_path.with_suffix('')
     output_folder.mkdir(exist_ok=True, parents=True)
     command = command.replace('{detector}', str(detector_path.resolve()))
     command = command.replace('{input}', str(tiffs_path.resolve()))
@@ -18,7 +18,7 @@ def detect_spots(tiffs_path, detector_path, command, output_path):
     return
 
 def main():
-    parser = argparse.ArgumentParser('Detect spots', description='Detect spots and convert resulting segmentation to h5.')
+    parser = argparse.ArgumentParser('Detect spots', description='Detect spots and convert resulting segmentation to h5.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('-m', '--movie', help='Path to the input folder containing one tiff file per frame.', default='tiff/', type=Path)
     parser.add_argument('-dp', '--detector_path', help='Path to the detector.', default='path/to/atlas', type=Path)
