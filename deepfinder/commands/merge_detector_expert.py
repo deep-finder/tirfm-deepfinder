@@ -120,20 +120,20 @@ def motl2objlist(motl, filename):
     tree.write(filename)
 
 
-def merge_atlas_expert_segmentation(atlas_segmentation_path, expert_object_list_path, expert_segmentation_path, output_segmentation_path, output_object_list_path):
+def merge_detector_expert_segmentation(detector_segmentation_path, expert_object_list_path, expert_segmentation_path, output_segmentation_path, output_object_list_path):
     
     print('Read inputs')
     motl_exo = objlist2motl(expert_object_list_path)
     
-    with h5py.File(atlas_segmentation_path, 'r') as hf:
+    with h5py.File(detector_segmentation_path, 'r') as hf:
         seg = np.array(hf.get('dataset'), dtype=np.int8)
     
     # % this operation is needed to get correct orientation:
     # %seg = permute(seg, [2 1 3]);
-    print('Atlas segmentation has size:', seg.shape)
+    print('detector segmentation has size:', seg.shape)
 
-    print('Computing connected components in atlas segmentation...')
-    # - Remove exocytose events from atlas segmentation seg <- custom
+    print('Computing connected components in detector segmentation...')
+    # - Remove exocytose events from detector segmentation seg <- custom
     # - Create a motl_normal with all other events
     # - Merge motl_normal and exocytose events and subsample
     
@@ -173,16 +173,16 @@ def merge_atlas_expert_segmentation(atlas_segmentation_path, expert_object_list_
     
     print('Comparing detected centroid with exocytose events...')
     D = motl_compare(motl_exo, motl, 5)
-    vect_corresp = np.sum(D, axis=0) # only considered as TP if =1
+    vect_corresp = np.sum(D, axis=0)
     # Erase all spots that correspond to exocytosis
-    print('Erasing exocytosis spots from atlas segmentation...')
+    print('Erasing exocytosis spots from detector segmentation...')
     target[np.isin(label_array, [i+1 for i in np.where(vect_corresp==1)])] = 0
     
     print('Creating a movie list from all remaining spots, slice by slice...')
     # Now get 2D CC to get coordinates of "normal" spots.
-    # We use 2D CC because the spot detector (Atlas) operates in 2D
+    # We use 2D CC because the spot detector (atlas) operates in 2D
     motl_normal = []
-    for s in range(target.shape[2]):
+    for s in range(target.shape[0]):
         # CC2d = measure.label(target[s,:,:], connectivity=2)
         # S = measure.regionprops(CC2d)
         # N = len(S)
@@ -195,7 +195,7 @@ def merge_atlas_expert_segmentation(atlas_segmentation_path, expert_object_list_
         #     m[9] = s
 
         if s%100==0:
-            print('Slice', s, 'of', target.shape[2])
+            print('Slice', s, 'of', target.shape[0])
         image = sitk.GetImageFromArray(target[s,:,:])
         label = sitk.ConnectedComponent(image, True)
         label_array = sitk.GetArrayFromImage(label)
@@ -219,9 +219,10 @@ def merge_atlas_expert_segmentation(atlas_segmentation_path, expert_object_list_
     # Fuse object lists and seg target
     N = 9800 # % motl_normal is way too big (~70k) therefore subsample
     print(f'Sampling {N} detections among {motl_normal.shape[1]}...')
-    motl_normal = random.sample(range(motl_normal.shape[1]), N)
+
+    idx_rnd = random.sample(range(motl_normal.shape[1]), N)
     # idx_rnd = range(N)
-    # motl_normal = motl_normal[:,idx_rnd]
+    motl_normal = motl_normal[:,idx_rnd]
     
     print(f'Merging normal (class 1) and exocytose (class 2) events...')
     motl_normal[19,:] = 1 # % 'normal' spot is class1;
@@ -247,23 +248,31 @@ def merge_atlas_expert_segmentation(atlas_segmentation_path, expert_object_list_
     
     motl2objlist(motl_final, output_object_list_path)
 
+def main():
 
-if __name__ == '__main__':
-    
-    parser = argparse.ArgumentParser('Merge atlas and experts', description='Merge atlas detections with expert annotations.')
+    parser = argparse.ArgumentParser('Merge detector and expert data', description='Merge detector detections with expert annotations.')
 
-    parser.add_argument('-i', '--input_image', 'Path to the input image. The correponding annotation file (.xml generated with napari-exodeepfinder) must be named "[input_image]_expert_annotations.xml". If the path is a folder, all .h5 images will be processed, expect the ones ending with "_segmentation.h5". The output segmentation will be named "[input_image]_expert_segmentation.h5".')
+    parser.add_argument('-ds', '--detector_segmentation', help='Path to the detector segmentation.', default='detector_segmentation.h5', type=Path)
+    # parser.add_argument('-da', '--detector_annotation', help='Path to the detector annotation.', default='detector_annotation.xml', type=Path)
+    parser.add_argument('-es', '--expert_segmentation', help='Path to the expert segmentation.', default='expert_segmentation.h5', type=Path)
+    parser.add_argument('-ea', '--expert_annotation', help='Path to the expert annotation.', default='expert_annotation.xml', type=Path)
+    parser.add_argument('-ms', '--merged_segmentation', help='Path to the output merged segmentation.', default='merged_segmentation.h5', type=Path)
+    parser.add_argument('-ma', '--merged_annotation', help='Path to the output merged annotation.', default='merged_annotation.xml', type=Path)
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
 
     args = parser.parse_args()
-
-    image_path = Path(args.input_image)
-    image_paths = list(set(image_path.glob('*.h5')) - set(image_path.glob('*_segmentation.h5'))) if image_path.is_dir() else [image_path]
     
-    for image_path in image_paths:
-        atlas_segmentation_path = image_path.parent / f'{image_path.step}_atlas_segmentation.h5'
-        expert_annotations_path = image_path.parent / f'{image_path.step}_expert_annotations.xml'
-        expert_segmentation_path = image_path.parent / f'{image_path.step}_expert_segmentation.h5'
-        merged_annotations_path = image_path.parent / f'{image_path.step}_merged_annotations.xml'
-        merged_segmentation_path = image_path.parent / f'{image_path.step}_merged_segmentation.h5'
+    # In batch mode, process all subfolders. In single movie mode, process given args once.
+    for movie_path in ( range(1) if args.batch is None else sorted([d for d in args.batch.iterdir() if d.is_dir()]) ):
 
-        merge_atlas_expert_segmentation(atlas_segmentation_path, expert_annotations_path, expert_segmentation_path, merged_segmentation_path, merged_annotations_path)
+        detector_segmentation_path = movie_path / args.detector_segmentation.name if args.batch is not None else args.detector_segmentation
+        expert_annotation_path = movie_path / args.expert_annotation.name if args.batch is not None else args.expert_annotation
+        expert_segmentation_path = movie_path / args.expert_segmentation.name if args.batch is not None else args.expert_segmentation
+        merged_annotation_path =  movie_path / args.merged_annotation.name if args.batch is not None else args.merged_annotation
+        merged_segmentation_path = movie_path / args.merged_segmentation.name if args.batch is not None else args.merged_segmentation
+
+        merge_detector_expert_segmentation(detector_segmentation_path, expert_annotation_path, expert_segmentation_path, merged_segmentation_path, merged_annotation_path)
+
+
+if __name__ == '__main__':
+    main()

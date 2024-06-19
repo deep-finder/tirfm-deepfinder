@@ -23,7 +23,7 @@ class Segment(core.DeepFinder):
         self.Ncl = Ncl
 
         # Segmentation, parameters for dividing data in patches:
-        self.P = patch_size  # patch length (in pixels) /!\ has to a multiple of 4 (because of 2 pooling layers), so that dim_in=dim_out
+        self.P = patch_size  # patch length (in pixels) has to a multiple of 4 (because of 2 pooling layers), so that dim_in=dim_out
         self.pcrop = 25  # how many pixels to crop from border (net model dependent)
         self.poverlap = 55  # patch overlap (in pixels) (2*pcrop + 5)
 

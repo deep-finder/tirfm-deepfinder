@@ -9,7 +9,7 @@
 
 from keras.layers import Input, concatenate
 from keras.models import Model
-from keras.layers.convolutional import Conv3D, MaxPooling3D, UpSampling3D
+from keras.layers import Conv3D, MaxPooling3D, UpSampling3D
 
 
 # This model has been modified so that pooling is only performed on (x,y) dimensions and not in (t)

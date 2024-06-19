@@ -201,6 +201,9 @@ def write_h5array(array, filename, dset_name='dataset'):
     elif array.dtype == np.uint8:
         dset = h5file.create_dataset(dset_name, array.shape, dtype='uint8')
         dset[:] = np.uint8(array)
+    elif array.dtype == np.int16:
+        dset = h5file.create_dataset(dset_name, array.shape, dtype='int16')
+        dset[:] = np.int16(array)
     elif array.dtype == np.uint16:
         dset = h5file.create_dataset(dset_name, array.shape, dtype='uint16')
         dset[:] = np.uint16(array)
@@ -211,7 +214,7 @@ def write_h5array(array, filename, dset_name='dataset'):
         dset = h5file.create_dataset(dset_name, array.shape, dtype='float32')
         dset[:] = np.float32(array)
     else:
-        print('/!\ DeepFinder: array needs to be one of following formats: uint8, int8, float16 or float32')
+        print('DeepFinder: array needs to be one of following formats: uint8, int8, uint16, int16, float16 or float32')
     h5file.close()
 
 
@@ -269,7 +272,7 @@ def read_array(filename, dset_name='dataset'):
     elif data_format[1] == '.tif' or data_format[1] == '.TIF':
         array = read_tif(filename)
     else:
-        print('/!\ DeepFinder can only read datasets in .h5 and .mrc formats')
+        print('DeepFinder can only read datasets in .h5 and .mrc formats')
     return array
 
 
@@ -292,7 +295,7 @@ def write_array(array, filename, dset_name='dataset'):
     elif data_format[1] == '.mrc':
         write_mrc(array, filename)
     else:
-        print('/!\ DeepFinder can only write arrays in .h5 and .mrc formats')
+        print('DeepFinder can only write arrays in .h5 and .mrc formats')
 
 
 # Subsamples a 3D array by a factor 2. Subsampling is performed by averaging voxel values in 2x2x2 tiles.

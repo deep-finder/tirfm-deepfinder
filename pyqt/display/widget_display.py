@@ -140,7 +140,7 @@ class DisplayOrthoslicesWidget(QWidget):
 
         self.initialize_orthoslice_linking()
 
-    def initialize_display(self): # /!\ self.dim needs to be declared first.
+    def initialize_display(self): # self.dim needs to be declared first.
         # Stuff that needs to be intialized after loading a volume (tomogram or label map)
         self.x = np.int_(np.round(self.dim[2] / 2))
         self.y = np.int_(np.round(self.dim[1] / 2))

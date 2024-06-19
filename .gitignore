@@ -1,3 +1,8 @@
-dist/
-cryoet_deepfinder.egg-info/
 tirfm_deepfinder.egg-info/
+exodeepfinder.egg-info/
+env/
+dist/
+build/
+.vscode/
+__pycache__/
+blobs.txt

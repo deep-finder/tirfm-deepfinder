@@ -79,7 +79,7 @@ def read(filename):
     elif data_format[1] == '.xlsx':
         objl = read_excel(filename)
     else:
-        print('/!\ DeepFinder can only read object lists in .xml and .xlsx formats')
+        print('DeepFinder can only read object lists in .xml and .xlsx formats')
     return objl
 
 
@@ -96,7 +96,7 @@ def write(objl, filename):
     elif data_format[1] == '.xlsx':
         write_excel(objl, filename)
     else:
-        print('/!\ DeepFinder can only write object lists in .xml and .xlsx formats')
+        print('DeepFinder can only write object lists in .xml and .xlsx formats')
 
 
 def read_xml(filename):
@@ -290,7 +290,7 @@ def above_thr(objlIN, thr):
             if csize>=thr:
                 idx_thr.append(idx)
         else:
-            print('/!\ Object ' + str(idx) + ' has no attribute cluster_size')
+            print('Object ' + str(idx) + ' has no attribute cluster_size')
 
     objlOUT = []
     for idx in range(len(idx_thr)):
@@ -324,7 +324,7 @@ def scale_coord(objlIN, scale):
     elif isinstance(scale, tuple):
         s = scale
     else:
-        print('/!\ scale must be either float, int or tuple (z,y,x)')
+        print('scale must be either float, int or tuple (z,y,x)')
 
     objlOUT = deepcopy(objlIN) # necessary else the original objl is scaled too
     for idx in range(len(objlIN)):
@@ -438,7 +438,7 @@ def remove_class(objl, label_list):
         objl.pop(idx)
     return objl
 
-# # /!\ for now this function does not know how to handle empty objlists
+# # for now this function does not know how to handle empty objlists
 # def get_Ntp(objl_gt, objl_df, tol_pos_err):
 #     # tolerated position error (in voxel)
 #     Ngt = len(objl_gt)

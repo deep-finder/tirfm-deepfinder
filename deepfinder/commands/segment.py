@@ -31,21 +31,24 @@ def segment(image_path, weights_path, output_path=None, visualization=False, pat
         cm.plot_volume_orthoslices(data    , str(output_path.parent / f'{image_path.stem}_data.png'))
         cm.plot_volume_orthoslices(labelmap, str(output_path.parent / f'{image_path.stem}_prediction.png'))
 
-if __name__ == '__main__':
+def main():
 
-    parser = argparse.ArgumentParser('Detect exocytose events.', description='Segment exocytose events in a video.')
+    parser = argparse.ArgumentParser('Detect exocytose events.', description='Segment exocytose events in a video.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('-i', '--image', help='Path to the input image. If the path is a folder, all .h5 images will be processed, expect the ones ending with "_segmentation.h5".')
-    parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path.', default='../examples/analyze/in/net_weights_FINAL.5')
+    parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path)
+    parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path.', default='examples/analyze/in/net_weights_FINAL.5')
     parser.add_argument('-ps', '--patch_size', help='Patch size. Must be a multiple of 4.', default=160)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[input_image]_segmentation.h5". If input_image is a folder, output names will be generated from input image names.', default=None)
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[--movie]_segmentation.h5".', default=None)
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
 
     args = parser.parse_args()
 
-    image_path = Path(args.image)
-    image_paths = list(set(image_path.glob('*.h5')) - set(image_path.glob('*_segmentation.h5'))) if image_path.is_dir() else [image_path]
-    
-    for image_path in image_paths:
+    movie_paths = [Path(args.movie)] if args.batch is None else sorted([d / args.movie.name for d in args.batch.iterdir() if d.is_dir()])
 
-        segment(image_path, args.model_weights, args.segmentation, args.visualization, args.patch_size)
+    for movie_path in movie_paths:
+
+        segment(movie_path, args.model_weights, args.segmentation, args.visualization, args.patch_size)
+
+if __name__ == '__main__':
+    main()

@@ -12,9 +12,6 @@ import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 
 def cluster(segmentation_path, cluster_radius, output_path=None):
-    if output_path is None:
-        output_path = segmentation_path.parent / f'{segmentation_path.stem}.xml'
-    
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
     # Load data:
@@ -41,19 +38,22 @@ def cluster(segmentation_path, cluster_radius, output_path=None):
     # Save object lists:
     ol.write_xml(objlist, output_path)
 
-if __name__ == '__main__':
+def main():
 
-    parser = argparse.ArgumentParser('Generate Annotation', description='Cluster exocytose events to generate an annotation file from a segmentation file.')
+    parser = argparse.ArgumentParser('Generate Annotation', description='Cluster exocytose events to generate an annotation file from a segmentation file.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation. If the path is a folder, all *_segmentation.h5 images will be processed.')
+    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path)
     parser.add_argument('-cr', '--cluster_radius', help='Size of the radius, in voxel.', default=5)
-    parser.add_argument('-a', '--annotations', help='Path to the output annotations. Default is "[input_segmentation].xml". If input_image is a folder, output names will be generated from input image names.', default=None)
+    parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path)
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
 
     args = parser.parse_args()
 
-    image_path = Path(args.segmentation)
-    image_paths = list(image_path.glob('*_segmentation.h5')) if image_path.is_dir() else [image_path]
+    segmentation_paths = [Path(args.segmentation)] if args.batch is None else sorted([d / args.segmentation.name for d in args.batch.iterdir() if d.is_dir()])
     
-    for image_path in image_paths:
+    for segmentation_path in segmentation_paths:
 
-        cluster(image_path, args.cluster_radius, args.annotations)
+        cluster(segmentation_path, args.cluster_radius, args.annotation)
+
+if __name__ == '__main__':
+    main()

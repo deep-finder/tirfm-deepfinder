@@ -8,8 +8,7 @@ import h5py
 import numpy as np
 import time
 
-#from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.optimizers.legacy import Adam
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 import tensorflow.keras.backend as K
 
@@ -153,7 +152,7 @@ class Train(core.DeepFinder):
 
         # Network parameters:
         self.Ncl = Ncl  # Ncl
-        self.dim_in = dim_in  # /!\ has to a multiple of 4 (because of 2 pooling layers), so that dim_in=dim_out
+        self.dim_in = dim_in  # has to a multiple of 4 (because of 2 pooling layers), so that dim_in=dim_out
         self.net = models.my_model(self.dim_in, self.Ncl)
 
         self.label_list = []
@@ -165,7 +164,7 @@ class Train(core.DeepFinder):
         self.epochs = 100
         self.steps_per_epoch = 100
         self.steps_per_valid = 10  # number of samples for validation
-        self.optimizer = Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+        self.optimizer = Adam(learning_rate=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, weight_decay=0.0)
         self.loss = losses.tversky_loss
 
         self.flag_direct_read = 1

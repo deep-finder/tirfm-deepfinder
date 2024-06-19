@@ -1,9 +1,9 @@
 import argparse
 from pathlib import Path
-from deepfinder.training import Train
-from deepfinder.utils.dataloader import Dataloader
 
-def train(dataset_path, output_path, n_epochs):
+def train(dataset_path, output_path, n_epochs, steps_per_epoch):
+    from deepfinder.training import Train
+    from deepfinder.utils.dataloader import Dataloader
 
     # Load dataset:
     path_data, path_target, objl_train, objl_valid = Dataloader(ext='.h5')(dataset_path)
@@ -18,7 +18,7 @@ def train(dataset_path, output_path, n_epochs):
     trainer.h5_dset_name     = 'dataset' # if training data is stored as h5, you can specify the h5 dataset
     trainer.batch_size       = 8
     trainer.epochs           = n_epochs
-    trainer.steps_per_epoch  = 100
+    trainer.steps_per_epoch  = steps_per_epoch
     trainer.Nvalid           = 10 # steps per validation
     trainer.flag_direct_read     = False
     trainer.flag_batch_bootstrap = True
@@ -33,15 +33,18 @@ def train(dataset_path, output_path, n_epochs):
     # Finally, launch the training procedure:
     trainer.launch(path_data, path_target, objl_train, objl_valid)
 
+def main():
 
-if __name__ == '__main__':
-    
-    parser = argparse.ArgumentParser('Train ExoDeepFinder', description='Train a model from the given dataset.')
+    parser = argparse.ArgumentParser('Train ExoDeepFinder', description="""Train a model from the given dataset.""", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('-d', '--dataset_path', 'Path to the input dataset')
-    parser.add_argument('-n', '--n_epochs', 'Number of epochs', default=1000, type=int)
-    parser.add_argument('-o', '--output_path', 'Output path where the model will be stored')
+    parser.add_argument('-d', '--dataset', help='Path to the input dataset', required=True)
+    parser.add_argument('-ne', '--n_epochs', help='Number of epochs', default=1000, type=int)
+    parser.add_argument('-ns', '--n_steps', help='Number of steps per epochs', default=100, type=int)
+    parser.add_argument('-o', '--output', help='Output path where the model will be stored')
 
     args = parser.parse_args()
 
-    train(args.dataset_path, args.output_path, args.n_epochs)
+    train(args.dataset, args.output, args.n_epochs, args.n_steps)
+
+if __name__ == '__main__':
+    main()
