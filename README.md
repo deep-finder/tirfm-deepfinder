@@ -46,7 +46,7 @@ For example, run `edf_detect_spots --help` to get more information about the `ed
 
 ### Exocytose events segmentation
 
-ExoDeepFinder handles exocytose movies made from tiff files, where each tiff file is a frame of the movie, and their name ends with the frame number ; like in the following structure:
+ExoDeepFinder handles exocytose movies made from tiff files, where each tiff file is a frame of the movie, and their name ends with the frame number; like in the following structure:
 
 ```
 exocytose_data/
@@ -69,7 +69,7 @@ You can also generate all your movie folders at once using the `--batch` option:
 `edf_convert_tiff_to_h5 --batch path/to/movies/ --output path/to/outputs/ --make_subfolder`
 
 where `path/to/movies/` contains movies folders (which in turn contains tiff files).
-The `--make_subfolder` option enable to put all tiff files in a `till/` subfolder ; which is useful in batch mode.
+The `--make_subfolder` option enable to put all tiff files in a `till/` subfolder; which is useful in batch mode.
 The `--batch` option enables to process multiple movie folders at once and work in the same way in all ExoDeepFinder commands.
 
 The above command will turn the following file structure:
@@ -122,7 +122,7 @@ The [napari-deepfinder](https://github.com/deep-finder/napari-deepfinder) plugin
 Open the movie you want to segment in napari (it must be in h5 format).
 In the menu, choose `Plugins > Napari DeepFinder > Segmentation`  to open the segmentation tools.
 Choose the image layer you want to segment.
-Select the `examples/analyze/in/net_weights_FINAL.h5` net weights ; or the path of the model weights you want to use for the segmentation.
+Select the `examples/analyze/in/net_weights_FINAL.h5` net weights; or the path of the model weights you want to use for the segmentation.
 Use 3 for the number of class, and 160 for the patch size.
 Choose an output image name (with the .h5 extension), then launch the segmentation.
 
@@ -208,7 +208,7 @@ Annotate the exocytose events in the movies with the [napari-deepfinder](https:/
 - You can also use the "Add points" and "Delete selected point" buttons from the layer controls.
 - When you annotated all events, save your annotations to xml by choosing the `File > Save selected layer(s)...` menu, or by using ctrl+S (command+S on a mac), **and choose the *Napadi DeepFinder (\*.xml)* format**. Save the file beside the movie, and name it `expert_annotation.xml` (this should result in the `exocytose_data/movie1/expert_annotation.xml` with the above example).
 
-Annotate all training and validation movies with this procedure ; you should end up with the following folder structure:
+Annotate all training and validation movies with this procedure; you should end up with the following folder structure:
 
 ```
 exocytose_data
@@ -270,7 +270,7 @@ Then, merge detector detections with expert annotations with the `edf_merge_dete
 
 `edf_merge_detector_expert --batch path/to/exocytose_data/`
 
-This will create two new files `merged_annotation.xml` (the merged annotations) and `merged_segmentation.h5` (the merged segmentations). The exocytose events are first removed from the detector segmentation (`detector_segmentation.h5`), then the remaining events (from the dector and the expert) are transfered to the merged segmentation (`merged_segmentation.h5`), with class 2 for exocytose events and class 1 for others events. The maximum number of other events in the annotation is 9800 ; meaning that if there are more than 9800 other events, only 9800 events will be picked randomly and the others will be discarded.
+This will create two new files `merged_annotation.xml` (the merged annotations) and `merged_segmentation.h5` (the merged segmentations). The exocytose events are first removed from the detector segmentation (`detector_segmentation.h5`), then the remaining events (from the dector and the expert) are transfered to the merged segmentation (`merged_segmentation.h5`), with class 2 for exocytose events and class 1 for others events. The maximum number of other events in the annotation is 9800; meaning that if there are more than 9800 other events, only 9800 events will be picked randomly and the others will be discarded.
 
 The `exocytose_data/` folder will then follow this structure:
 
