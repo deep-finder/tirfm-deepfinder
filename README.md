@@ -6,29 +6,47 @@ This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfin
 
 ## Installation guide
 
-It is strongly advised to create a virtual environment for ExoDeepFinder before installing it.
-With virtualenv, simply run `python -m venv exoDeepFinder/` to create your environment, and `source exoDeepFinder/bin/activate` to activate it.
+Make sure you have python version 3.10 or later, or [conda](https://conda.io/projects/conda/en/latest/commands/create.html) installed. [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html) is a minimalist drop-in replacement for conda which is very simple to install and pretty fast.
 
-Then, you can install DeepFinder with pip:
+On Windows, TensorFlow requires WSL2; please see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2).
+
+It is strongly advised to create a virtual environment for ExoDeepFinder before installing it.
+
+The simplest way of creating a virtual environment in python is to use [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments). Simply run `python -m venv ExoDeepFinder/` to create your environment, and `source ExoDeepFinder/bin/activate` to activate it. Note that you need python greater than 3.10 for the environment to work with exodeepfinder.
+
+Alternatively, you can use [conda](https://conda.io/projects/conda/en/latest/commands/create.html), and optionally specify the python version when you create the environment. For example: `conda create -n ExoDeepFinder python=3.10` to create the environment with python 3.10, and `conda activate ExoDeepFinder` to activate it.
+
+Then, you can install ExoDeepFinder with pip:
 
 ```
 pip install exodeepfinder
 ```
 
-Also, in order for Tensorflow to work with your Nvidia GPU, you need to install CUDA. 
-An alternative could be to install the python packages `cudatoolkit` and `cudnn`.
-Once these steps have been achieved, the user should be able to run DeepFinder.
 
 ## Usage
 
-To detect exocytose events, you can either use the pretrained model to generate segmetations, or you can train your own model from your annotated images.
+To detect exocytose events, you can either use the pretrained model (available in `examples/analyze/in/net_weights_FINAL.h5`) to generate segmetations, or you can annotate soome exocytose movies and train your own model.
 
-For more information about the different ExoDeepFinder commands, use the `--help` option. 
+Here are all ExoDeepFinder commands (described later):
+
+```
+edf_convert_tiff_to_h5              # convert tiff folders to a single h5 file
+edf_segment                         # segment a movie
+edf_generate_annotation             # generate an annotation file from a segmentation by clustering it
+edf_generate_segmentation           # generate a segmentation from an annotation file
+edf_detect_spots                    # detect bright spots in movies
+edf_merge_detector_expert           # merge the expert annotations with the detector segmentations for training
+edf_structure_training_dataset      # structure dataset files for training
+edf_train                           # train a new model
+```
+
+For more information about an ExoDeepFinder command, use the `--help` option. 
+
 For example, run `edf_detect_spots --help` to get more information about the `edf_detect_spots` command.
 
 ### Exocytose events segmentation
 
-ExoDeepFinder handles movies made from tiff files, where each tiff file is a frame of the movie, and their name ends with the frame number ; like in the following structure:
+ExoDeepFinder handles exocytose movies made from tiff files, where each tiff file is a frame of the movie, and their name ends with the frame number ; like in the following structure:
 
 ```
 exocytose_data/
@@ -39,6 +57,8 @@ exocytose_data/
 ```
 
 The frame extensions can be .tif, .tiff, .TIF or .TIFF.
+
+There is no constraint on the file names, but they must contain the frame number (the last number in the file name must be the frame number), and be in the tiff format (it could work with other format like .png since images are read with the `skimage.io.imread()` function of the scikit-image library). For example `frame_1.tiff` could also be named `IMAGE32_1.TIF`. Similarly, there is no constraint on the movie names. In addition, although there is no strict constraint on the file names, be aware that it is much simpler to work with simple file names with no space or special characters.
 
 The movie folders (containing the frames in tiff format) can be converted into a single `.h5` file with the `edf_convert_tiff_to_h5` command.
 Most ExoDeepFinder commands take h5 files as input, so the first step is to convert the data to h5 format with the following command:
@@ -98,7 +118,7 @@ To cluster a segmentation and create an annotation file from it, use:
 
 #### Using the GUI
 
-The [napari-deepfinder](https://github.com/deep-finder/napari-deepfinder) plugin can be used to perform perictions.
+The [napari-deepfinder](https://github.com/deep-finder/napari-deepfinder) plugin can be used to compute predictions.
 Open the movie you want to segment in napari (it must be in h5 format).
 In the menu, choose `Plugins > Napari DeepFinder > Segmentation`  to open the segmentation tools.
 Choose the image layer you want to segment.
@@ -122,7 +142,7 @@ exocytose_data/
 └── ...
 ```
 
-There is no constraint on the file names, but they must contain the frame number (the last number in the file name must be the frame number), and be in the tiff format (it could work with other format like .png since images are read with the `skimage.io.imread()` function of the scikit-image library). For example `frame_1.tiff` could also be named `IMAGE32_1.TIF`. Similarly, there is no constraint on the movie names.
+#### Convert movies to h5 format
 
 For each movie, tiff files must be converted to a single `.h5` using the `edf_convert_tiff_to_h5` command:
 
@@ -146,11 +166,15 @@ exocytose_data/
 └── ...
 ```
 
-Then, bright spots must be detected in each frame with a spot detector such as [Atlas](https://gitlab.inria.fr/serpico/atlas) (it can be another spot detector). The Atlas installation instructions are detailed in the repository.
+#### Detect bright spots
 
-Once your installed atlas, you can detect spots in each frame using the `edf_detect_spots` command:
+Then, bright spots must be detected in each frame with a spot detector such as [Atlas](https://gitlab.inria.fr/serpico/atlas). The Atlas installation instructions are detailed in the repository.
+
+Once atlas (or the detector of your choice) is installed, you can detect spots in each frame using the `edf_detect_spots` command:
 
 `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytose_data/`
+
+where `path/to/atlas/` is the root path of atlas (containing the `build/` directory with the binaries inside if you followed the default installation instructions).
 
 This will generate `detector_segmentation.h5` files (the semgentations of spots) in the movie folders:
 
@@ -169,17 +193,21 @@ exocytose_data/
 
 You can make sure that the detector segmentations are correct by opening them in napari with the corresponding movie. Open both `.h5` files in napari, put the `detector_segmentation.h5` layer on top, then right-click on it and select "Convert to labels". You should see the detections in red on top of the movie.
 
+#### Annotate exocytose events
 
-Annotate the exocytose events in the movies with the [napari-deepfinder](https://github.com/deep-finder/napari-deepfinder) plugin.
-Follow the install instructions, and open napari.
-In the menu, choose `Plugins > Napari DeepFinder > Annotation`  to open the annotation tools.
-Open a movie (for example `exocytose_data/movie1/movie.h5`).
-Create a new points layer, and name it `movie_1` (any name with the `_1` suffix, since we want to annotate with the class 1). In the annotation panel, select the layer you just created in the "Points layer" select box.
-You can use the Orthoslice view to easily navigate in the volume, by using the `Plugins > Napari DeepFinder > Orthoslice view` menu.
-Scroll in the movie until you find and exocytose event.
-If you opened the Orthoslice view, you can click on an exocytose event to put the red cursor at its location, then click the "Add point" button in the annotation panel to annotate the event.
-You can also use the "Add points" and "Delete selected point" button from the layer controls.
-When you annotated all events, save your annotations to xml by choosing the `File > Save selected layer(s)...` menu, or by using ctrl+S (command+S on a mac), **and choose the *Napadi DeepFinder (\*.xml)* format**. Save the file beside the movie, and name it `expert_annotation.xml` (this should result in the `exocytose_data/movie1/expert_annotation.xml` with the above example).
+Annotate the exocytose events in the movies with the [napari-deepfinder](https://github.com/deep-finder/napari-deepfinder) plugin:
+
+- Follow the install instructions, and open napari.
+- In the menu, choose `Plugins > Napari DeepFinder > Annotation`  to open the annotation tools.
+- Open a movie (for example `exocytose_data/movie1/movie.h5`).
+- Create a new points layer, and name it `movie_1` (any name with the `_1` suffix, since we want to annotate with the class 1). 
+- In the annotation panel, select the layer you just created in the "Points layer" select box (you can skip this step and use the "Add points" and "Delete selected point" buttons from the layer controls).
+- You can use the Orthoslice view to easily navigate in the volume, by using the `Plugins > Napari DeepFinder > Orthoslice view` menu.
+- Scroll in the movie until you find and exocytose event.
+- If you opened the Orthoslice view, you can click on an exocytose event to put the red cursor at its location, then click the "Add point" button in the annotation panel to annotate the event.
+- You can also use the "Add points" and "Delete selected point" buttons from the layer controls.
+- When you annotated all events, save your annotations to xml by choosing the `File > Save selected layer(s)...` menu, or by using ctrl+S (command+S on a mac), **and choose the *Napadi DeepFinder (\*.xml)* format**. Save the file beside the movie, and name it `expert_annotation.xml` (this should result in the `exocytose_data/movie1/expert_annotation.xml` with the above example).
+
 Annotate all training and validation movies with this procedure ; you should end up with the following folder structure:
 
 ```
@@ -211,6 +239,7 @@ Make sure that the `expert_annotation.xml` files you just created have the follo
 
 The `class_label` must be 1, and `tomo_idx` must be 0.
 
+#### Convert expert annotations to expert segmentations
 
 Use the `edf_generate_segmentation` command to convert the annotations to segmentations:
 
@@ -234,6 +263,8 @@ exocytose_data/
 ```
 
 Again, you can check on napari that everything went right by opening all images and checking that `expert_segmentation.h5` corresponds to `expert_annotation.xml` and the movie.
+
+#### Merge detector and expert data
 
 Then, merge detector detections with expert annotations with the `edf_merge_detector_expert` command:
 
@@ -262,6 +293,8 @@ exocytose_data/
 
 Again, make sure everything looks right in napari.
 
+#### Organize training files
+
 Finally, the training data should be organized in the following way:
 
 ```
@@ -289,9 +322,13 @@ This will organize the files with the above structure, by putting 70% of the mov
 
 Make sure the output folder is correct, and that you can open its content in napari.
 
+#### Train your custom model
+
 Finally, launch the training with `edf_train --dataset path/to/dataset/ --output path/to/model/`.
 
-To sum up, here is all the steps you should execute to train a new model:
+#### Summary
+
+Here is all the steps you should execute to train a new model:
 
 1. Convert tiff frames to h5 file: `edf_convert_tiff_to_h5 --batch path/to/exocytose_data/ --make_subfolder`
 1. Use `napari-exodeepfinder` to annotation exocytose events in the movies
