@@ -122,7 +122,7 @@ Open the movie you want to segment in napari (it must be in h5 format).
 In the menu, choose `Plugins > Napari DeepFinder > Segmentation`  to open the segmentation tools.
 Choose the image layer you want to segment.
 Select the `examples/analyze/in/net_weights_FINAL.h5` net weights; or the path of the model weights you want to use for the segmentation.
-Use 3 for the number of class, and 160 for the patch size.
+Use 3 for the number of class (0: background, 1: bright spots, 2: exocytose events), and 160 for the patch size.
 Choose an output image name (with the .h5 extension), then launch the segmentation.
 
 ### Training
