@@ -2,26 +2,25 @@
 
 ExoDeepFinder is an exocytosis event detection tool.
 
-This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfinder), customized for use in TIRF microscopy.
+This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfinder) which has been customized for TIRF microscopy.
 
 ## Installation guide
 
-Make sure you have python version 3.10 or later, or [conda](https://conda.io/projects/conda/en/latest/commands/create.html) installed. [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html) is a minimalist drop-in replacement for conda which is very simple to install and pretty fast.
+Create and activate a virtual environment with python 3.10  or later, and run `pip install exodeepfinder`.
 
 On Windows, TensorFlow requires WSL2; please see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2).
 
-It is strongly advised to create a virtual environment for ExoDeepFinder before installing it.
+The simplest way of creating a virtual environment in python is to use [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments). Make sure your Python version greater or equal to 3.10, and simply run `python -m venv ExoDeepFinder/` to create your environment. Then run `source ExoDeepFinder/bin/activate` to activate it.
 
-The simplest way of creating a virtual environment in python is to use [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments). Simply run `python -m venv ExoDeepFinder/` to create your environment, and `source ExoDeepFinder/bin/activate` to activate it. Note that you need python greater than 3.10 for the environment to work with exodeepfinder.
+Alternatively, you can use [Conda](https://conda.io/projects/conda/en/latest/index.html) (or a nice minimalist alternative like [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), see the [Virtual environments](#virtual-environments) section for more information) to create a Python 3.10 environment, even if your python version is different.
 
-Alternatively, you can use [conda](https://conda.io/projects/conda/en/latest/commands/create.html), and optionally specify the python version when you create the environment. For example: `conda create -n ExoDeepFinder python=3.10` to create the environment with python 3.10, and `conda activate ExoDeepFinder` to activate it.
+Once conda is installed, run `conda create -n ExoDeepFinder python=3.10` to create the environment with python 3.10, and `conda activate ExoDeepFinder` to activate it.
 
 Then, you can install ExoDeepFinder with pip:
 
 ```
 pip install exodeepfinder
 ```
-
 
 ## Usage
 
@@ -118,7 +117,7 @@ To cluster a segmentation and create an annotation file from it, use:
 
 #### Using the GUI
 
-The [napari-deepfinder](https://github.com/deep-finder/napari-deepfinder) plugin can be used to compute predictions.
+The napari-exodeepfinder plugin can be used to compute predictions.
 Open the movie you want to segment in napari (it must be in h5 format).
 In the menu, choose `Plugins > Napari DeepFinder > Segmentation`  to open the segmentation tools.
 Choose the image layer you want to segment.
@@ -195,7 +194,7 @@ You can make sure that the detector segmentations are correct by opening them in
 
 #### Annotate exocytose events
 
-Annotate the exocytose events in the movies with the [napari-deepfinder](https://github.com/deep-finder/napari-deepfinder) plugin:
+Annotate the exocytose events in the movies with the napari-exodeepfinder plugin:
 
 - Follow the install instructions, and open napari.
 - In the menu, choose `Plugins > Napari DeepFinder > Annotation`  to open the annotation tools.
@@ -337,3 +336,23 @@ Here is all the steps you should execute to train a new model:
 1. Merge expert and detector segmentation: `edf_merge_detector_expert --batch path/to/exocytose_data/`
 1. Structure the files: `edf_structure_training_dataset --dataset path/to/exocytose_data/ --training path/to/dataset/`
 1. Train the model: `edf_train --dataset path/to/dataset/ --output path/to/model/`
+
+## Virtual environments
+
+There are two major ways of creating virtual environments in Python: venv and conda ; and two major ways of installing packages: pip and conda.
+
+### Pip & conda
+
+The [Numpy documentation](https://numpy.org/install/#pip--conda) explains the main differences between pip and conda:
+
+> The two main tools that install Python packages are `pip` and `conda`. Their functionality partially overlaps (e.g. both can install `numpy`), however, they can also work together. We’ll discuss the major differences between pip and conda here - this is important to understand if you want to manage packages effectively.
+
+> The first difference is that conda is cross-language and it can install Python, while pip is installed for a particular Python on your system and installs other packages to that same Python install only. This also means conda can install non-Python libraries and tools you may need (e.g. compilers, CUDA, HDF5), while pip can’t.
+
+> The second difference is that pip installs from the Python Packaging Index (PyPI), while conda installs from its own channels (typically “defaults” or “conda-forge”). PyPI is the largest collection of packages by far, however, all popular packages are available for conda as well.
+
+> The third difference is that conda is an integrated solution for managing packages, dependencies and environments, while with pip you may need another tool (there are many!) for dealing with environments or complex dependencies.
+
+### Conda alternatives
+
+The simplest way to install and use Conda is via [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), which a minimalist drop-in replacement. Once you installed it, just use `micromamba` instead of `conda` for all you conda commands (some unusual commands might not be implemented in micromamba, but it is really sufficient for most use cases). 

@@ -39,7 +39,7 @@ def main():
     parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path.', default='examples/analyze/in/net_weights_FINAL.5')
     parser.add_argument('-ps', '--patch_size', help='Patch size. Must be a multiple of 4.', default=160)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[--movie]_segmentation.h5".', default=None)
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[--movie]_segmentation.h5".', default=None, type=Path)
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
 
     args = parser.parse_args()
