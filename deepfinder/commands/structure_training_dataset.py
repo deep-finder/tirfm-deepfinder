@@ -1,9 +1,9 @@
-import random
 import sys
 import shutil
-import argparse
 import numpy as np
 from pathlib import Path
+from deepfinder.commands import utils
+from gooey import Gooey
 
 def structure_training_dataset(input_path:Path, output_path:Path, movie:Path, merged_segmentation:Path, merged_annotation:Path, split:float):
     if output_path.exists() and len(list(output_path.iterdir()))>0:
@@ -74,20 +74,26 @@ def structure_training_dataset(input_path:Path, output_path:Path, movie:Path, me
 #   ...
 # 
 
-def main():
-    
-    parser = argparse.ArgumentParser('Structure training dataset', description="""Convert the default dataset structure to the training file structure.""")
 
+utils.ignore_gooey_if_args()
+
+def create_parser(parser=None, command=Path(__file__).stem, prog='Structure training dataset', description='Convert the default dataset structure to the training file structure.'):
+    return utils.create_parser(parser, command, prog, description)
+
+def add_args(parser):
     parser.add_argument('-i', '--input', help='Path to the input dataset folder', type=Path, required=True)
     parser.add_argument('-o', '--output', help='Path to the output folder', type=Path, required=True)
     parser.add_argument('-s', '--split', help='Splits the dataset in two random sets for training and validation, with [--split] %% of the movies in the training set, and the rest in the validation set (creates train/ and valid/ folders). Does not split if 0.', default=70, type=float)
 
-    parser.add_argument('-m', '--movie', help='Path to the movie (relative to the movie folder).', default='movie.h5', type=Path)
-    parser.add_argument('-ms', '--merged_segmentation', help='Path to the merged segmentation (relative to the movie folder).', default='merged_segmentation.h5', type=Path)
-    parser.add_argument('-ma', '--merged_annotation', help='Path to the merged annotation (relative to the movie folder).', default='merged_annotation.xml', type=Path)
+    parser.add_argument('-m', '--movie', help='Path to the movie (relative to the movie folder).', default='movie.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-ms', '--merged_segmentation', help='Path to the merged segmentation (relative to the movie folder).', default='merged_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-ma', '--merged_annotation', help='Path to the merged annotation (relative to the movie folder).', default='merged_annotation.xml', type=Path, widget='FileChooser')
 
-    args = parser.parse_args()
-
+@Gooey
+def main(args=None):
+    
+    args = utils.parse_args(args, create_parser, add_args)
+    
     structure_training_dataset(args.input, args.output, args.movie, args.merged_segmentation, args.merged_annotation, args.split)
 
 if __name__ == '__main__':

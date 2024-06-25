@@ -1,10 +1,11 @@
-import argparse
 import sys
 from pathlib import Path
 import numpy as np
 from deepfinder.training import TargetBuilder
+from deepfinder.commands import utils
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
+from gooey import Gooey
 
 # path_output.mkdir(exist_ok=True, parents=True)
 
@@ -69,17 +70,23 @@ def generate_segmentation(image_path, object_list_path, output_path):
     # Save target:
     cm.write_array(target, str(output_path))
 
-def main():
+utils.ignore_gooey_if_args()
 
-    parser = argparse.ArgumentParser('Convert annotations to segmentations', description='Convert an annotation file (.xml generated with napari-exodeepfinder) into a segmentation.')
+def create_parser(parser=None, command=Path(__file__).stem, prog='Convert annotations to segmentations', description='Convert an annotation file (.xml generated with napari-exodeepfinder) into a segmentation.'):
+    return utils.create_parser(parser, command, prog, description)
 
-    parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path)
-    parser.add_argument('-a', '--annotation', help='Path to the corresponding annotation (.xml generated with napari-exodeepfinder.', default='expert_annotation.xml', type=Path)
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation.', default='expert_segmentation.h5', type=Path)
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
+def add_args(parser):
+    parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-a', '--annotation', help='Path to the corresponding annotation (.xml generated with napari-exodeepfinder.', default='expert_annotation.xml', type=Path, widget='FileChooser')
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation.', default='expert_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='FileChooser')
 
-    args = parser.parse_args()
 
+@Gooey
+def main(args=None):
+
+    args = utils.parse_args(args, create_parser, add_args)
+    
     folder_paths = Path(args.movie).parent if args.batch is None else sorted([d for d in args.batch.iterdir() if d.is_dir()])
 
     for folder_path in folder_paths:

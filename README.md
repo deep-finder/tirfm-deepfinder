@@ -43,6 +43,7 @@ For more information about an ExoDeepFinder command, use the `--help` option.
 
 For example, run `edf_detect_spots --help` to get more information about the `edf_detect_spots` command.
 
+
 ### Exocytose events segmentation
 
 ExoDeepFinder handles exocytose movies made from tiff files, where each tiff file is a frame of the movie, and their name ends with the frame number; like in the following structure:

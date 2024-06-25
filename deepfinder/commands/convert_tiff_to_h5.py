@@ -1,11 +1,10 @@
 import re
 import skimage
-import argparse
 from pathlib import Path
-import h5py
 import numpy as np
-import os
 from deepfinder.utils.common import write_h5array
+from deepfinder.commands import utils
+from gooey import Gooey
 
 def get_tiff_files(path):
     return sorted([f for f in path.iterdir() if f.suffix.lower() in ['.tif', '.tiff']])
@@ -44,16 +43,21 @@ def convert_tiff_to_h5(tiff_path:Path, output_path:Path|None, make_subfolder:boo
 
     write_h5array(vol, output_path)
 
-def main():
-    parser = argparse.ArgumentParser('Convert tiff to h5', description='Convert a movie made of tiff files to a single h5 file.')
+utils.ignore_gooey_if_args()
 
-    parser.add_argument('-t', '--tiff', help='Path to the tiff input folder. This must contain one tiff file per frame, their names must end with the frame number. If the [--batch] argument is set, this argument will be ignored and all folders in [--batch] will be processed.', default=None, type=Path)
+def create_parser(parser=None, command=Path(__file__).stem, prog='Convert tiff to h5', description='Convert a movie made of tiff files to a single h5 file.'):
+    return utils.create_parser(parser, command, prog, description)
+
+def add_args(parser):
+    parser.add_argument('-t', '--tiff', help='Path to the tiff input folder. This must contain one tiff file per frame, their names must end with the frame number. If the [--batch] argument is set, this argument will be ignored and all folders in [--batch] will be processed.', default=None, type=Path, widget='FileChooser')
     parser.add_argument('-ms', '--make_subfolder', action='store_true', help='Put all tiffs in a tiff/ subfolder in the [--tiff] input folder, and saves the output h5 file beside.')
-    parser.add_argument('-o', '--output', help='Output path to the h5 file. Default is [--tiff].h5, or movie.h5 if the [--make_subfolder] argument is set.', default='movie.h5', type=Path)
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
+    parser.add_argument('-o', '--output', help='Output path to the h5 file. Default is [--tiff].h5, or movie.h5 if the [--make_subfolder] argument is set.', default='movie.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='FileChooser')
 
-    args = parser.parse_args()
-
+@Gooey
+def main(args=None):
+    
+    args = utils.parse_args(args, create_parser, add_args)
     tiffs = sorted([d for d in args.batch.iterdir() if d.is_dir()]) if args.batch is not None else [args.tiff]
 
     for tiff in tiffs:

@@ -1,11 +1,11 @@
 from pathlib import Path
-import argparse
 import numpy as np
 import h5py
 import SimpleITK as sitk
 import xml.etree.ElementTree as ET
 import random
-
+from deepfinder.commands import utils
+from gooey import Gooey
 
 def objlist2motl(objlist_path):
     """Translate function from MATLAB. Returns the motive list filled up with particle information from xml file.
@@ -248,19 +248,25 @@ def merge_detector_expert_segmentation(detector_segmentation_path, expert_object
     
     motl2objlist(motl_final, output_object_list_path)
 
-def main():
+utils.ignore_gooey_if_args()
 
-    parser = argparse.ArgumentParser('Merge detector and expert data', description='Merge detector detections with expert annotations.')
+def create_parser(parser=None, command=Path(__file__).stem, prog='Merge detector and expert data', description='Merge detector detections with expert annotations.'):
+    return utils.create_parser(parser, command, prog, description)
 
-    parser.add_argument('-ds', '--detector_segmentation', help='Path to the detector segmentation.', default='detector_segmentation.h5', type=Path)
+def add_args(parser):
+    parser.add_argument('-ds', '--detector_segmentation', help='Path to the detector segmentation.', default='detector_segmentation.h5', type=Path, widget='FileChooser')
     # parser.add_argument('-da', '--detector_annotation', help='Path to the detector annotation.', default='detector_annotation.xml', type=Path)
-    parser.add_argument('-es', '--expert_segmentation', help='Path to the expert segmentation.', default='expert_segmentation.h5', type=Path)
-    parser.add_argument('-ea', '--expert_annotation', help='Path to the expert annotation.', default='expert_annotation.xml', type=Path)
-    parser.add_argument('-ms', '--merged_segmentation', help='Path to the output merged segmentation.', default='merged_segmentation.h5', type=Path)
-    parser.add_argument('-ma', '--merged_annotation', help='Path to the output merged annotation.', default='merged_annotation.xml', type=Path)
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
+    parser.add_argument('-es', '--expert_segmentation', help='Path to the expert segmentation.', default='expert_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-ea', '--expert_annotation', help='Path to the expert annotation.', default='expert_annotation.xml', type=Path, widget='FileChooser')
+    parser.add_argument('-ms', '--merged_segmentation', help='Path to the output merged segmentation.', default='merged_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-ma', '--merged_annotation', help='Path to the output merged annotation.', default='merged_annotation.xml', type=Path, widget='FileChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='FileChooser')
 
-    args = parser.parse_args()
+
+@Gooey
+def main(args=None):
+
+    args = utils.parse_args(args, create_parser, add_args)
     
     # In batch mode, process all subfolders. In single movie mode, process given args once.
     for movie_path in ( range(1) if args.batch is None else sorted([d for d in args.batch.iterdir() if d.is_dir()]) ):

@@ -5,11 +5,12 @@
 # License: GPL v3.0. See <https://www.gnu.org/licenses/>
 # =============================================================================================
 
-import argparse
 from pathlib import Path
 from deepfinder.inference import Cluster
+from deepfinder.commands import utils
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
+from gooey import Gooey
 
 def cluster(segmentation_path, cluster_radius, output_path=None):
     output_path.parent.mkdir(exist_ok=True, parents=True)
@@ -38,16 +39,21 @@ def cluster(segmentation_path, cluster_radius, output_path=None):
     # Save object lists:
     ol.write_xml(objlist, output_path)
 
-def main():
+utils.ignore_gooey_if_args()
 
-    parser = argparse.ArgumentParser('Generate Annotation', description='Cluster exocytose events to generate an annotation file from a segmentation file.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+def create_parser(parser=None, command=Path(__file__).stem, prog='Detect spots', description='Detect spots and convert resulting segmentation to h5.'):
+    return utils.create_parser(parser, command, prog, description)
 
-    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path)
+def add_args(parser):
+    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-cr', '--cluster_radius', help='Size of the radius, in voxel.', default=5)
-    parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path)
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path)
+    parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='FileChooser')
 
-    args = parser.parse_args()
+@Gooey
+def main(args=None):
+
+    args = utils.parse_args(args, create_parser, add_args)
 
     segmentation_paths = [Path(args.segmentation)] if args.batch is None else sorted([d / args.segmentation.name for d in args.batch.iterdir() if d.is_dir()])
     

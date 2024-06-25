@@ -1,5 +1,6 @@
-import argparse
 from pathlib import Path
+from deepfinder.commands import utils
+from gooey import Gooey
 
 def train(dataset_path, output_path, n_epochs, steps_per_epoch):
     from deepfinder.training import Train
@@ -33,17 +34,23 @@ def train(dataset_path, output_path, n_epochs, steps_per_epoch):
     # Finally, launch the training procedure:
     trainer.launch(path_data, path_target, objl_train, objl_valid)
 
-def main():
 
-    parser = argparse.ArgumentParser('Train ExoDeepFinder', description="""Train a model from the given dataset.""", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+utils.ignore_gooey_if_args()
 
-    parser.add_argument('-d', '--dataset', help='Path to the input dataset', required=True)
+def create_parser(parser=None, command=Path(__file__).stem, prog='Train ExoDeepFinder', description='Train a model from the given dataset.'):
+    return utils.create_parser(parser, command, prog, description)
+
+def add_args(parser):
+    parser.add_argument('-d', '--dataset', help='Path to the input dataset', required=True, widget='FileChooser')
     parser.add_argument('-ne', '--n_epochs', help='Number of epochs', default=1000, type=int)
     parser.add_argument('-ns', '--n_steps', help='Number of steps per epochs', default=100, type=int)
-    parser.add_argument('-o', '--output', help='Output path where the model will be stored')
+    parser.add_argument('-o', '--output', help='Output path where the model will be stored', widget='FileChooser')
 
-    args = parser.parse_args()
+@Gooey
+def main(args=None):
 
+    args = utils.parse_args(args, create_parser, add_args)
+    
     train(args.dataset, args.output, args.n_epochs, args.n_steps)
 
 if __name__ == '__main__':

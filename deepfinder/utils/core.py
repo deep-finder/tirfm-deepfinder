@@ -87,7 +87,7 @@ class DeepFinder:
 # Following observer classes are needed to send prints to GUI:
 class observer_print:
     def display(message):
-        print(message)
+        print(message, flush=True)
 
 class observer_gui:
     def __init__(self, pyqt_signal):
