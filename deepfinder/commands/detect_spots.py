@@ -6,6 +6,8 @@ from deepfinder.commands import utils
 from deepfinder.commands.convert_tiff_to_h5 import convert_tiff_to_h5
 from gooey import Gooey
 
+utils.run_with_python_on_windows(__file__)
+
 def detect_spots(tiffs_path, detector_path, command, output_path):
     output_folder = output_path.with_suffix('')
     output_folder.mkdir(exist_ok=True, parents=True)

@@ -11,6 +11,8 @@ import deepfinder.commands.train
 import inspect
 from gooey import Gooey, GooeyParser
 
+deepfinder.commands.utils.run_with_python_on_windows(__file__)
+
 deepfinder.commands.utils.ignore_gooey_if_args()
 
 def get_description(function):

@@ -7,6 +7,8 @@ import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 from gooey import Gooey
 
+utils.run_with_python_on_windows(__file__)
+
 # path_output.mkdir(exist_ok=True, parents=True)
 
 # First, define the (t,y,x) mask for exocytosis event:

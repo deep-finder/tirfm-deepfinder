@@ -7,6 +7,8 @@ import random
 from deepfinder.commands import utils
 from gooey import Gooey
 
+utils.run_with_python_on_windows(__file__)
+
 def objlist2motl(objlist_path):
     """Translate function from MATLAB. Returns the motive list filled up with particle information from xml file.
 

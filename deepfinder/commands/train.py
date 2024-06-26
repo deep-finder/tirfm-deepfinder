@@ -2,6 +2,8 @@ from pathlib import Path
 from deepfinder.commands import utils
 from gooey import Gooey
 
+utils.run_with_python_on_windows(__file__)
+
 def train(dataset_path, output_path, n_epochs, steps_per_epoch):
     from deepfinder.training import Train
     from deepfinder.utils.dataloader import Dataloader

@@ -4,11 +4,8 @@ from deepfinder.commands import utils
 import deepfinder.utils.common as cm
 import deepfinder.utils.smap as sm
 from gooey import Gooey
-import platform, sys, subprocess
 
-if platform.system() == 'Windows' and len(sys.argv) == 1:
-    subprocess.call([sys.executable, __file__])
-    sys.exit()
+utils.run_with_python_on_windows(__file__)
 
 def segment(image_path, weights_path, output_path=None, visualization=False, patch_size=160):
     if output_path is None:
