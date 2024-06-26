@@ -6,25 +6,15 @@ This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfin
 
 ## Installation guide
 
-Create and activate a virtual environment with python 3.10  or later, and run `pip install exodeepfinder`.
+ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform. On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
 
-On Windows, TensorFlow requires WSL2; please see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2).
+Create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), and run `pip install exodeepfinder`.
 
-The simplest way of creating a virtual environment in python is to use [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments). Make sure your Python version greater or equal to 3.10, and simply run `python -m venv ExoDeepFinder/` to create your environment. Then run `source ExoDeepFinder/bin/activate` to activate it.
-
-Alternatively, you can use [Conda](https://conda.io/projects/conda/en/latest/index.html) (or a nice minimalist alternative like [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), see the [Virtual environments](#virtual-environments) section for more information) to create a Python 3.10 environment, even if your python version is different.
-
-Once conda is installed, run `conda create -n ExoDeepFinder python=3.10` to create the environment with python 3.10, and `conda activate ExoDeepFinder` to activate it.
-
-Then, you can install ExoDeepFinder with pip:
-
-```
-pip install exodeepfinder
-```
+Note that on windows, the `python` command is often replaced by `py` and `pip` by `py -m pip`; so you migth need adapt the commands in this documentation depending on your system settings.
 
 ## Usage
 
-To detect exocytose events, you can either use the pretrained model (available in `examples/analyze/in/net_weights_FINAL.h5`) to generate segmetations, or you can annotate soome exocytose movies and train your own model.
+To detect exocytose events, you can either use the pretrained model (available in `examples/analyze/in/net_weights_FINAL.h5`) to generate segmetations, or you can annotate your exocytose movies and train your own model.
 
 Here are all ExoDeepFinder commands (described later):
 
@@ -37,12 +27,20 @@ edf_detect_spots                    # detect bright spots in movies
 edf_merge_detector_expert           # merge the expert annotations with the detector segmentations for training
 edf_structure_training_dataset      # structure dataset files for training
 edf_train                           # train a new model
+exodeepfinder                       # combine all above commands
 ```
 
-For more information about an ExoDeepFinder command, use the `--help` option. 
+For more information about an ExoDeepFinder command, use the `--help` option (run `edf_detect_spots --help` to know more about `edf_detect_spots`).
 
-For example, run `edf_detect_spots --help` to get more information about the `edf_detect_spots` command.
+To open a Graphical User Interface (GUI) for a given command, run it without any argument. For example, `edf_segment` opens a GUI which can execute the `edf_segment` command with the arguments specified with the graphical interface.
 
+`exodeepfinder` runs any of the other command as a subcommand (for example `exodeepfinder segment -m movie.h5` is equivalent to `edf_segment -m movie.h5`); and it opens a GUI for all other commands when called without any argument.
+
+All commands can either be called directly (`edf_segment -m movie.h5`) or with python and the proper path (`python deepfinder/commands/segment.py -m movie.h5` when in the project root directory).
+
+**On Windows, use python to open GUI** (`py deepfinder/commands/segment.py` instead of `edf_segment`) to avoid [a known issue with Gooey](https://github.com/chriskiehl/Gooey/issues/907) (the GUI library).
+
+The following documentation explains how to use ExoDeepFinder with command lines, but you can use the GUI if you prefer.
 
 ### Exocytose events segmentation
 
@@ -338,11 +336,25 @@ Here is all the steps you should execute to train a new model:
 1. Structure the files: `edf_structure_training_dataset --dataset path/to/exocytose_data/ --training path/to/dataset/`
 1. Train the model: `edf_train --dataset path/to/dataset/ --output path/to/model/`
 
-## Virtual environments
+## Virtual environments & package managers
 
 There are two major ways of creating virtual environments in Python: venv and conda ; and two major ways of installing packages: pip and conda.
 
-### Pip & conda
+### Virtual environment: venv & conda
+
+The simplest way of creating a virtual environment in python is to use [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments). Make sure your Python version greater or equal to 3.10, and simply run `python -m venv ExoDeepFinder/` (`py -m venv ExoDeepFinder/` on Windows) to create your environment (replace `ExoDeepFinder` by the name you want for your environment). Then run `source ExoDeepFinder/bin/activate` to activate it (`source ExoDeepFinder/Scripts/activate` on windows).
+
+Alternatively, you can use [Conda](https://conda.io/projects/conda/en/latest/index.html) (or a nice minimalist alternative like [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), see bellow) to create a Python 3.10 environment, even if your python version is different.
+
+Once conda is installed, run `conda create -n ExoDeepFinder python=3.10` to create the environment with python 3.10, and `conda activate ExoDeepFinder` to activate it.
+
+#### Conda alternatives
+
+The simplest way to install and use Conda is via [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), which a minimalist drop-in replacement. Once you installed it, just use `micromamba` instead of `conda` for all you conda commands (some unusual commands might not be implemented in micromamba, but it is really sufficient for most use cases). 
+
+For example, run `micromamba create -n ExoDeepFinder python=3.10` to create the environment with python 3.10, and `micromamba activate ExoDeepFinder` to activate it.
+
+### Package managers: pip & conda
 
 The [Numpy documentation](https://numpy.org/install/#pip--conda) explains the main differences between pip and conda:
 
@@ -353,7 +365,3 @@ The [Numpy documentation](https://numpy.org/install/#pip--conda) explains the ma
 > The second difference is that pip installs from the Python Packaging Index (PyPI), while conda installs from its own channels (typically “defaults” or “conda-forge”). PyPI is the largest collection of packages by far, however, all popular packages are available for conda as well.
 
 > The third difference is that conda is an integrated solution for managing packages, dependencies and environments, while with pip you may need another tool (there are many!) for dealing with environments or complex dependencies.
-
-### Conda alternatives
-
-The simplest way to install and use Conda is via [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), which a minimalist drop-in replacement. Once you installed it, just use `micromamba` instead of `conda` for all you conda commands (some unusual commands might not be implemented in micromamba, but it is really sufficient for most use cases). 
