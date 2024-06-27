@@ -1,15 +1,21 @@
+from deepfinder.commands import utils
+utils.run_with_python_on_windows(__file__)
 from pathlib import Path
 from deepfinder.inference import Segment
-from deepfinder.commands import utils
 import deepfinder.utils.common as cm
 import deepfinder.utils.smap as sm
 from gooey import Gooey
 
-utils.run_with_python_on_windows(__file__)
 
 def segment(image_path, weights_path, output_path=None, visualization=False, patch_size=160):
     if output_path is None:
         output_path = image_path.parent / f'{image_path.stem}_segmentation.h5'
+    if weights_path is None:
+        weights_path = Path('_internal/net_weights_FINAL.h5')
+        if not weights_path.exists():
+            weights_path = Path('examples/analyze/in/net_weights_FINAL.h5')
+    if not weights_path.exists():
+        raise Exception(f'Model weights {weights_path} not found.')
 
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
@@ -41,7 +47,7 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Detect exocyto
 
 def add_args(parser):
     parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path, widget='FileChooser')
-    parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path.', default='examples/analyze/in/net_weights_FINAL.h5', widget='FileChooser')
+    parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path. If none is given, default locations will be used ("_internal/net_weights_FINAL.h5" or "examples/analyze/in/net_weights_FINAL.h5").', default=None, widget='FileChooser')
     parser.add_argument('-ps', '--patch_size', help='Patch size. Must be a multiple of 4.', default=160, type=int)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
     parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[--movie]_segmentation.h5".', default=None, type=Path, widget='FileChooser')

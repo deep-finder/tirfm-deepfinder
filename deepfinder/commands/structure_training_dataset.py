@@ -1,11 +1,11 @@
+from deepfinder.commands import utils
+utils.run_with_python_on_windows(__file__)
 import sys
 import shutil
 import numpy as np
 from pathlib import Path
-from deepfinder.commands import utils
 from gooey import Gooey
 
-utils.run_with_python_on_windows(__file__)
 
 def structure_training_dataset(input_path:Path, output_path:Path, movie:Path, merged_segmentation:Path, merged_annotation:Path, split:float):
     if output_path.exists() and len(list(output_path.iterdir()))>0:

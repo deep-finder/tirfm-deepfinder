@@ -1,12 +1,12 @@
+from deepfinder.commands import utils
+utils.run_with_python_on_windows(__file__)
 import re
 import skimage
 from pathlib import Path
 import numpy as np
 from deepfinder.utils.common import write_h5array
-from deepfinder.commands import utils
 from gooey import Gooey
 
-utils.run_with_python_on_windows(__file__)
 
 def get_tiff_files(path):
     return sorted([f for f in path.iterdir() if f.suffix.lower() in ['.tif', '.tiff']])

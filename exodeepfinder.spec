@@ -5,7 +5,7 @@ a = Analysis(
     ['deepfinder/commands/exodeepfinder.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('examples/analyze/in/net_weights_FINAL.h5', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -19,16 +19,14 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
-    a.binaries,
-    a.datas,
+    [],
     [('u', None, 'OPTION')],
+    exclude_binaries=True,
     name='exodeepfinder',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    upx_exclude=[],
-    runtime_tmpdir=None,
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -36,8 +34,17 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
-app = BUNDLE(
+coll = COLLECT(
     exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='exodeepfinder',
+)
+app = BUNDLE(
+    coll,
     name='exodeepfinder.app',
     icon=None,
     bundle_identifier=None,

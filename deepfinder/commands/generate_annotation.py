@@ -5,14 +5,14 @@
 # License: GPL v3.0. See <https://www.gnu.org/licenses/>
 # =============================================================================================
 
+from deepfinder.commands import utils
+utils.run_with_python_on_windows(__file__)
 from pathlib import Path
 from deepfinder.inference import Cluster
-from deepfinder.commands import utils
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 from gooey import Gooey
 
-utils.run_with_python_on_windows(__file__)
 
 def cluster(segmentation_path, cluster_radius, output_path=None):
     output_path.parent.mkdir(exist_ok=True, parents=True)

@@ -1,5 +1,6 @@
-import sys, argparse
 import deepfinder.commands.utils
+deepfinder.commands.utils.run_with_python_on_windows(__file__)
+import argparse
 import deepfinder.commands.convert_tiff_to_h5
 import deepfinder.commands.segment
 import deepfinder.commands.generate_annotation
@@ -10,8 +11,6 @@ import deepfinder.commands.structure_training_dataset
 import deepfinder.commands.train
 import inspect
 from gooey import Gooey, GooeyParser
-
-deepfinder.commands.utils.run_with_python_on_windows(__file__)
 
 deepfinder.commands.utils.ignore_gooey_if_args()
 

@@ -1,13 +1,13 @@
+from deepfinder.commands import utils
+utils.run_with_python_on_windows(__file__)
 import sys
 from pathlib import Path
 import numpy as np
 from deepfinder.training import TargetBuilder
-from deepfinder.commands import utils
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 from gooey import Gooey
 
-utils.run_with_python_on_windows(__file__)
 
 # path_output.mkdir(exist_ok=True, parents=True)
 

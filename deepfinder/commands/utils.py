@@ -1,11 +1,13 @@
 import sys, argparse, platform, subprocess
+from pathlib import Path
 from gooey import GooeyParser
 
 # On windows, the command GUIs cannot be used directly, they must be called with python and full path to the command (because of [a known Gooey issue](https://github.com/chriskiehl/Gooey/issues/907))
 # So, if called from the command: rerun the same file but with python and full path
 def run_with_python_on_windows(file):
     if platform.system() == 'Windows' and len(sys.argv) == 1 and not sys.argv[0].endswith('.py'):
-        subprocess.call([sys.executable, file])
+        # bundle_dir = sys._MEIPASS if getattr(sys, 'frozen', False) else 
+        subprocess.call([sys.executable if Path(sys.executable).name.startswith('py') else  Path(sys.base_prefix) / 'bin' / 'python', file])
         sys.exit()
 
 def ignore_gooey_if_args():
