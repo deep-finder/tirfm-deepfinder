@@ -13,6 +13,8 @@ def segment(image_path, weights_path, output_path=None, visualization=False, pat
     if weights_path is None:
         weights_path = Path('_internal/net_weights_FINAL.h5')
         if not weights_path.exists():
+            weights_path = utils.get_bundle_path() / 'net_weights_FINAL.h5'
+        if not weights_path.exists():
             weights_path = Path('examples/analyze/in/net_weights_FINAL.h5')
     if not weights_path.exists():
         raise Exception(f'Model weights {weights_path} not found.')

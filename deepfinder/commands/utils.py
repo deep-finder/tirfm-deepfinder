@@ -6,7 +6,7 @@ from gooey import GooeyParser
 # So, if called from the command: rerun the same file but with python and full path
 def run_with_python_on_windows(file):
     if platform.system() == 'Windows' and len(sys.argv) == 1 and not sys.argv[0].endswith('.py'):
-        # bundle_dir = sys._MEIPASS if getattr(sys, 'frozen', False) else 
+        # bundle_dir = sys._MEIPASS if getattr(sys, 'frozen', False) else bundle_dir = os.path.dirname(os.path.abspath(__file__))
         subprocess.call([sys.executable if Path(sys.executable).name.startswith('py') else  Path(sys.base_prefix) / 'bin' / 'python', file])
         sys.exit()
 
@@ -30,3 +30,6 @@ def parse_args(args, create_parser, add_args):
         remove_ignore_gooey()
         args = parser.parse_args()
     return args
+
+def get_bundle_path():
+    return Path(sys._MEIPASS) if getattr(sys, 'frozen', False) else Path(__file__).parent.resolve()
