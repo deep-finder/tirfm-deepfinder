@@ -49,7 +49,7 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Detect exocyto
 
 def add_args(parser):
     parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path, widget='FileChooser')
-    parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path. If none is given, default locations will be used ("_internal/net_weights_FINAL.h5" or "examples/analyze/in/net_weights_FINAL.h5").', default=None, widget='FileChooser')
+    parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path. If none is given, default locations will be used ("_internal/net_weights_FINAL.h5" or "examples/analyze/in/net_weights_FINAL.h5").', default=None, type=Path, widget='FileChooser')
     parser.add_argument('-ps', '--patch_size', help='Patch size. Must be a multiple of 4.', default=160, type=int)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
     parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[--movie]_segmentation.h5".', default=None, type=Path, widget='FileChooser')
