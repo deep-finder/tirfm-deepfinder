@@ -8,9 +8,9 @@ This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfin
 
 ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
 
-ExoDeepFinder binaries are available for Windows, Linux and Mac, so there is no need to install anything if you just want to use the graphical user interface.
+ExoDeepFinder binaries are available for Windows, Linux and Mac, so there is no need to install anything if you just want to use the graphical user interface. The Linux release is big (over 4Gb) because it contains the libraries required for the GPU acceleration. Thus they are split in two parts (`ExoDeepFinder_Linux-x86_64_part1.tar.gz` and `ExoDeepFinder_Linux-x86_64_part2.tar.gz`). To uncompress them, use the following command: `tarcat ExoDeepFinder_Linux-x86_64_part*.tar.gz  | tar -xvzf -`.
 
-To install ExoDeepFinder and use it with command lines, create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), and run `pip install exodeepfinder`.
+Alternatively, to install ExoDeepFinder and use it with command lines, create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), and run `pip install exodeepfinder`.
 
 Note that on Windows, the `python` command is often replaced by `py` and `pip` by `py -m pip`; so you migth need adapt the commands in this documentation depending on your system settings.
 
@@ -41,7 +41,7 @@ To open a Graphical User Interface (GUI) for a given command, run it without any
 
 `exodeepfinder` runs any of the other command as a subcommand (for example `exodeepfinder segment -m movie.h5` is equivalent to `edf_segment -m movie.h5`); and it opens a GUI for all other commands when called without any argument.
 
-All commands can either be called directly (`edf_segment -m movie.h5`) or with python and the proper path (`python deepfinder/commands/segment.py -m movie.h5` when in the project root directory).
+If you installed ExoDeepFinder as a developer (see [Development section](## Development)), all commands can either be called directly (`edf_segment -m movie.h5`) or with python and the proper path (`python deepfinder/commands/segment.py -m movie.h5` when in the project root directory).
 
 ### Exocytose events segmentation
 
@@ -103,7 +103,7 @@ exocytose_data/
 └── ...
 ```
 
-To generate segmentations, you can either use the `napari-exodeepfinder` plugin which provide a simple graphical interface, or you can run the following command lines.
+To generate segmentations, you can either use ExoDeepFinder or [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder).
 
 To segment a movie, use:
 `edf_segment --movie path/to/movie.h5 --model_weights examples/analyze/in/net_weights_FINAL.h5 --patch_size 160 --visualization`
@@ -115,9 +115,9 @@ See `edf_segment --help` for more information about the input arguments.
 To cluster a segmentation and create an annotation file from it, use:
 `edf_generate_annotation --segmentation path/to/movie_segmentation.h5 --cluster_radius 5`
 
-#### Using the GUI
+#### Using napari-exodeepfinder
 
-The napari-exodeepfinder plugin can be used to compute predictions.
+The [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder) plugin can be used to compute predictions.
 Open the movie you want to segment in napari (it must be in h5 format).
 In the menu, choose `Plugins > Napari DeepFinder > Segmentation`  to open the segmentation tools.
 Choose the image layer you want to segment.
@@ -194,7 +194,7 @@ You can make sure that the detector segmentations are correct by opening them in
 
 #### Annotate exocytose events
 
-Annotate the exocytose events in the movies with the napari-exodeepfinder plugin:
+Annotate the exocytose events in the movies with the [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder) plugin:
 
 - Follow the install instructions, and open napari.
 - In the menu, choose `Plugins > Napari DeepFinder > Annotation`  to open the annotation tools.
@@ -330,7 +330,7 @@ Finally, launch the training with `edf_train --dataset path/to/dataset/ --output
 Here is all the steps you should execute to train a new model:
 
 1. Convert tiff frames to h5 file: `edf_convert_tiff_to_h5 --batch path/to/exocytose_data/ --make_subfolder`
-1. Use `napari-exodeepfinder` to annotation exocytose events in the movies
+1. Use [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder) to annotation exocytose events in the movies
 1. Detect all spots: `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytose_data/`
 1. Generate detector segmentations: `edf_generate_segmentation --batch path/to/exocytose_data/`
 1. Merge expert and detector segmentation: `edf_merge_detector_expert --batch path/to/exocytose_data/`
