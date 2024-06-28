@@ -10,7 +10,9 @@ ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. Ther
 
 [ExoDeepFinder binaries are available](https://github.com/deep-finder/tirfm-deepfinder/releases/tag/v0.2.3) for Windows, Linux and Mac, so there is no need to install anything if you just want to use the graphical user interface. The Linux release is big (over 4Gb) because it contains the libraries required for the GPU acceleration. Thus they are split in two parts (`ExoDeepFinder_Linux-x86_64_part1.tar.gz` and `ExoDeepFinder_Linux-x86_64_part2.tar.gz`). To uncompress them, use the following command: `tarcat ExoDeepFinder_Linux-x86_64_part*.tar.gz  | tar -xvzf -`.
 
-Alternatively, to install ExoDeepFinder and use it with command lines, create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), and run `pip install exodeepfinder`.
+Alternatively, to install ExoDeepFinder and use it with command lines, create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), install dependencies (on Linux only, see bellow), and run `pip install exodeepfinder[GUI]`.
+
+On Linux you will need to install [`wxPython` dependencies](https://github.com/wxWidgets/Phoenix/blob/master/README.rst#prerequisites) manually (`sudo apt install libgtk-3-dev`, etc.) or use one [precompiled wxPython version](https://wxpython.org/pages/downloads/index.html) (use `pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython` with your Ubuntu version number, or use `conda install wxpython` to install a compiled wxPython from conda). 
 
 Note that on Windows, the `python` command is often replaced by `py` and `pip` by `py -m pip`; so you migth need adapt the commands in this documentation depending on your system settings.
 
@@ -369,6 +371,6 @@ The [Numpy documentation](https://numpy.org/install/#pip--conda) explains the ma
 
 ## Development
 
-To install ExoDeepFinder for development, clone the repository (`git clone git@github.com:deep-finder/tirfm-deepfinder.git`), create and activate a virtual environment (see section above), and install it with `pip install -e tirfm-deepfinder/`.
+To install ExoDeepFinder for development, clone the repository (`git clone git@github.com:deep-finder/tirfm-deepfinder.git`), create and activate a virtual environment (see section above), and install it with `pip install -e ./tirfm-deepfinder/[GUI]`.
 
 To generate the release binaries, install PyInstaller with `pip install pyinstaller` in your virtual environment ; and package ExoDeepFinder with `pyinstaller exodeepfinder.spec`. You must run this command on the destination platform (run on Windows for a Windows release, on Mac for a Mac release, and Linux for a Linux release).
