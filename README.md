@@ -6,11 +6,13 @@ This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfin
 
 ## Installation guide
 
-ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform. On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
+ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
 
-Create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), and run `pip install exodeepfinder`.
+ExoDeepFinder binaries are available for Windows, Linux and Mac, so there is no need to install anything if you just want to use the graphical user interface.
 
-Note that on windows, the `python` command is often replaced by `py` and `pip` by `py -m pip`; so you migth need adapt the commands in this documentation depending on your system settings.
+To install ExoDeepFinder and use it with command lines, create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), and run `pip install exodeepfinder`.
+
+Note that on Windows, the `python` command is often replaced by `py` and `pip` by `py -m pip`; so you migth need adapt the commands in this documentation depending on your system settings.
 
 ## Usage
 
@@ -30,6 +32,9 @@ edf_train                           # train a new model
 exodeepfinder                       # combine all above commands
 ```
 
+The ExoDeepFinder main GUI enables to execute each of those commands (listed on the Actions panel, although the `edf_` prefix is removed).
+The following documentation explains how to use ExoDeepFinder with command lines (when installed with `pip install exodeepfinder`), but you can use the [available GUI]() if you prefer.
+
 For more information about an ExoDeepFinder command, use the `--help` option (run `edf_detect_spots --help` to know more about `edf_detect_spots`).
 
 To open a Graphical User Interface (GUI) for a given command, run it without any argument. For example, `edf_segment` opens a GUI which can execute the `edf_segment` command with the arguments specified with the graphical interface.
@@ -37,10 +42,6 @@ To open a Graphical User Interface (GUI) for a given command, run it without any
 `exodeepfinder` runs any of the other command as a subcommand (for example `exodeepfinder segment -m movie.h5` is equivalent to `edf_segment -m movie.h5`); and it opens a GUI for all other commands when called without any argument.
 
 All commands can either be called directly (`edf_segment -m movie.h5`) or with python and the proper path (`python deepfinder/commands/segment.py -m movie.h5` when in the project root directory).
-
-**On Windows, use python to open GUI** (`py deepfinder/commands/segment.py` instead of `edf_segment`) to avoid [a known issue with Gooey](https://github.com/chriskiehl/Gooey/issues/907) (the GUI library).
-
-The following documentation explains how to use ExoDeepFinder with command lines, but you can use the GUI if you prefer.
 
 ### Exocytose events segmentation
 
@@ -342,7 +343,7 @@ There are two major ways of creating virtual environments in Python: venv and co
 
 ### Virtual environment: venv & conda
 
-The simplest way of creating a virtual environment in python is to use [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments). Make sure your Python version greater or equal to 3.10, and simply run `python -m venv ExoDeepFinder/` (`py -m venv ExoDeepFinder/` on Windows) to create your environment (replace `ExoDeepFinder` by the name you want for your environment). Then run `source ExoDeepFinder/bin/activate` to activate it (`source ExoDeepFinder/Scripts/activate` on windows).
+The simplest way of creating a virtual environment in python is to use [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments). Make sure your Python version greater or equal to 3.10, and simply run `python -m venv ExoDeepFinder/` (`py -m venv ExoDeepFinder/` on Windows) to create your environment (replace `ExoDeepFinder` by the name you want for your environment). Then run `source ExoDeepFinder/bin/activate` to activate it (`ExoDeepFinder\Scripts\activate` on Windows).
 
 Alternatively, you can use [Conda](https://conda.io/projects/conda/en/latest/index.html) (or a nice minimalist alternative like [Micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), see bellow) to create a Python 3.10 environment, even if your python version is different.
 
@@ -365,3 +366,9 @@ The [Numpy documentation](https://numpy.org/install/#pip--conda) explains the ma
 > The second difference is that pip installs from the Python Packaging Index (PyPI), while conda installs from its own channels (typically “defaults” or “conda-forge”). PyPI is the largest collection of packages by far, however, all popular packages are available for conda as well.
 
 > The third difference is that conda is an integrated solution for managing packages, dependencies and environments, while with pip you may need another tool (there are many!) for dealing with environments or complex dependencies.
+
+## Development
+
+To install ExoDeepFinder for development, clone the repository (`git clone git@github.com:deep-finder/tirfm-deepfinder.git`), create and activate a virtual environment (see section above), and install it with `pip install -e tirfm-deepfinder/`.
+
+To generate the release binaries, install PyInstaller with `pip install pyinstaller` in your virtual environment ; and package ExoDeepFinder with `pyinstaller exodeepfinder.spec`. You must run this command on the destination platform (run on Windows for a Windows release, on Mac for a Mac release, and Linux for a Linux release).
