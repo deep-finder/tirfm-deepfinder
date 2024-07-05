@@ -46,7 +46,7 @@ def getv(object, name):
     return object[name] if name in object else None
 
 def read_csv(object_list_path):
-    required_headers = ['class_label', 'x', 'y', 'z']
+    required_headers = ['tomo_idx', 'class_label', 'x', 'y', 'z']
     accepted_headers = ['tomo_idx', 'class_label', 'x', 'y', 'z', 'obj_id', 'psi', 'phi', 'the', 'cluster_size']
     with open(object_list_path, 'r') as csvfile:
         lines = list(csv.reader(csvfile))
