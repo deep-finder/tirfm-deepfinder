@@ -110,12 +110,18 @@ To generate segmentations, you can either use ExoDeepFinder or [`napari-exodeepf
 To segment a movie, use:
 `edf_segment --movie path/to/movie.h5 --model_weights examples/analyze/in/net_weights_FINAL.h5 --patch_size 160 --visualization`
 
+The --patch-size argument corresponds to the size of the input patch for the network. The movie is split in cubes of --patch_size voxels before being processed. --patch_size must be a multiple of 4.
+
 This will generate a segmentation named `path/to/movie_semgmentation.h5` with the pretrained weigths in `examples/analyze/in/net_weights_FINAL.h5` and patches of size 160. It will also generate visualization images.
 
 See `edf_segment --help` for more information about the input arguments.
 
 To cluster a segmentation and create an annotation file from it, use:
 `edf_generate_annotation --segmentation path/to/movie_segmentation.h5 --cluster_radius 5`
+
+The clustering will convert the segmentation map (here `movie_segmentation.h5`) into an event list. The algorithm groups and labels the voxels so that all voxels of the same event share the same label, and each event gets a different label. The cluster radius is the approximate size in voxel of the objects to cluster.
+5 voxels is best for films with a pixel size of 160nm, for exocytose events of 1 second and of size 400nm.
+
 
 #### Using napari-exodeepfinder
 

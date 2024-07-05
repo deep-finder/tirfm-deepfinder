@@ -11,6 +11,8 @@ from pathlib import Path
 from deepfinder.inference import Cluster
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
+import numpy as np
+import sys
 from gooey import Gooey
 
 
@@ -26,6 +28,9 @@ def cluster(segmentation_path, cluster_radius, output_path=None):
     labelmap.setflags(write=1)
     labelmap[labelmap == 1] = 0
     labelmap[labelmap == 2] = 1  # keep only exo class, else clustering too slow
+    
+    if np.sum(labelmap)==0:
+        sys.exit('Error: the given segmentation has no exocytose event (no voxel of value 2).')
 
     # Initialize clustering task:
     clust = Cluster(clustRadius=cluster_radius)
@@ -43,12 +48,12 @@ def cluster(segmentation_path, cluster_radius, output_path=None):
 
 utils.ignore_gooey_if_args()
 
-def create_parser(parser=None, command=Path(__file__).stem, prog='Detect spots', description='Detect spots and convert resulting segmentation to h5.'):
+def create_parser(parser=None, command=Path(__file__).stem, prog='Detect spots', description='Detect spots and convert resulting segmentation to h5. The clustering groups and labels the voxels so that all voxels of the same event share the same label, and each event gets a different label. Only exocytose events (voxels of value 2) are considered, ones are ignored.'):
     return utils.create_parser(parser, command, prog, description)
 
 def add_args(parser):
     parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path, widget='FileChooser')
-    parser.add_argument('-cr', '--cluster_radius', help='Size of the radius, in voxel.', default=5)
+    parser.add_argument('-cr', '--cluster_radius', help='Approximate size in voxel of the objects to cluster. 5 is a good value for events of 400nm on films with a pixel size of 160nm.', default=5, type=int)
     parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileChooser')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 

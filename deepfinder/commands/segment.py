@@ -7,9 +7,8 @@ import deepfinder.utils.smap as sm
 from gooey import Gooey
 
 
-def segment(image_path, weights_path, output_path=None, visualization=False, patch_size=160):
-    if output_path is None:
-        output_path = image_path.parent / f'{image_path.stem}_segmentation.h5'
+def segment(image_path, weights_path, output_path, visualization=False, patch_size=160):
+
     if weights_path is None:
         weights_path = Path('_internal/net_weights_FINAL.h5')
         if not weights_path.exists():
@@ -18,6 +17,8 @@ def segment(image_path, weights_path, output_path=None, visualization=False, pat
             weights_path = Path('examples/analyze/in/net_weights_FINAL.h5')
     if not weights_path.exists():
         raise Exception(f'Model weights {weights_path} not found.')
+    
+    output_path = output_path.parent / output_path.name.replace('{movie}', image_path.stem)
 
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
@@ -50,9 +51,9 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Detect exocyto
 def add_args(parser):
     parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path, widget='FileChooser')
     parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path. If none is given, default locations will be used ("_internal/net_weights_FINAL.h5" or "examples/analyze/in/net_weights_FINAL.h5").', default=None, type=Path, widget='FileChooser')
-    parser.add_argument('-ps', '--patch_size', help='Patch size. Must be a multiple of 4.', default=160, type=int)
+    parser.add_argument('-ps', '--patch_size', help='Patch size (the movie is split in cubes of --patch_size before being processed). Must be a multiple of 4.', default=160, type=int)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[--movie]_segmentation.h5".', default=None, type=Path, widget='FileChooser')
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. If used, the string {movie} will be replaced by the movie file name (without extension).', default='{movie}_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @Gooey
