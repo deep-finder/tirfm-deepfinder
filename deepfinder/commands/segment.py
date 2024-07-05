@@ -53,7 +53,7 @@ def add_args(parser):
     parser.add_argument('-ps', '--patch_size', help='Patch size. Must be a multiple of 4.', default=160, type=int)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
     parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. Default is "[--movie]_segmentation.h5".', default=None, type=Path, widget='FileChooser')
-    parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process.', default=None, type=Path, widget='FileChooser')
+    parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @Gooey
 def main(args=None):

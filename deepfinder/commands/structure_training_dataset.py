@@ -83,8 +83,8 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Structure trai
     return utils.create_parser(parser, command, prog, description)
 
 def add_args(parser):
-    parser.add_argument('-i', '--input', help='Path to the input dataset folder', type=Path, required=True)
-    parser.add_argument('-o', '--output', help='Path to the output folder', type=Path, required=True)
+    parser.add_argument('-i', '--input', help='Path to the input dataset folder', type=Path, required=True, widget='DirChooser')
+    parser.add_argument('-o', '--output', help='Path to the output folder', type=Path, required=True, widget='DirChooser')
     parser.add_argument('-s', '--split', help='Splits the dataset in two random sets for training and validation, with [--split] %% of the movies in the training set, and the rest in the validation set (creates train/ and valid/ folders). Does not split if 0.', default=70, type=float)
 
     parser.add_argument('-m', '--movie', help='Path to the movie (relative to the movie folder).', default='movie.h5', type=Path, widget='FileChooser')

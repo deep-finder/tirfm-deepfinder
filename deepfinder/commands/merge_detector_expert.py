@@ -262,7 +262,7 @@ def add_args(parser):
     parser.add_argument('-ea', '--expert_annotation', help='Path to the expert annotation.', default='expert_annotation.xml', type=Path, widget='FileChooser')
     parser.add_argument('-ms', '--merged_segmentation', help='Path to the output merged segmentation.', default='merged_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-ma', '--merged_annotation', help='Path to the output merged annotation.', default='merged_annotation.xml', type=Path, widget='FileChooser')
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='FileChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 
 @Gooey

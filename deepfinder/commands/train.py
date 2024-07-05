@@ -43,10 +43,10 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Train ExoDeepF
     return utils.create_parser(parser, command, prog, description)
 
 def add_args(parser):
-    parser.add_argument('-d', '--dataset', help='Path to the input dataset', required=True, widget='FileChooser')
+    parser.add_argument('-d', '--dataset', help='Path to the input dataset', required=True, widget='DirChooser')
     parser.add_argument('-ne', '--n_epochs', help='Number of epochs', default=1000, type=int)
     parser.add_argument('-ns', '--n_steps', help='Number of steps per epochs', default=100, type=int)
-    parser.add_argument('-o', '--output', help='Output path where the model will be stored', widget='FileChooser')
+    parser.add_argument('-o', '--output', help='Path to the output folder where the model will be stored', widget='DirChooser')
 
 @Gooey
 def main(args=None):

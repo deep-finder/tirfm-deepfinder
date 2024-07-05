@@ -50,7 +50,7 @@ def add_args(parser):
     parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-cr', '--cluster_radius', help='Size of the radius, in voxel.', default=5)
     parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileChooser')
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='FileChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @Gooey
 def main(args=None):
