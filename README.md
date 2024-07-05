@@ -202,7 +202,9 @@ You can make sure that the detector segmentations are correct by opening them in
 
 #### Annotate exocytose events
 
-Annotate the exocytose events in the movies with the [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder) plugin:
+The recommended way to annotate exocytose events is to use the [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder) plugin but it is also possible to use other software as long as the output annotations respect the format described bellow.
+
+Annotate the exocytose events in the movies with the `napari-exodeepfinder` plugin:
 
 - Follow the install instructions, and open napari.
 - In the menu, choose `Plugins > Napari DeepFinder > Annotation`  to open the annotation tools.
@@ -242,6 +244,16 @@ Make sure that the `expert_annotation.xml` files you just created have the follo
   <object tomo_idx="0" class_label="1" x="95" y="229" z="438"/>
   ...
 </objlist>
+```
+
+If you used a software other than `napari-exodeepfinder`, make sure your output files follow the same structure. It can be `csv` files, but they must follow the same naming, as in the following `example.csv`:
+
+```
+tomo_idx,class_label,x,y,z
+0,1,133,257,518
+0,1,169,230,519
+0,1,184,237,534
+0,1,146,260,546
 ```
 
 The `class_label` must be 1, and `tomo_idx` must be 0.
