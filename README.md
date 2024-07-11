@@ -112,7 +112,11 @@ To segment a movie, use:
 
 The --patch-size argument corresponds to the size of the input patch for the network. The movie is split in cubes of --patch_size voxels before being processed. --patch_size must be a multiple of 4.
 
+You can omit the model weights path if you use the release (downloaded from [here](https://github.com/deep-finder/tirfm-deepfinder/releases/)) or if you cloned the repository since the default example weights will be found automatically. Otherwise (for example if you installed with `pip install exodeepfinder`), the default weights can also be downloaded manually [here](https://github.com/deep-finder/tirfm-deepfinder/raw/master/examples/analyze/in/net_weights_FINAL.h5).
+
 This will generate a segmentation named `path/to/movie_semgmentation.h5` with the pretrained weigths in `examples/analyze/in/net_weights_FINAL.h5` and patches of size 160. It will also generate visualization images.
+
+This should take 10 to 15 minutes for a movie of 1000 frames of size 400 x 300 pixels on a modern CPU (mac M1).
 
 See `edf_segment --help` for more information about the input arguments.
 

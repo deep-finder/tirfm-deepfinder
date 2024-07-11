@@ -1,5 +1,6 @@
 from deepfinder.commands import utils
 utils.run_with_python_on_windows(__file__)
+import sys
 import shlex
 import shutil
 from pathlib import Path
@@ -14,8 +15,7 @@ def detect_spots(tiffs_path, detector_path, command, output_path):
     command = command.replace('{detector}', str(detector_path.resolve()))
     command = command.replace('{input}', str(tiffs_path.resolve()))
     command = command.replace('{output}', str(output_folder.resolve()))
-    subprocess.run(shlex.split(command))
-    
+    subprocess.run(shlex.split(command), check=True)
     convert_tiff_to_h5(output_folder, output_path, make_subfolder=False)
     shutil.rmtree(output_folder)
     return
