@@ -54,7 +54,7 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Detect spots',
 def add_args(parser):
     parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-cr', '--cluster_radius', help='Approximate size in voxel of the objects to cluster. 5 is a good value for events of 400nm on films with a pixel size of 160nm.', default=5, type=int)
-    parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileChooser')
+    parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @Gooey

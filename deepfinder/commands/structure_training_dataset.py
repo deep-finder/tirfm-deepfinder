@@ -88,8 +88,8 @@ def add_args(parser):
     parser.add_argument('-s', '--split', help='Splits the dataset in two random sets for training and validation, with --split %% of the movies in the training set, and the rest in the validation set (creates train/ and valid/ folders). Does not split if 0.', default=70, type=float)
 
     parser.add_argument('-m', '--movie', help='Path to the movie (relative to the movie folder).', default='movie.h5', type=Path, widget='FileChooser')
-    parser.add_argument('-ms', '--merged_segmentation', help='Path to the merged segmentation (relative to the movie folder).', default='merged_segmentation.h5', type=Path, widget='FileChooser')
-    parser.add_argument('-ma', '--merged_annotation', help='Path to the merged annotation (relative to the movie folder).', default='merged_annotation.xml', type=Path, widget='FileChooser')
+    parser.add_argument('-ms', '--merged_segmentation', help='Path to the merged segmentation (relative to the movie folder).', default='merged_segmentation.h5', type=Path, widget='FileSaver')
+    parser.add_argument('-ma', '--merged_annotation', help='Path to the merged annotation (relative to the movie folder).', default='merged_annotation.xml', type=Path, widget='FileSaver')
 
 @Gooey
 def main(args=None):

@@ -56,7 +56,7 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Convert tiff t
 def add_args(parser):
     parser.add_argument('-t', '--tiff', help='Path to the tiff input folder. This must contain one tiff file per frame, their names must end with the frame number. If the --batch argument is set, this argument will be ignored and all folders in --batch will be processed.', default=None, type=Path, widget='DirChooser')
     parser.add_argument('-ms', '--make_subfolder', action='store_true', help='Put all tiffs in a tiff/ subfolder in the --tiff input folder, and saves the output h5 file beside.')
-    parser.add_argument('-o', '--output', help='Output path to the h5 file. If used, the string {tiff} will be replaced by the --tiff argument folder name.', default='movie.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-o', '--output', help='Output path to the h5 file. If used, the string {tiff} will be replaced by the --tiff argument folder name.', default='movie.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @Gooey

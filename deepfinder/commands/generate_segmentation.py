@@ -106,7 +106,7 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Convert annota
 def add_args(parser):
     parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path, widget='FileChooser')
     parser.add_argument('-a', '--annotation', help='Path to the corresponding annotation (.xml generated with napari-exodeepfinder or equivalent, can also be a .csv file).', default='expert_annotation.xml', type=Path, widget='FileChooser')
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation.', default='expert_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation.', default='expert_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 

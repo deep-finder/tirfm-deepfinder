@@ -53,7 +53,7 @@ def add_args(parser):
     parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path. If none is given, default locations will be used ("_internal/net_weights_FINAL.h5" or "examples/analyze/in/net_weights_FINAL.h5").', default=None, type=Path, widget='FileChooser')
     parser.add_argument('-ps', '--patch_size', help='Patch size (the movie is split in cubes of --patch_size before being processed). Must be a multiple of 4.', default=160, type=int)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. If used, the string {movie} will be replaced by the movie file name (without extension).', default='{movie}_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. If used, the string {movie} will be replaced by the movie file name (without extension).', default='{movie}_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @Gooey
