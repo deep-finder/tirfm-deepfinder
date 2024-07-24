@@ -16,7 +16,7 @@ import sys
 from gooey import Gooey
 
 
-def cluster(segmentation_path, cluster_radius, output_path=None):
+def cluster(segmentation_path, cluster_radius, output_path=None, keep_labels_unchanged=False):
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
     # Load data:
@@ -26,9 +26,10 @@ def cluster(segmentation_path, cluster_radius, output_path=None):
     # class 1 is constant spot (docked vesicle), and class 2 is blinking spot (exocytosis event).
     # Below we convert to an array with only class 0 as background and class 1 as constant spot:
     labelmap.setflags(write=1)
-    labelmap[labelmap == 1] = 0
-    labelmap[labelmap == 2] = 1  # keep only exo class, else clustering too slow
-    
+    if not keep_labels_unchanged:
+        labelmap[labelmap == 1] = 0
+        labelmap[labelmap == 2] = 1  # keep only exo class, else clustering too slow
+        
     if np.sum(labelmap)==0:
         sys.exit('Error: the given segmentation has no exocytose event (no voxel of value 2).')
 
@@ -55,6 +56,7 @@ def add_args(parser):
     parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-cr', '--cluster_radius', help='Approximate size in voxel of the objects to cluster. 5 is a good value for events of 400nm on films with a pixel size of 160nm.', default=5, type=int)
     parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileSaver')
+    parser.add_argument('-klu', '--keep_labels_unchanged', help='By default, bright spots are removed (labels 1 are set to 0) and exocytose events (labels 2) are set to 1. This option skip this step, so labels are kept unchanged.', action='store_true')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @Gooey
@@ -66,7 +68,7 @@ def main(args=None):
     
     for segmentation_path in segmentation_paths:
 
-        cluster(segmentation_path, args.cluster_radius, args.annotation)
+        cluster(segmentation_path, args.cluster_radius, args.annotation, args.keep_labels_unchanged)
 
 if __name__ == '__main__':
     main()
