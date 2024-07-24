@@ -126,7 +126,7 @@ To cluster a segmentation and create an annotation file from it, use:
 The clustering will convert the segmentation map (here `movie_segmentation.h5`) into an event list. The algorithm groups and labels the voxels so that all voxels of the same event share the same label, and each event gets a different label. The cluster radius is the approximate size in voxel of the objects to cluster.
 5 voxels is best for films with a pixel size of 160nm, for exocytose events of 1 second and of size 400nm.
 
-By default, the command will ignore all bright spots (replace label "1" with 0) and will replace exocytose events (label "2") to ones. Indeed, ExoDeepFinder is an exocytose event detector, so its output is only composed of exocytose events labelled with ones. Use the --keep_labels_unchanged option to skip this step and use the raw label map (segmentation) instead. This can be useful if you use your custom detector for example.
+By default, the command will ignore all bright spots (replace label "1" with 0) and will replace exocytose events (label "2") to ones. Indeed, ExoDeepFinder is an exocytose event detector, so its output is only composed of exocytose events labelled with ones. Use the --keep_labels_unchanged option to skip this step and use the raw label map (segmentation) instead. This can be useful if you use a custom detector and want to check the corresponding annotations for example.
 
 #### Using napari-exodeepfinder
 
