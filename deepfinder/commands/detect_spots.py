@@ -12,9 +12,9 @@ from gooey import Gooey
 def detect_spots(tiffs_path, detector_path, command, output_path):
     output_folder = output_path.with_suffix('')
     output_folder.mkdir(exist_ok=True, parents=True)
-    command = command.replace('{detector}', str(detector_path.resolve()))
-    command = command.replace('{input}', str(tiffs_path.resolve()))
-    command = command.replace('{output}', str(output_folder.resolve()))
+    command = command.replace('{detector}', str(detector_path))
+    command = command.replace('{input}', str(tiffs_path))
+    command = command.replace('{output}', str(output_folder))
     subprocess.run(shlex.split(command), check=True)
     convert_tiff_to_h5(output_folder, output_path, make_subfolder=False)
     shutil.rmtree(output_folder)
