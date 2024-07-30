@@ -371,7 +371,7 @@ This structure can be obtained with the `structure_training_dataset` action in t
 
 `edf_structure_training_dataset --input path/to/exocytosis_data/ --output path/to/dataset/`
 
-This will organize the files with the above structure, by putting 70% of the movies in the train/ folder, and 30% of them in the valid/ folder.
+This will organize the input folder (which should be structured as in the previous step) with the above final structure, by putting 70% of the movies in the train/ folder, and 30% of them in the valid/ folder.
 
 Make sure the output folder is correct, and that you can open its content in napari.
 
