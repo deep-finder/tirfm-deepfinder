@@ -118,7 +118,7 @@ exocytosis_data/
 └── ...
 ```
 
-#### 1. Segment movies
+#### 2. Segment movies
 
 To generate segmentations, you can either use ExoDeepFinder or [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder).
 
@@ -139,7 +139,7 @@ Use the `--visualization` argument to also generate visualization images and get
 
 See `edf_segment --help` for more information about the input arguments.
 
-#### 1. Generate annotations
+#### 3. Generate annotations
 
 To cluster a segmentation and create an annotation file from it, use the `generate_annotation` action in the GUI, or the following command:
 `edf_generate_annotation --segmentation path/to/movie_segmentation.h5 --cluster_radius 5`
@@ -199,7 +199,7 @@ exocytosis_data/
 └── ...
 ```
 
-#### 1. Detect bright spots
+#### 2. Detect bright spots
 
 ExoDeepFinder can generate false positives by confusing bright spots with genuine exocytosis events. The strategy to reduce this type of false positive is to explicitly present these bright spots as counter-examples during the training. Hence,  the training requires bright spots to be annotated. You can use any suitable methods that will accurately detect counter-examples bright spots in your data, or use our spot detector [Atlas](https://gitlab.inria.fr/serpico/atlas). The Atlas installation instructions are detailed in the repository, but the most simple way of installing it is by using conda: `conda install bioimageit::atlas`.
 
@@ -230,7 +230,7 @@ You can make sure that the detector segmentations are correct by opening them in
 
 Note that one can convert annotations (.xml or .csv files describing bright spots) to segmentation maps (.h5 files) with the `edf_generate_segmentation` command, and segmentation maps to annotations with the `edf_generate_annotation` command. This can be useful if you use your own detector which generates either annotations or segmentations.
 
-#### 1. Annotate exocytosis events
+#### 3. Annotate exocytosis events
 
 The training requires movies to be annotated with the localizations of exocytosis events and bright spots. The recommended way to annotate exocytosis events is to use the [`napari-exodeepfinder` plugin](https://github.com/deep-finder/napari-exodeepfinder) but it is also possible to use other software (e.g. ImageJ) as long as the output annotations respect the format described below.
 
@@ -288,7 +288,7 @@ tomo_idx,class_label,x,y,z
 
 The `class_label` must be 1, and `tomo_idx` must be 0.
 
-#### 1. Convert expert annotations to expert segmentations
+#### 4. Convert expert annotations to expert segmentations
 
 Convert your manual annotations (named expert annotations) into expert segmentations so that they can be merged with the detected bright spots and used for the training.
 
@@ -317,7 +317,7 @@ Note that the expert annotation can be a `.csv` as long as it respects the corre
 
 Again, you can check on napari that everything went right by opening all images and checking that `expert_segmentation.h5` corresponds to `expert_annotation.xml` and the movie.
 
-#### 1. Merge detector and expert data
+#### 5. Merge detector and expert data
 
 Then, merge detector detections with expert annotations with the `merge_detector_expert` action in the GUI, or the `edf_merge_detector_expert` command:
 
@@ -346,7 +346,7 @@ exocytosis_data/
 
 Again, make sure everything looks right in napari.
 
-#### 1. Organize training files
+#### 6. Organize training files
 
 Finally, the training data should be organized in the following way:
 
@@ -375,7 +375,7 @@ This will organize the input folder (which should be structured as in the previo
 
 Make sure the output folder is correct, and that you can open its content in napari.
 
-#### 1. Train your custom model
+#### 7. Train your custom model
 
 Finally, launch the training with `train` action in the GUI, or the command `edf_train --dataset path/to/dataset/ --output path/to/model/`.
 
