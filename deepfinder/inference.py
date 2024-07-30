@@ -39,7 +39,7 @@ class Segment(core.DeepFinder):
         self.is_h5_path(self.path_weights, 'path_weights')
         self.is_multiple_4_int(self.P, 'patch_size')
 
-    def launch(self, dataArray, verbose='auto'):
+    def launch(self, dataArray, verbose=2):
         """This function enables to segment a tomogram. As tomograms are too large to be processed in one take, the
         tomogram is decomposed in smaller overlapping 3D patches.
 
@@ -135,7 +135,7 @@ class Segment(core.DeepFinder):
         dim = dataArray.shape
         dataArray = np.reshape(dataArray, (1, dim[0], dim[1], dim[2], 1))  # reshape for keras [batch,x,y,z,channel]
 
-        pred = self.net.predict(dataArray, batch_size=1)
+        pred = self.net.predict(dataArray, batch_size=1, verbose=2)
         predArray = pred[0, :, :, :, :]
         #predArray = predArray[self.pcrop:-self.pcrop, self.pcrop:-self.pcrop, self.pcrop:-self.pcrop, :]  # unpad
 

@@ -297,7 +297,7 @@ class Train(core.DeepFinder):
                 else:
                     batch_data_valid, batch_target_valid, idx_list = self.generate_batch_from_array(data_list, target_list, self.batch_size, objlist_valid)
                 loss_val = self.net.evaluate(batch_data_valid, batch_target_valid, verbose=0) # TODO replace by loss() to reduce computation
-                batch_pred = self.net.predict(batch_data_valid)
+                batch_pred = self.net.predict(batch_data_valid, verbose=2)
                 #loss_val = K.eval(losses.tversky_loss(K.constant(batch_target_valid), K.constant(batch_pred)))
                 scores = precision_recall_fscore_support(batch_target_valid.argmax(axis=-1).flatten(), batch_pred.argmax(axis=-1).flatten(), average=None, labels=self.label_list)
 
