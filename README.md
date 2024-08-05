@@ -8,7 +8,7 @@ This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfin
 
 [ExoDeepFinder binaries are available](https://github.com/deep-finder/tirfm-deepfinder/releases/tag/v0.2.3) for Windows, Linux and Mac, so there is no need to install anything if you just want to use the graphical user interface. The Linux release is big (over 4Gb) because it contains the libraries required for the GPU acceleration. Thus they are split in two parts (`ExoDeepFinder_Linux-x86_64_part1.tar.gz` and `ExoDeepFinder_Linux-x86_64_part2.tar.gz`). To uncompress them, use the following command: `tarcat ExoDeepFinder_Linux-x86_64_part*.tar.gz  | tar -xvzf -`.
 
-> **_Note:_** ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow and can be buggy). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
+> **_Note:_** ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow and is not well supported). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
 
 ### Python installation
 
@@ -36,7 +36,7 @@ exodeepfinder                   # combine all above commands
 
 The ExoDeepFinder main GUI enables to execute each of those commands (listed on the Actions panel).
 
-### Command-line usage (Python)
+### Command-line usage
 
 All commands (except `exodeepfinder`) must be prefixed with `edf_` when using the command-line interface.
 
@@ -133,7 +133,7 @@ You can omit the model weights path (`--model_weights`) if you use the release (
 
 This will generate a segmentation named `path/to/movie_semgmentation.h5` with the pretrained weigths in `examples/analyze/in/net_weights_FINAL.h5` and patches of size 160. It will also generate visualization images.
 
-This should take 10 to 15 minutes for a movie of 1000 frames of size 400 x 300 pixels on a modern CPU (mac M1) and only few dozens of seconds on a GPU.
+This should take 10 to 15 minutes for a movie of 1000 frames of size 400 x 300 pixels on a modern CPU (mac M1) and only few dozens of seconds on an A100 GPU.
 
 Use the `--visualization` argument to also generate visualization images and get a quick overview of the segmentation results.
 
@@ -161,7 +161,8 @@ Choose an output image name (with the .h5 extension), then launch the segmentati
 
 ### Training
 
-The training is really slow and can generate some bugs when runned on the CPU. We recommend using Linux (or eventually WLS2 on Windows) to take benefit of the GPU (see the "Installaton Guide" section).
+Training requires considerable computing resources, so the use of a GPU is highly recommended. Thus, we strongly suggest using Linux for the Training, although using WLS2 on Windows should also work (see the "Installaton Guide" section).
+
 To train a model, your data should be organized in the following way:
 
 ```
@@ -225,22 +226,13 @@ exocytosis_data/
 └── ...
 ```
 
-You have two possibilities if you want to use an alternative detector:
+There are two ways of using an alternative detector:
 
-1) Call a function with ExoDeepFinder. Make sure your detector generates segmentation maps with 1s where there are bright spots (no matter whether they are exocytosis events or not) and 0s elsewhere. You can specify the command to call the detector with the `--detector_command` and/or the `--detector_path` arguments. For example `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytosis_data/ --detector_path path/to/custom_detector.py --detector_command 'python "{detector}" -i "{input}" -o "{output}"'` will call `custom_detector.py` with each each movies in the dataset like so: `python path/to/custom_detector.py -i path/to/exocytosis_data/movieN/tiff/ -o path/to/exocytosis_data/movieN/detector_segmentation.h5`. The detector will have to handle all `.tiff` frames and generate a segmentation in the `.h5` format.
+1) Call a custom detector command from the `edf_detect_spots` command. Make sure your detector generates segmentation maps with 1s where there are bright spots (no matter whether they are exocytosis events or not) and 0s elsewhere. You can specify the command to call the detector with the `--detector_command` and/or the `--detector_path` arguments. For example `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytosis_data/ --detector_path path/to/custom_detector.py --detector_command 'python "{detector}" -i "{input}" -o "{output}"'` will call `custom_detector.py` with each each movies in the dataset like so: `python path/to/custom_detector.py -i path/to/exocytosis_data/movieN/tiff/ -o path/to/exocytosis_data/movieN/detector_segmentation.h5`. The detector will have to handle all `.tiff` frames and generate a segmentation in the `.h5` format.
 
 You can make sure that the detector segmentations are correct by opening them in napari with the corresponding movie. Open both `.h5` files in napari, put the `detector_segmentation.h5` layer on top, then right-click on it and select "Convert to labels". You should see the detections in red on top of the movie.`
 
-2) Use an independent program (e.g. ImageJ). Use the software of your choise to obtain bright spot coordinates (no mattter whether they are exocytosis events or not) and save these annotations in a .csv (or .xml) with the following format:
-
-```
-tomo_idx,class_label,x,y,z
-0,1,133,257,518
-0,1,169,230,519
-0,1,184,237,534
-0,1,146,260,546
-```
-
+2) Use the software of your choise (e.g. ImageJ) to create annotations files. An annotation file consists of a list of bright spots coordinates (no matter whether they are exocytosis events or not). It can be a .csv or .xml file, and must follow the same format as described in the [3. Annotate exocytosis events](3.-Annotate-exocytosis-events) section bellow (bright spots must have a class_label equal to 1).
 
 Note that one can convert annotations (.xml or .csv files describing bright spots) to segmentation maps (.h5 files) with the `edf_generate_segmentation` command, and segmentation maps to annotations with the `edf_generate_annotation` command. This can be useful if you use your own detector which generates either annotations or segmentations.
 
@@ -290,7 +282,7 @@ Make sure that the `expert_annotation.xml` files you just created have the follo
 </objlist>
 ```
 
-If you used an alternative software (e.g. ImageJ) other than `napari-exodeepfinder` to annotate exocytosis events, make sure your output files follow the same structure. It can be `csv` files, but they must follow the same naming, as in the following `example.csv`:
+If you used a software other than `napari-exodeepfinder` (e.g. ImageJ) to annotate exocytosis events, make sure your output files follow the same structure. It can be `csv` files, but they must follow the same naming, as in the following `example.csv`:
 
 ```
 tomo_idx,class_label,x,y,z
@@ -337,7 +329,7 @@ Then, merge detector detections with expert annotations with the `merge_detector
 
 `edf_merge_detector_expert --batch path/to/exocytosis_data/`
 
-This will create two new files `merged_annotation.xml` (the merged annotations) and `merged_segmentation.h5` (the merged segmentations). The exocytosis events are first removed from the detector segmentation (`detector_segmentation.h5`), then the remaining events (from the detector and the expert) are transferred to the merged segmentation (`merged_segmentation.h5`), with class 2 for exocytosis events and class 1 for others events. The maximum number of other events in the annotation is 9800; meaning that if there are more than 9800 other events, only 9800 events will be picked randomly and the others will be discarded. If you have >>9800 annotations with a vast majority of bright spots, exocytosis events can be under-represented and we recommend to obtain a more specific annotation of the bright spots.
+This will create two new files `merged_annotation.xml` (the merged annotations) and `merged_segmentation.h5` (the merged segmentations). The exocytosis events are first removed from the detector segmentation (`detector_segmentation.h5`), then the remaining events (from the detector and the expert) are transferred to the merged segmentation (`merged_segmentation.h5`), with class 2 for exocytosis events and class 1 for others events. The maximum number of other events in the annotation is 9800; meaning that if there are more than 9800 other events, only 9800 events will be picked randomly and the others will be discarded.
 
 The `exocytosis_data/` folder will then follow this structure:
 
