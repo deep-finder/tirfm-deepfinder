@@ -36,7 +36,7 @@ exodeepfinder                   # combine all above commands
 
 The ExoDeepFinder main GUI enables to execute each of those commands (listed on the Actions panel).
 
-### Command-line usage
+### Command-line usage (Python)
 
 All commands (except `exodeepfinder`) must be prefixed with `edf_` when using the command-line interface.
 
