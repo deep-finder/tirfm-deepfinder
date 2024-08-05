@@ -8,7 +8,7 @@ This work is based on [DeepFinder](https://github.com/deep-finder/cryoet-deepfin
 
 [ExoDeepFinder binaries are available](https://github.com/deep-finder/tirfm-deepfinder/releases/tag/v0.2.3) for Windows, Linux and Mac, so there is no need to install anything if you just want to use the graphical user interface. The Linux release is big (over 4Gb) because it contains the libraries required for the GPU acceleration. Thus they are split in two parts (`ExoDeepFinder_Linux-x86_64_part1.tar.gz` and `ExoDeepFinder_Linux-x86_64_part2.tar.gz`). To uncompress them, use the following command: `tarcat ExoDeepFinder_Linux-x86_64_part*.tar.gz  | tar -xvzf -`.
 
-> **_Note:_** ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
+> **_Note:_** ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow and can be buggy). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
 
 ### Python installation
 
@@ -52,7 +52,7 @@ If you installed ExoDeepFinder as a developer (see [Development section](## Deve
 
 The detection of exocytosis events is formally the segmentation of events in 3D (2D + time) TIRF movies followed by the clustering of the resulting segmentation map.
 
-Detecting exocytose events in ExoDeepFinder involves executing the following commands:
+Detecting exocytosis events in ExoDeepFinder involves executing the following commands:
   1. `convert_tiff_to_h5`  to convert tiff folders to a single h5 file,
   1. `segment` to generate segmentation maps from movies, where 2s will be exocytosis events and 1s will be bright spots,
   1. `generate_annotation` to generate an annotation file from a segmentation by clustering it.
@@ -71,7 +71,7 @@ exocytosis_data/
 
 The frame extensions can be .tif, .tiff, .TIF or .TIFF.
 
-There is no constraint on the file names, but they must contain the frame number (the last number in the file name must be the frame number), and be in the tiff format (it could work with other format like .png since images are read with the `skimage.io.imread()` function of the scikit-image library). For example `frame_1.tiff` could also be named `IMAGE32_1.TIF`. Similarly, there is no constraint on the movie names. In addition, although there is no strict constraint on the file names, be aware that it is much simpler to work with simple file names with no space or special characters. Lastly, make sure that folders contain only the .tiff frame of your movie and no additional images (e.g. a mask of the cell, etc.).
+There is no constraint on the file names, but they must contain the frame number (the last number in the file name must be the frame number), and be in the tiff format (it could work with other format like .png since images are read with the `skimage.io.imread()` function of the scikit-image library). For example `frame_1.tiff` could also be named `IMAGE32_1.TIF`. Similarly, there is no constraint on the movie names. In addition, although there is no strict constraint on the file names, be aware that it is much simpler to work with simple file names with no space nor special characters. Lastly, make sure that folders contain only the .tiff frame of your movie and no additional images (e.g. a mask of the cell, etc.).
 
 The movie folders (containing the frames in tiff format) can be converted into a single `.h5` file with the `convert_tiff_to_h5` command.
 Most ExoDeepFinder commands take h5 files as input, so the first step is to convert the data to h5 format with the `convert_tiff_to_h5` action in the GUI, or with the following command:
@@ -133,7 +133,7 @@ You can omit the model weights path (`--model_weights`) if you use the release (
 
 This will generate a segmentation named `path/to/movie_semgmentation.h5` with the pretrained weigths in `examples/analyze/in/net_weights_FINAL.h5` and patches of size 160. It will also generate visualization images.
 
-This should take 10 to 15 minutes for a movie of 1000 frames of size 400 x 300 pixels on a modern CPU (mac M1).
+This should take 10 to 15 minutes for a movie of 1000 frames of size 400 x 300 pixels on a modern CPU (mac M1) and only few dozens of seconds on a GPU.
 
 Use the `--visualization` argument to also generate visualization images and get a quick overview of the segmentation results.
 
@@ -141,7 +141,7 @@ See `edf_segment --help` for more information about the input arguments.
 
 #### 3. Generate annotations
 
-To cluster a segmentation and create an annotation file from it, use the `generate_annotation` action in the GUI, or the following command:
+To cluster a segmentation file and create an annotation file from it, use the `generate_annotation` action in the GUI, or the following command:
 `edf_generate_annotation --segmentation path/to/movie_segmentation.h5 --cluster_radius 5`
 
 The clustering will convert the segmentation map (here `movie_segmentation.h5`) into an event list. The algorithm groups and labels the voxels so that all voxels of the same event share the same label, and each event gets a different label. The cluster radius is the approximate size in voxel of the objects to cluster.
@@ -161,6 +161,7 @@ Choose an output image name (with the .h5 extension), then launch the segmentati
 
 ### Training
 
+The training is really slow and can generate some bugs when runned on the CPU. We recommend using Linux (or eventually WLS2 on Windows) to take benefit of the GPU (see the "Installaton Guide" section).
 To train a model, your data should be organized in the following way:
 
 ```
@@ -181,7 +182,7 @@ For each movie, tiff files must be converted to a single `.h5` using the `conver
 
 `edf_convert_tiff_to_h5 --batch path/to/exocytosis_data/ --make_subfolder`
 
-This will change the `exocytosis_data` structrue into the following one:
+This will change the `exocytosis_data` structure into the following one:
 
 ```
 exocytosis_data/
@@ -224,9 +225,22 @@ exocytosis_data/
 └── ...
 ```
 
-If you want to use an alternative detector, make sure it generates segmentation maps with 1s where there are bright spots (no matter whether they are exocytosis events or not) and 0s elsewhere. You can specify the command to call the detector with the `--detector_command` and/or the `--detector_path` arguments. For example `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytosis_data/ --detector_path path/to/custom_detector.py --detector_command 'python "{detector}" -i "{input}" -o "{output}"'` will call `custom_detector.py` with each each movies in the dataset like so: `python path/to/custom_detector.py -i path/to/exocytosis_data/movieN/tiff/ -o path/to/exocytosis_data/movieN/detector_segmentation.h5`. The detector will have to handle all `.tiff` frames and generate a segmentation in the `.h5` format.
+You have two possibilities if you want to use an alternative detector:
+
+1) Call a function with ExoDeepFinder. Make sure your detector generates segmentation maps with 1s where there are bright spots (no matter whether they are exocytosis events or not) and 0s elsewhere. You can specify the command to call the detector with the `--detector_command` and/or the `--detector_path` arguments. For example `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytosis_data/ --detector_path path/to/custom_detector.py --detector_command 'python "{detector}" -i "{input}" -o "{output}"'` will call `custom_detector.py` with each each movies in the dataset like so: `python path/to/custom_detector.py -i path/to/exocytosis_data/movieN/tiff/ -o path/to/exocytosis_data/movieN/detector_segmentation.h5`. The detector will have to handle all `.tiff` frames and generate a segmentation in the `.h5` format.
 
 You can make sure that the detector segmentations are correct by opening them in napari with the corresponding movie. Open both `.h5` files in napari, put the `detector_segmentation.h5` layer on top, then right-click on it and select "Convert to labels". You should see the detections in red on top of the movie.`
+
+2) Use an independent program (e.g. ImageJ). Use the software of your choise to obtain bright spot coordinates (no mattter whether they are exocytosis events or not) and save these annotations in a .csv (or .xml) with the following format:
+
+```
+tomo_idx,class_label,x,y,z
+0,1,133,257,518
+0,1,169,230,519
+0,1,184,237,534
+0,1,146,260,546
+```
+
 
 Note that one can convert annotations (.xml or .csv files describing bright spots) to segmentation maps (.h5 files) with the `edf_generate_segmentation` command, and segmentation maps to annotations with the `edf_generate_annotation` command. This can be useful if you use your own detector which generates either annotations or segmentations.
 
@@ -276,7 +290,7 @@ Make sure that the `expert_annotation.xml` files you just created have the follo
 </objlist>
 ```
 
-If you used a software other than `napari-exodeepfinder`, make sure your output files follow the same structure. It can be `csv` files, but they must follow the same naming, as in the following `example.csv`:
+If you used an alternative software (e.g. ImageJ) other than `napari-exodeepfinder` to annotate exocytosis events, make sure your output files follow the same structure. It can be `csv` files, but they must follow the same naming, as in the following `example.csv`:
 
 ```
 tomo_idx,class_label,x,y,z
@@ -323,7 +337,7 @@ Then, merge detector detections with expert annotations with the `merge_detector
 
 `edf_merge_detector_expert --batch path/to/exocytosis_data/`
 
-This will create two new files `merged_annotation.xml` (the merged annotations) and `merged_segmentation.h5` (the merged segmentations). The exocytosis events are first removed from the detector segmentation (`detector_segmentation.h5`), then the remaining events (from the dector and the expert) are transfered to the merged segmentation (`merged_segmentation.h5`), with class 2 for exocytosis events and class 1 for others events. The maximum number of other events in the annotation is 9800; meaning that if there are more than 9800 other events, only 9800 events will be picked randomly and the others will be discarded.
+This will create two new files `merged_annotation.xml` (the merged annotations) and `merged_segmentation.h5` (the merged segmentations). The exocytosis events are first removed from the detector segmentation (`detector_segmentation.h5`), then the remaining events (from the detector and the expert) are transferred to the merged segmentation (`merged_segmentation.h5`), with class 2 for exocytosis events and class 1 for others events. The maximum number of other events in the annotation is 9800; meaning that if there are more than 9800 other events, only 9800 events will be picked randomly and the others will be discarded. If you have >>9800 annotations with a vast majority of bright spots, exocytosis events can be under-represented and we recommend to obtain a more specific annotation of the bright spots.
 
 The `exocytosis_data/` folder will then follow this structure:
 
@@ -425,4 +439,4 @@ The [Numpy documentation](https://numpy.org/install/#pip--conda) explains the ma
 
 To install ExoDeepFinder for development, clone the repository (`git clone git@github.com:deep-finder/tirfm-deepfinder.git`), create and activate a virtual environment (see section above), and install it with `pip install -e ./tirfm-deepfinder/[GUI]`.
 
-To generate the release binaries, install PyInstaller with `pip install pyinstaller` in your virtual environment ; and package ExoDeepFinder with `pyinstaller exodeepfinder.spec`. You must run this command on the destination platform (run on Windows for a Windows release, on Mac for a Mac release, and Linux for a Linux release).
+To generate the release binaries, install PyInstaller with `pip install pyinstaller` in your virtual environment; and package ExoDeepFinder with `pyinstaller exodeepfinder.spec`. You must run this command on the destination platform (run on Windows for a Windows release, on Mac for a Mac release, and Linux for a Linux release).
