@@ -1,6 +1,5 @@
 import sys, argparse, platform, subprocess
 from pathlib import Path
-from gooey import GooeyParser
 
 # On windows, the command GUIs cannot be used directly, they must be called with python and full path to the command (because of [a known Gooey issue](https://github.com/chriskiehl/Gooey/issues/907))
 # So, if called from the command: rerun the same file but with python and full path
@@ -19,6 +18,7 @@ def remove_ignore_gooey():
 
 def create_parser(parser, command, prog, description):
     if parser is None:
+        from gooey import GooeyParser
         return GooeyParser(prog=prog, description=description, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     return parser.add_parser(command, description=description, help=description)
 
