@@ -22,9 +22,15 @@ The following software are required for GPU support:
 
 ### Python installation
 
-Alternatively, to install ExoDeepFinder and use it with command lines, create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), install dependencies (on Linux only, see bellow), and run `pip install exodeepfinder[GUI]`.
+Alternatively, to install ExoDeepFinder and use it with command lines, create and activate a virtual environment with python 3.11 or later (see the [Virtual environments](#virtual-environments) section for more information), install dependencies (on Linux only, and only if you wish to use the GUI, see bellow), and run `pip install exodeepfinder[GUI]` (you can also omit `[GUI]` if you only want to use the command line).
 
-On Linux you will need to install [`wxPython` dependencies](https://github.com/wxWidgets/Phoenix/blob/master/README.rst#prerequisites) manually (`sudo apt install libgtk-3-dev`, etc.) or use one [precompiled wxPython version](https://wxpython.org/pages/downloads/index.html) (use `pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython` with your Ubuntu version number, or use `conda install wxpython` to install a compiled wxPython from conda). 
+On Linux, the GUI requires [`wxPython` dependencies](https://github.com/wxWidgets/Phoenix/blob/master/README.rst#prerequisites) to be installed (you can just run `pip install exodeepfinder` if you don't want the GUI). 
+The simplest way is to use conda (or micromamba, see the [Conda alternatives](#conda-alternatives) section): 
+- create a new environment named exodeepfinder with Python 3.10 and Gooey (which installs wxPython): `conda create -n exodeepfinder python=3.10 gooey==1.0.8.1`
+- activate it: `conda activate exodeepfinder`
+- install exodeepfinder: `pip install exodeepfinder`
+
+You can also install wxPython manually (`sudo apt install libgtk-3-dev`, etc.) or use one [precompiled wxPython version](https://wxpython.org/pages/downloads/index.html) (use `pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython` with your Ubuntu version number, or use `conda install wxpython` to install a compiled wxPython from conda). The rest can be installed with `pip install exodeepfinder`. 
 
 Note that on Windows, the `python` command is often replaced by `py` and `pip` by `py -m pip`; so you migth need adapt the commands in this documentation depending on your system settings.
 
