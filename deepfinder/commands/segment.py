@@ -4,8 +4,6 @@ from pathlib import Path
 from deepfinder.inference import Segment
 import deepfinder.utils.common as cm
 import deepfinder.utils.smap as sm
-from gooey import Gooey
-
 
 def segment(image_path, weights_path, output_path, visualization=False, patch_size=160):
 
@@ -56,7 +54,7 @@ def add_args(parser):
     parser.add_argument('-s', '--segmentation', help='Path to the output segmentation. If used, the string {movie} will be replaced by the movie file name (without extension).', default='{movie}_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
-@Gooey
+@utils.Gooey
 def main(args=None):
 
     args = utils.parse_args(args, create_parser, add_args)

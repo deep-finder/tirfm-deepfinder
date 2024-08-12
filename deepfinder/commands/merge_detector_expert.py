@@ -6,8 +6,6 @@ import h5py
 import SimpleITK as sitk
 import xml.etree.ElementTree as ET
 import random
-from gooey import Gooey
-
 
 def objlist2motl(objlist_path):
     """Translate function from MATLAB. Returns the motive list filled up with particle information from xml file.
@@ -120,7 +118,6 @@ def motl2objlist(motl, filename):
     tree = ET.ElementTree(obj_list)
     ET.indent(tree)
     tree.write(filename)
-
 
 def merge_detector_expert_segmentation(detector_segmentation_path, expert_object_list_path, expert_segmentation_path, output_segmentation_path, output_object_list_path):
     
@@ -265,7 +262,7 @@ def add_args(parser):
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 
-@Gooey
+@utils.Gooey
 def main(args=None):
 
     args = utils.parse_args(args, create_parser, add_args)

@@ -12,9 +12,6 @@ from deepfinder.inference import Cluster
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
 import numpy as np
-import sys
-from gooey import Gooey
-
 
 def cluster(segmentation_path, cluster_radius, output_path=None, keep_labels_unchanged=False):
     output_path.parent.mkdir(exist_ok=True, parents=True)
@@ -31,7 +28,8 @@ def cluster(segmentation_path, cluster_radius, output_path=None, keep_labels_unc
         labelmap[labelmap == 2] = 1  # keep only exo class, else clustering too slow
         
     if np.sum(labelmap)==0:
-        sys.exit('Error: the given segmentation has no exocytose event (no voxel of value 2).')
+        print(f'Error: segmentation {segmentation_path} has no exocytose event (no voxel of value 2).')
+        return
 
     # Initialize clustering task:
     clust = Cluster(clustRadius=cluster_radius)
@@ -53,13 +51,13 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Detect spots',
     return utils.create_parser(parser, command, prog, description)
 
 def add_args(parser):
-    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='detector_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='movie_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-cr', '--cluster_radius', help='Approximate size in voxel of the objects to cluster. 5 is a good value for events of 400nm on films with a pixel size of 160nm.', default=5, type=int)
     parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileSaver')
     parser.add_argument('-klu', '--keep_labels_unchanged', help='By default, bright spots are removed (labels 1 are set to 0) and exocytose events (labels 2) are set to 1. This option skip this step, so labels are kept unchanged.', action='store_true')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
-@Gooey
+@utils.Gooey
 def main(args=None):
 
     args = utils.parse_args(args, create_parser, add_args)

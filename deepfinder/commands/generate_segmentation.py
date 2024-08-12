@@ -7,7 +7,6 @@ import numpy as np
 from deepfinder.training import TargetBuilder
 import deepfinder.utils.common as cm
 import deepfinder.utils.objl as ol
-from gooey import Gooey
 
 
 # path_output.mkdir(exist_ok=True, parents=True)
@@ -110,7 +109,7 @@ def add_args(parser):
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 
-@Gooey
+@utils.Gooey
 def main(args=None):
 
     args = utils.parse_args(args, create_parser, add_args)

@@ -6,8 +6,6 @@ import shutil
 from pathlib import Path
 import subprocess
 from deepfinder.commands.convert_tiff_to_h5 import convert_tiff_to_h5
-from gooey import Gooey
-
 
 def detect_spots(tiffs_path, detector_path, command, output_path):
     output_folder = output_path.with_suffix('')
@@ -32,7 +30,7 @@ def add_args(parser):
     parser.add_argument('-o', '--output', help='Path to the output segmentations.', default='detector_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process. If given, all other path arguments must be relative to the folders to process.', default=None, type=Path, widget='DirChooser')
 
-@Gooey
+@utils.Gooey
 def main(args=None):
 
     args = utils.parse_args(args, create_parser, add_args)

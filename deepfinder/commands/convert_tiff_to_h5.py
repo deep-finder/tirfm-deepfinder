@@ -5,8 +5,6 @@ import skimage
 from pathlib import Path
 import numpy as np
 from deepfinder.utils.common import write_h5array
-from gooey import Gooey
-
 
 def get_tiff_files(path):
     return sorted([f for f in path.iterdir() if f.suffix.lower() in ['.tif', '.tiff']])
@@ -59,7 +57,7 @@ def add_args(parser):
     parser.add_argument('-o', '--output', help='Output path to the h5 file. If used, the string {tiff} will be replaced by the --tiff argument folder name.', default='movie.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
-@Gooey
+@utils.Gooey
 def main(args=None):
     
     args = utils.parse_args(args, create_parser, add_args)

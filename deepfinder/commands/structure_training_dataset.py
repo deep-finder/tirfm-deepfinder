@@ -4,8 +4,6 @@ import sys
 import shutil
 import numpy as np
 from pathlib import Path
-from gooey import Gooey
-
 
 def structure_training_dataset(input_path:Path, output_path:Path, movie:Path, merged_segmentation:Path, merged_annotation:Path, split:float):
     if output_path.exists() and len(list(output_path.iterdir()))>0:
@@ -91,7 +89,7 @@ def add_args(parser):
     parser.add_argument('-ms', '--merged_segmentation', help='Path to the merged segmentation (relative to the movie folder).', default='merged_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-ma', '--merged_annotation', help='Path to the merged annotation (relative to the movie folder).', default='merged_annotation.xml', type=Path, widget='FileSaver')
 
-@Gooey
+@utils.Gooey
 def main(args=None):
     
     args = utils.parse_args(args, create_parser, add_args)

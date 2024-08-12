@@ -10,14 +10,13 @@ import deepfinder.commands.merge_detector_expert
 import deepfinder.commands.structure_training_dataset
 import deepfinder.commands.train
 import inspect
-from gooey import Gooey, GooeyParser
 
 deepfinder.commands.utils.ignore_gooey_if_args()
 
 def get_description(function):
     return inspect.signature(function).parameters["description"].default
 
-@Gooey(
+@deepfinder.commands.utils.Gooey(
     program_name='ExoDeepFinder',
     menu=[{
         'name': 'Help',
@@ -47,8 +46,14 @@ def main():
     #                     merge_detector_expert: {get_description(deepfinder.commands.merge_detector_expert.create_parser)}\n
     #                     structure_training_dataset: {get_description(deepfinder.commands.structure_training_dataset.create_parser)}\n
     #                     train: {get_description(deepfinder.commands.train.create_parser)}\n''', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser = GooeyParser(prog='', description=f'''Detect exocytose events\n
-                        see https://github.com/deep-finder/tirfm-deepfinder for more information''', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    description = f'''Detect exocytose events\n
+                    see https://github.com/deep-finder/tirfm-deepfinder for more information'''
+    try:
+        from gooey import GooeyParser
+        parser = GooeyParser(prog='', description=description, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    except ModuleNotFoundError:
+        parser = deepfinder.commands.utils.CustomArgumentParser(prog='ExoDeepFinder', description=description, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    
     subparsers = parser.add_subparsers(required=True)
 
     subparser = deepfinder.commands.convert_tiff_to_h5.create_parser(subparsers)

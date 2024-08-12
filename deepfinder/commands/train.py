@@ -1,8 +1,6 @@
 from deepfinder.commands import utils
 utils.run_with_python_on_windows(__file__)
 from pathlib import Path
-from gooey import Gooey
-
 
 def train(dataset_path, output_path, n_epochs, steps_per_epoch):
     from deepfinder.training import Train
@@ -48,7 +46,7 @@ def add_args(parser):
     parser.add_argument('-ns', '--n_steps', help='Number of steps per epochs', default=100, type=int)
     parser.add_argument('-o', '--output', help='Path to the output folder where the model will be stored', widget='DirChooser')
 
-@Gooey
+@utils.Gooey
 def main(args=None):
 
     args = utils.parse_args(args, create_parser, add_args)
