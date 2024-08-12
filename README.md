@@ -16,7 +16,7 @@ The following software are required for GPU support:
 
 ## Installation guide
 
-[ExoDeepFinder binaries are available](https://github.com/deep-finder/tirfm-deepfinder/releases/tag/v0.2.3) for Windows, Linux and Mac, so there is no need to install anything (except the Tensorflow requirements described above for GPU support) if you just want to use the Graphical User Interface (GUI). The Linux release is big (over 4Gb) because it contains the libraries required for the GPU acceleration. Thus they are split in two parts (`ExoDeepFinder_Linux-x86_64_part1.tar.gz` and `ExoDeepFinder_Linux-x86_64_part2.tar.gz`). To uncompress them, use the following command: `tarcat ExoDeepFinder_Linux-x86_64_part*.tar.gz  | tar -xvzf -`.
+[ExoDeepFinder binaries are available](https://github.com/deep-finder/tirfm-deepfinder/releases/tag/v0.2.3) for Windows, Linux and Mac, so there is no need to install anything (except the Tensorflow requirements described above for GPU support) if you just want to use the Graphical User Interface (GUI).
 
 > **_Note:_** ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow and is not well supported). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
 
