@@ -28,7 +28,7 @@ On Linux, the GUI requires [`wxPython` dependencies](https://github.com/wxWidget
 The simplest way is to use conda (or micromamba, see the [Conda alternatives](#conda-alternatives) section): 
 - create a new environment named exodeepfinder with Python 3.10 and Gooey (which installs wxPython): `conda create -n exodeepfinder python=3.10`
 - activate it: `conda activate exodeepfinder`
-- install Gooey with conda: `conda install gooey==1.0.8.1`
+- install Gooey with conda: `conda install conda-forge::gooey==1.0.8.1`
 - install exodeepfinder with pip: `pip install exodeepfinder`
 
 You can also install wxPython manually (`sudo apt install libgtk-3-dev`, etc.) or use one [precompiled wxPython version](https://wxpython.org/pages/downloads/index.html) (use `pip install -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 wxPython` with your Ubuntu version number, or use `conda install wxpython` to install a compiled wxPython from conda). The rest can be installed with `pip install exodeepfinder`. 
