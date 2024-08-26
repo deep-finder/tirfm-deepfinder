@@ -5,6 +5,7 @@
 # License: GPL v3.0. See <https://www.gnu.org/licenses/>
 # =============================================================================================
 
+import sys
 from deepfinder.commands import utils
 utils.run_with_python_on_windows(__file__)
 from pathlib import Path
@@ -14,6 +15,11 @@ import deepfinder.utils.objl as ol
 import numpy as np
 
 def cluster(segmentation_path, cluster_radius, output_path=None, keep_labels_unchanged=False):
+    if segmentation_path.suffix != '.h5':
+        raise(Exception(f'Error: {segmentation_path} must be in h5 format.'))
+    if output_path.suffix != '.xml':
+        raise(Exception(f'Error: {output_path} must end with .xml since it will be saved in the xml format.'))
+
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
     # Load data:
@@ -43,6 +49,7 @@ def cluster(segmentation_path, cluster_radius, output_path=None, keep_labels_unc
     # objlist_thr = ol.above_thr_per_class(objlist, lbl_list, thr_list)
 
     # Save object lists:
+    print(f'Saving annotation file "{output_path.resolve()}"...')
     ol.write_xml(objlist, output_path)
 
 utils.ignore_gooey_if_args()
@@ -51,9 +58,9 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Detect spots',
     return utils.create_parser(parser, command, prog, description)
 
 def add_args(parser):
-    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation.', default='movie_segmentation.h5', type=Path, widget='FileChooser')
+    parser.add_argument('-s', '--segmentation', help='Path to the input segmentation (in .h5 format).', default='movie_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-cr', '--cluster_radius', help='Approximate size in voxel of the objects to cluster. 5 is a good value for events of 400nm on films with a pixel size of 160nm.', default=5, type=int)
-    parser.add_argument('-a', '--annotation', help='Path to the output annotation file.', default='annotation.xml', type=Path, widget='FileSaver')
+    parser.add_argument('-a', '--annotation', help='Path to the output annotation file (in .xml format).', default='annotation.xml', type=Path, widget='FileSaver')
     parser.add_argument('-klu', '--keep_labels_unchanged', help='By default, bright spots are removed (labels 1 are set to 0) and exocytose events (labels 2) are set to 1. This option skip this step, so labels are kept unchanged.', action='store_true')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 

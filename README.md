@@ -200,6 +200,8 @@ For each movie, tiff files must be converted to a single `.h5` using the `conver
 
 `edf_convert_tiff_to_h5 --batch path/to/exocytosis_data/ --make_subfolder`
 
+> **Warning**: make sure to use the --make_subfolder option if you want to obtain the file structure below (with the tiff frames in a `tiff/` folder). This is the default structure which will be used in this documentation.
+
 This will change the `exocytosis_data` structure into the following one:
 
 ```

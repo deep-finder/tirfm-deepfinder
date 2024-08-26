@@ -44,6 +44,7 @@ def convert_tiff_to_h5(tiff_path:Path, output_path:Path, make_subfolder:bool):
         slice_idx = int(slice_idx[-1])  # last number in fname is slice idx    
         vol[slice_idx-1,:,:] = img
 
+    print(f'Saving image file "{output_path.resolve()}"...')
     write_h5array(vol, output_path)
 
 utils.ignore_gooey_if_args()
