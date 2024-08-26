@@ -100,8 +100,8 @@ For example:
 `edf_convert_tiff_to_h5 --batch path/to/movies/ --output path/to/outputs/ --make_subfolder`
 
 where `path/to/movies/` contains movies folders (which in turn contains tiff files).
-The `--make_subfolder` option enable to put all tiff files in a `tiff/` subfolder; which is useful in batch mode.
-The `--batch` option enables to process multiple movie folders at once and work in the same way in all ExoDeepFinder commands.
+The `--make_subfolder` option enable to put all tiff files in a `tiff/` subfolder; which is useful in batch mode. 
+The `--batch` option enables to process multiple movie folders at once and work in the same way in all ExoDeepFinder commands. Define the `--batch` option with a path to a folder containing multiple movie folders, each one following the same structure. There should not be any non-movie folder in the `--batch` folder. All folder will be processed independently, as if given iteratively without the `--batch` option.
 
 The above command will turn the following file structure:
 
@@ -200,7 +200,7 @@ For each movie, tiff files must be converted to a single `.h5` using the `conver
 
 `edf_convert_tiff_to_h5 --batch path/to/exocytosis_data/ --make_subfolder`
 
-> **Warning**: make sure to use the --make_subfolder option if you want to obtain the file structure below (with the tiff frames in a `tiff/` folder). This is the default structure which will be used in this documentation.
+> **Warning**: make sure you read the [Exocytosis events detection section](#Exocytosis-events-detection) to understand the `--batch` and `--make_subfolder` options of `edf_convert_tiff_to_h5`. Importantly, use the --make_subfolder option if you want to obtain the file structure below (with the tiff frames in a `tiff/` folder). This is the default structure which will be used in this documentation. Note that the `--batch` option, if defined, must point to a folder containing movie folders, all following the same file structure. 
 
 This will change the `exocytosis_data` structure into the following one:
 
