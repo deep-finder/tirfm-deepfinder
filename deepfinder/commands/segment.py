@@ -21,7 +21,7 @@ def segment(image_path, weights_path, output_path, visualization=False, patch_si
     if not weights_path.exists():
         raise Exception(f'Model weights {weights_path} not found.')
     
-    output_path = output_path.parent / output_path.name.replace('{movie}', image_path.stem)
+    output_path = image_path.parent / output_path.name.replace('{movie}', image_path.stem)
 
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
