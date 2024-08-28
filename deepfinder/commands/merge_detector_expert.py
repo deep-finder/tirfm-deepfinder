@@ -122,15 +122,20 @@ def motl2objlist(motl, filename):
 def merge_detector_expert_segmentation(detector_segmentation_path, expert_object_list_path, expert_segmentation_path, output_segmentation_path, output_object_list_path):
     
     if detector_segmentation_path.suffix != '.h5':
-        raise(Exception(f'Error: {detector_segmentation_path} must be in h5 format.'))
+        raise Exception(f'Error: {detector_segmentation_path} must be in h5 format.')
     if expert_object_list_path.suffix != '.xml':
-        raise(Exception(f'Error: {expert_object_list_path} must be in xml format.'))
+        raise Exception(f'Error: {expert_object_list_path} must be in xml format.')
     if expert_segmentation_path.suffix != '.h5':
-        raise(Exception(f'Error: {expert_segmentation_path} must be in h5 format.'))
+        raise Exception(f'Error: {expert_segmentation_path} must be in h5 format.')
     if output_segmentation_path.suffix != '.h5':
-        raise(Exception(f'Error: {output_segmentation_path} must end with .h5 since it will be saved in the h5 format.'))
+        raise Exception(f'Error: {output_segmentation_path} must end with .h5 since it will be saved in the h5 format.')
     if output_object_list_path.suffix != '.xml':
-        raise(Exception(f'Error: {output_object_list_path} must end with .xml since it will be saved in the xml format.'))
+        raise Exception(f'Error: {output_object_list_path} must end with .xml since it will be saved in the xml format.')
+
+    output_segmentation_path = Path(str(output_segmentation_path).replace('{segmentation.parent}', expert_segmentation_path.parent))
+    output_segmentation_path.parent.mkdir(exist_ok=True, parents=True)
+    output_object_list_path = Path(str(output_object_list_path).replace('{segmentation.parent}', expert_segmentation_path.parent))
+    output_object_list_path.parent.mkdir(exist_ok=True, parents=True)
 
     print('Read inputs')
     motl_exo = objlist2motl(expert_object_list_path)
@@ -270,8 +275,8 @@ def add_args(parser):
     # parser.add_argument('-da', '--detector_annotation', help='Path to the detector annotation.', default='detector_annotation.xml', type=Path)
     parser.add_argument('-es', '--expert_segmentation', help='Path to the expert segmentation (in .h5 format).', default='expert_segmentation.h5', type=Path, widget='FileChooser')
     parser.add_argument('-ea', '--expert_annotation', help='Path to the expert annotation (in .xml format).', default='expert_annotation.xml', type=Path, widget='FileChooser')
-    parser.add_argument('-ms', '--merged_segmentation', help='Path to the output merged segmentation (in .h5 format).', default='merged_segmentation.h5', type=Path, widget='FileSaver')
-    parser.add_argument('-ma', '--merged_annotation', help='Path to the output merged annotation (in .xml format).', default='merged_annotation.xml', type=Path, widget='FileSaver')
+    parser.add_argument('-ms', '--merged_segmentation', help='Path to the output merged segmentation (in .h5 format). If used, the {segmentation.parent} string will be replaced by the parent folder of the --expert_segmentation file.', default='{segmentation.parent}/merged_segmentation.h5', type=Path, widget='FileSaver')
+    parser.add_argument('-ma', '--merged_annotation', help='Path to the output merged annotation (in .xml format). If used, the {segmentation.parent} string will be replaced by the parent folder of the --expert_segmentation file.', default='{segmentation.parent}/merged_annotation.xml', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 
@@ -286,10 +291,8 @@ def main(args=None):
         detector_segmentation_path = movie_path / args.detector_segmentation.name if args.batch is not None else args.detector_segmentation
         expert_annotation_path = movie_path / args.expert_annotation.name if args.batch is not None else args.expert_annotation
         expert_segmentation_path = movie_path / args.expert_segmentation.name if args.batch is not None else args.expert_segmentation
-        merged_annotation_path =  movie_path / args.merged_annotation.name if args.batch is not None else args.merged_annotation
-        merged_segmentation_path = movie_path / args.merged_segmentation.name if args.batch is not None else args.merged_segmentation
 
-        merge_detector_expert_segmentation(detector_segmentation_path, expert_annotation_path, expert_segmentation_path, merged_segmentation_path, merged_annotation_path)
+        merge_detector_expert_segmentation(detector_segmentation_path, expert_annotation_path, expert_segmentation_path, args.merged_segmentation, args.merged_annotation)
 
 
 if __name__ == '__main__':

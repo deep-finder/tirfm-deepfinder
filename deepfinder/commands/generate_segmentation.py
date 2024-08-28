@@ -65,10 +65,13 @@ def read_csv(object_list_path):
 
 def generate_segmentation(image_path, object_list_path, output_path):
     if output_path.suffix != '.h5':
-        raise(Exception(f'Error: {output_path} must end with .h5 since it will be saved in this format.'))
+        raise Exception(f'Error: {output_path} must end with .h5 since it will be saved in this format.')
 
+    output_path = Path(str(output_path).replace('{movie.stem}', image_path.stem).replace('{movie.parent}', image_path.parent))
+    output_path.parent.mkdir(exist_ok=True, parents=True)
+    
     if not object_list_path.exists():
-        raise(Exception(f'The annotation file {object_list_path} does not exist.'))
+        raise Exception(f'The annotation file {object_list_path} does not exist.')
     
     image = cm.read_array(str(image_path))
     data_shape = image.shape  # shape of image sequence [t,y,x]
@@ -77,7 +80,7 @@ def generate_segmentation(image_path, object_list_path, output_path):
 
     # Next, read object list:
     if object_list_path.suffix not in ['.xml', '.csv']:
-        raise(Exception(f'The annotation file {object_list_path} must be a .xml or .csv file.'))
+        raise Exception(f'The annotation file {object_list_path} must be a .xml or .csv file.')
 
     objl = ol.read_xml(object_list_path) if object_list_path.suffix == '.xml' else read_csv(object_list_path)
 
@@ -108,7 +111,7 @@ def create_parser(parser=None, command=Path(__file__).stem, prog='Convert annota
 def add_args(parser):
     parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path, widget='FileChooser')
     parser.add_argument('-a', '--annotation', help='Path to the corresponding annotation (.xml generated with napari-exodeepfinder or equivalent, can also be a .csv file).', default='expert_annotation.xml', type=Path, widget='FileChooser')
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation (in .h5 format).', default='expert_segmentation.h5', type=Path, widget='FileSaver')
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation (in .h5 format). If used, the {movie.stem} string will be replaced by the --movie file name (without extension), and {movie.parent} by its parent folder.', default='{movie.parent}/expert_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 
@@ -123,8 +126,7 @@ def main(args=None):
         # path to object list containing annotated positions
         movie_path = folder_path / args.movie if args.batch is not None else args.movie
         object_list_path = folder_path / args.annotation if args.batch is not None else args.annotation
-        output_path = folder_path / args.segmentation if args.batch is not None else args.segmentation
-        generate_segmentation(movie_path, object_list_path, output_path)
+        generate_segmentation(movie_path, object_list_path, args.segmentation)
 
 
 if __name__ == '__main__':

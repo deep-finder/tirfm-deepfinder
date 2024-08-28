@@ -5,12 +5,12 @@ from deepfinder.inference import Segment
 import deepfinder.utils.common as cm
 import deepfinder.utils.smap as sm
 
-def segment(image_path, weights_path, output_path, visualization=False, patch_size=160):
+def segment(image_path, weights_path, output_path, visualization=False, patch_size=160, batch=None):
 
     if image_path.suffix != '.h5':
-        raise(Exception(f'Error: {image_path} must be in h5 format.'))
+        raise Exception(f'Error: {image_path} must be in h5 format.')
     if output_path.suffix != '.h5':
-        raise(Exception(f'Error: {output_path} must be in h5 format.'))
+        raise Exception(f'Error: {output_path} must be in h5 format.')
 
     if weights_path is None:
         weights_path = Path('_internal/net_weights_FINAL.h5')
@@ -21,8 +21,7 @@ def segment(image_path, weights_path, output_path, visualization=False, patch_si
     if not weights_path.exists():
         raise Exception(f'Model weights {weights_path} not found.')
     
-    output_path = image_path.parent / output_path.name.replace('{movie}', image_path.stem)
-
+    output_path = Path(str(output_path).replace('{movie.stem}', image_path.stem).replace('{movie.parent}', image_path.parent))
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
     # Load data:
@@ -57,7 +56,7 @@ def add_args(parser):
     parser.add_argument('-mw', '--model_weights', help='Path to the model weigths path (in .h5 format). If none is given, default locations will be used ("_internal/net_weights_FINAL.h5" or "examples/analyze/in/net_weights_FINAL.h5").', default=None, type=Path, widget='FileChooser')
     parser.add_argument('-ps', '--patch_size', help='Patch size (the movie is split in cubes of --patch_size before being processed). Must be a multiple of 4.', default=160, type=int)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
-    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation (in .h5 format). If used, the string {movie} will be replaced by the movie file name (without extension).', default='{movie}_segmentation.h5', type=Path, widget='FileSaver')
+    parser.add_argument('-s', '--segmentation', help='Path to the output segmentation (in .h5 format). If used, the string {movie.stem} will be replaced by the movie file name (without extension), and {movie.parent} will be replaced by its parent folder.', default='{movie.parent}/{movie.stem}_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
 
 @utils.Gooey
@@ -69,7 +68,7 @@ def main(args=None):
 
     for movie_path in movie_paths:
 
-        segment(movie_path, args.model_weights, args.segmentation, args.visualization, args.patch_size)
+        segment(movie_path, args.model_weights, args.segmentation, args.visualization, args.patch_size, args.batch)
 
 if __name__ == '__main__':
     main()

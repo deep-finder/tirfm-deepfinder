@@ -97,11 +97,12 @@ Most ExoDeepFinder commands take h5 files as input, so the first step is to conv
 You can also generate all your movie folders at once using the `--batch` option. 
 For example:
 
-`edf_convert_tiff_to_h5 --batch path/to/movies/ --output path/to/outputs/ --make_subfolder`
+`edf_convert_tiff_to_h5 --batch path/to/movies/ --make_subfolder`
 
 where `path/to/movies/` contains movies folders (which in turn contains tiff files).
 The `--make_subfolder` option enable to put all tiff files in a `tiff/` subfolder; which is useful in batch mode. 
-The `--batch` option enables to process multiple movie folders at once and work in the same way in all ExoDeepFinder commands. Define the `--batch` option with a path to a folder containing multiple movie folders, each one following the same structure. There should not be any non-movie folder in the `--batch` folder. All folder will be processed independently, as if given iteratively without the `--batch` option.
+The `--batch` option enables to process multiple movie folders at once and work in the same way in all ExoDeepFinder commands. Define the `--batch` option with a path to a folder containing multiple movie folders, each one following the same structure. There should not be any non-movie folder in the `--batch` folder. All folders will be processed independently, as if given iteratively without the `--batch` option.
+In the `--output` argument, the string "{movie}" will be replaced by the movie folder, and "{movie.name}" will be replaced by its name. By default, the `--output` argument is `{movie}/movie.h5`, meaning the output file will be saved in the movie folder and named `movie.h5`. For example, if `--tiff` is `path/to/movie/`, the output will become `path/to/movie/movie.h5`.
 
 The above command will turn the following file structure:
 
@@ -154,6 +155,8 @@ This should take 10 to 15 minutes for a movie of 1000 frames of size 400 x 300 p
 
 Use the `--visualization` argument to also generate visualization images and get a quick overview of the segmentation results.
 
+The string "{movie.stem}" in the `--segmentation` argument will be replaced by the movie file name (without extension), and "{movie.parent}" will be replaced by its parent folder. By default `--segmentation` is `{movie.parent}/{movie.stem}_segmentation.h5`, meaning it will become `path/to/movie_segmentation.h5` when `--movie` is `path/to/movie.h5`.
+
 See `edf_segment --help` for more information about the input arguments.
 
 #### 3. Generate annotations
@@ -162,9 +165,10 @@ To cluster a segmentation file and create an annotation file from it, use the `g
 `edf_generate_annotation --segmentation path/to/movie_segmentation.h5 --cluster_radius 5`
 
 The clustering will convert the segmentation map (here `movie_segmentation.h5`) into an event list. The algorithm groups and labels the voxels so that all voxels of the same event share the same label, and each event gets a different label. The cluster radius is the approximate size in voxel of the objects to cluster.
+
 5 voxels is best for films with a pixel size of 160nm, for exocytosis events of 1 second and of size 300nm.
 
-ExoDeepFinder detects both bright spots (that could be confused with exocytosis events) and genuine exocytosis events. By default, the command will ignore all bright spots (replace label "1" with 0) and will replace exocytosis events (label "2") to ones. Indeed, ExoDeepFinder is an exocytosis event detector, so its output is only composed of exocytosis events labelled with ones. Use the --keep_labels_unchanged option to skip this step and use the raw label map (segmentation) instead. This can be useful if you use a custom detector and want to check the corresponding annotations for example.
+ExoDeepFinder detects both bright spots (that could be confused with exocytosis events) and genuine exocytosis events. By default, the command will ignore all bright spots (replace label "1" with "0") and will replace exocytosis events (label "2") to ones. Indeed, ExoDeepFinder is an exocytosis event detector, so its output is only composed of exocytosis events labelled with ones. Use the --keep_labels_unchanged option to skip this step and use the raw label map (segmentation) instead. This can be useful if you use a custom detector and want to check the corresponding annotations for example.
 
 #### Using napari-exodeepfinder
 
