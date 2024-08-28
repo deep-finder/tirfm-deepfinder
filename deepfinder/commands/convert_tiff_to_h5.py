@@ -13,7 +13,7 @@ def convert_tiff_to_h5(tiff_path:Path, output_path:Path, make_subfolder:bool):
     if not tiff_path.exists():
         raise Exception(f'The input tiff path {tiff_path} does not exist.')
     
-    output_path = Path(str(output_path).replace('{movie.name}', tiff_path.name).replace('{movie}', tiff_path))
+    output_path = Path(str(output_path).replace('{movie.name}', tiff_path.name).replace('{movie}', str(tiff_path)))
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
     if make_subfolder:

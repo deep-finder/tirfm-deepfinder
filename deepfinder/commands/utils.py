@@ -15,6 +15,9 @@ except:
             return wrapper_main
         return decorator_Gooey if _func is None else decorator_Gooey(_func)
 
+def get_gooey():
+    return Gooey
+
 # On windows, the command GUIs cannot be used directly, they must be called with python and full path to the command (because of [a known Gooey issue](https://github.com/chriskiehl/Gooey/issues/907))
 # So, if called from the command: rerun the same file but with python and full path
 def run_with_python_on_windows(file):

@@ -132,9 +132,9 @@ def merge_detector_expert_segmentation(detector_segmentation_path, expert_object
     if output_object_list_path.suffix != '.xml':
         raise Exception(f'Error: {output_object_list_path} must end with .xml since it will be saved in the xml format.')
 
-    output_segmentation_path = Path(str(output_segmentation_path).replace('{segmentation.parent}', expert_segmentation_path.parent))
+    output_segmentation_path = Path(str(output_segmentation_path).replace('{segmentation.parent}', str(expert_segmentation_path.parent)))
     output_segmentation_path.parent.mkdir(exist_ok=True, parents=True)
-    output_object_list_path = Path(str(output_object_list_path).replace('{segmentation.parent}', expert_segmentation_path.parent))
+    output_object_list_path = Path(str(output_object_list_path).replace('{segmentation.parent}', str(expert_segmentation_path.parent)))
     output_object_list_path.parent.mkdir(exist_ok=True, parents=True)
 
     print('Read inputs')
@@ -277,7 +277,7 @@ def add_args(parser):
     parser.add_argument('-ea', '--expert_annotation', help='Path to the expert annotation (in .xml format).', default='expert_annotation.xml', type=Path, widget='FileChooser')
     parser.add_argument('-ms', '--merged_segmentation', help='Path to the output merged segmentation (in .h5 format). If used, the {segmentation.parent} string will be replaced by the parent folder of the --expert_segmentation file.', default='{segmentation.parent}/merged_segmentation.h5', type=Path, widget='FileSaver')
     parser.add_argument('-ma', '--merged_annotation', help='Path to the output merged annotation (in .xml format). If used, the {segmentation.parent} string will be replaced by the parent folder of the --expert_segmentation file.', default='{segmentation.parent}/merged_annotation.xml', type=Path, widget='FileSaver')
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process. If given, the input arguments must be relative to the folder to process.', default=None, type=Path, widget='DirChooser')
 
 
 @utils.Gooey

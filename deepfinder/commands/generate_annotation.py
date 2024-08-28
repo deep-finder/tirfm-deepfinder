@@ -20,7 +20,7 @@ def cluster(segmentation_path, cluster_radius, output_path=None, keep_labels_unc
     if output_path.suffix != '.xml':
         raise Exception(f'Error: {output_path} must end with .xml since it will be saved in the xml format.')
 
-    output_path = Path(str(output_path).replace('{segmentation.stem}', segmentation_path.stem).replace('{segmentation.parent}', segmentation_path.parent))
+    output_path = Path(str(output_path).replace('{segmentation.stem}', segmentation_path.stem).replace('{segmentation.parent}', str(segmentation_path.parent)))
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
     # Load data:
@@ -63,7 +63,7 @@ def add_args(parser):
     parser.add_argument('-cr', '--cluster_radius', help='Approximate size in voxel of the objects to cluster. 5 is a good value for events of 400nm on films with a pixel size of 160nm.', default=5, type=int)
     parser.add_argument('-a', '--annotation', help='Path to the output annotation file (in .xml format). If used, the {segmentation.stem} string will be replaced by the --segmentation file name (without extension), and {segmentation.parent} by its parent folder.', default='{segmentation.parent}/annotation.xml', type=Path, widget='FileSaver')
     parser.add_argument('-klu', '--keep_labels_unchanged', help='By default, bright spots are removed (labels 1 are set to 0) and exocytose events (labels 2) are set to 1. This option skip this step, so labels are kept unchanged.', action='store_true')
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process. If given, the --segmentation argument must be relative to the folder to process.', default=None, type=Path, widget='DirChooser')
 
 @utils.Gooey
 def main(args=None):

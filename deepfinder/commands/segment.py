@@ -21,7 +21,7 @@ def segment(image_path, weights_path, output_path, visualization=False, patch_si
     if not weights_path.exists():
         raise Exception(f'Model weights {weights_path} not found.')
     
-    output_path = Path(str(output_path).replace('{movie.stem}', image_path.stem).replace('{movie.parent}', image_path.parent))
+    output_path = Path(str(output_path).replace('{movie.stem}', image_path.stem).replace('{movie.parent}', str(image_path.parent)))
     output_path.parent.mkdir(exist_ok=True, parents=True)
 
     # Load data:
@@ -57,7 +57,7 @@ def add_args(parser):
     parser.add_argument('-ps', '--patch_size', help='Patch size (the movie is split in cubes of --patch_size before being processed). Must be a multiple of 4.', default=160, type=int)
     parser.add_argument('-v', '--visualization', help='Generate visualization images.', action='store_true')
     parser.add_argument('-s', '--segmentation', help='Path to the output segmentation (in .h5 format). If used, the string {movie.stem} will be replaced by the movie file name (without extension), and {movie.parent} will be replaced by its parent folder.', default='{movie.parent}/{movie.stem}_segmentation.h5', type=Path, widget='FileSaver')
-    parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
+    parser.add_argument('-b', '--batch', help='Optional path to the root folder containing all folders to process. If given, the --movie argument must be relative to the folder to process.', default=None, type=Path, widget='DirChooser')
 
 @utils.Gooey
 def main(args=None):

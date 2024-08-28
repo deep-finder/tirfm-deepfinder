@@ -67,9 +67,9 @@ def generate_segmentation(image_path, object_list_path, output_path):
     if output_path.suffix != '.h5':
         raise Exception(f'Error: {output_path} must end with .h5 since it will be saved in this format.')
 
-    output_path = Path(str(output_path).replace('{movie.stem}', image_path.stem).replace('{movie.parent}', image_path.parent))
+    output_path = Path(str(output_path).replace('{movie.stem}', image_path.stem).replace('{movie.parent}', str(image_path.parent)))
     output_path.parent.mkdir(exist_ok=True, parents=True)
-    
+
     if not object_list_path.exists():
         raise Exception(f'The annotation file {object_list_path} does not exist.')
     
@@ -112,7 +112,7 @@ def add_args(parser):
     parser.add_argument('-m', '--movie', help='Path to the input movie.', default='movie.h5', type=Path, widget='FileChooser')
     parser.add_argument('-a', '--annotation', help='Path to the corresponding annotation (.xml generated with napari-exodeepfinder or equivalent, can also be a .csv file).', default='expert_annotation.xml', type=Path, widget='FileChooser')
     parser.add_argument('-s', '--segmentation', help='Path to the output segmentation (in .h5 format). If used, the {movie.stem} string will be replaced by the --movie file name (without extension), and {movie.parent} by its parent folder.', default='{movie.parent}/expert_segmentation.h5', type=Path, widget='FileSaver')
-    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process.', default=None, type=Path, widget='DirChooser')
+    parser.add_argument('-b', '--batch', help='Path to the root folder containing all folders to process. If given, the --movie and --annotation arguments must be relative to the folder to process.', default=None, type=Path, widget='DirChooser')
 
 
 @utils.Gooey
