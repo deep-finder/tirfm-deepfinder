@@ -19,7 +19,7 @@ def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns
 
         # Initialize training task:
         trainer = Train(Ncl=Nclass, dim_in=dim_in)
-        trainer.path_out         = str(Path(output_path) / f'weights_patch_size_{patch_size}') # output path
+        trainer.path_out         = f'{output_path}_weights_patch_size_{patch_size}_' # output path
         trainer.h5_dset_name     = 'dataset' # if training data is stored as h5, you can specify the h5 dataset
         trainer.batch_size       = batch_size
         trainer.epochs           = n_epochs
@@ -30,10 +30,10 @@ def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns
         trainer.Lrnd             = random_shift # random shifts when sampling patches (data augmentation)
         trainer.class_weights = None # keras syntax: class_weights={0:1., 1:10.} every instance of class 1 is treated as 10 instances of class 0
 
-        Path(trainer.path_out).mkdir(exist_ok=True, parents=True)
+        Path(trainer.path_out).parent.mkdir(exist_ok=True, parents=True)
 
         if last_weights_path is not None:
-            trainer.net.load_weights(str(Path(last_weights_path) / 'net_weights_FINAL.h5'))
+            trainer.net.load_weights(f'{last_weights_path}net_weights_FINAL.h5')
 
         # Finally, launch the training procedure:
         trainer.launch(path_data, path_target, objl_train, objl_valid)
