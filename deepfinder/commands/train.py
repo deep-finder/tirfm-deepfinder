@@ -58,15 +58,15 @@ def main(args=None):
 
     args = utils.parse_args(args, create_parser, add_args)
     # Convert arguments --patch_sizes, --n_epochs, --n_steps, _random_shifts and --batch_sizes to lists with json.loads()
-    params = [json.loads(str(getattr(args, arg_name))) for arg_name in ['patch_sizes', 'n_epochs', 'n_steps', 'random_shifts', 'batch_sizes']]
+    params = [json.loads(str(getattr(args, arg_name))) for arg_name in ['patch_sizes', 'random_shifts', 'batch_sizes', 'n_epochs', 'n_steps']]
     # Convert ints to lists
     params = [p if isinstance(p, list) else [p] for p in params]
     # Set the number of trainings to the longest list length
     n_trainings = max([len(p) for p in params])
     # Duplicate the last value of each list to exetend it so that it has one value for each training
     params = [p + [p[-1]]*(n_trainings-len(p)) for p in params]
-
-    train(args.dataset, args.output, args.patch_sizes, args.random_shifts, args.batch_sizes, args.n_epochs, args.n_steps)
+    patch_sizes, random_shifts, batch_sizes, n_epochs, n_steps = params
+    train(args.dataset, args.output, patch_sizes, random_shifts, batch_sizes, n_epochs, n_steps)
 
 if __name__ == '__main__':
     main()
