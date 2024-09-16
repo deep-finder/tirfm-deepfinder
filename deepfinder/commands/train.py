@@ -13,6 +13,7 @@ def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns
     last_weights_path = None
     for patch_size, random_shift, batch_size, n_epochs, n_steps_per_epoch in zip(patch_sizes, random_shifts, batch_sizes, ns_epochs, ns_steps_per_epoch):
         
+        print(f'Launch training with: patch_size: {patch_size}, random_shift: {random_shift}, batch_size: {batch_size}, n_epochs: {n_epochs}, n_steps_per_epoch: {n_steps_per_epoch}')
         # Input parameters:
         Nclass = 3
         dim_in = patch_size  # patch size
