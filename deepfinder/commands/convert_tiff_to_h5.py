@@ -1,3 +1,4 @@
+import sys
 from deepfinder.commands import utils
 utils.run_with_python_on_windows(__file__)
 import re
@@ -35,11 +36,17 @@ def convert_tiff_to_h5(tiff_path:Path, output_path:Path, make_subfolder:bool):
     # Instanciate volume
     vol = np.zeros((nframes, first_frame.shape[0], first_frame.shape[1]), dtype=first_frame.dtype)
     
+    root_name = None
+
     for frame in frames:
         img = skimage.io.imread(str(frame))
 
         slice_idx = re.findall('[0-9]+', frame.name)  # get numbers from fname
-        slice_idx = int(slice_idx[-1])  # last number in fname is slice idx    
+        slice_idx = int(slice_idx[-1])  # last number in fname is slice idx
+        if root_name is None:
+            root_name = re.sub(r'\d+(?!.*\d)', '', frame.name)
+        if root_name != re.sub(r'\d+(?!.*\d)', '', frame.name):
+            raise Exception(f'Warning, two or more tiff frames have different name formatting ("{root_name}" and "{frame.name}").\nPlease make sure all frames are formatted in the same way, with the last number in the file name being the frame number.')
         vol[slice_idx-1,:,:] = img
 
     print(f'Saving image file "{output_path.resolve()}"...')
@@ -60,6 +67,10 @@ def add_args(parser):
 def main(args=None):
     
     args = utils.parse_args(args, create_parser, add_args)
+    
+    if args.batch is not None and args.tiff is not None:
+        sys.exit('Error: the tiff argument should not be set when the batch argument is used. Please remove the tiff argument to process all folders in the batch path ; or the batch argument to only process the tiff path.')
+    
     tiffs = sorted([d for d in args.batch.iterdir() if d.is_dir()]) if args.batch is not None else [args.tiff]
 
     for tiff in tiffs:
