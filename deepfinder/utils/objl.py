@@ -169,7 +169,7 @@ def write_xml(objlIN, filename):
 # TODO: handle psi phi theta & tomoIDX
 def read_txt(filename):
     objlOUT = []
-    with open(str(filename), 'rU') as f:
+    with open(str(filename), 'r') as f:
         for line in f:
             lbl, z, y, x, *_ = line.rstrip('\n').split()
             add_obj(objlOUT, label=lbl, coord=(float(x), float(y), float(z)))

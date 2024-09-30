@@ -47,15 +47,16 @@ def getv(object, name):
 def read_csv(object_list_path):
     required_headers = ['tomo_idx', 'class_label', 'x', 'y', 'z']
     accepted_headers = ['tomo_idx', 'class_label', 'x', 'y', 'z', 'obj_id', 'psi', 'phi', 'the', 'cluster_size']
-    with open(object_list_path, 'r') as csvfile:
+    with open(object_list_path, 'r', encoding='utf-8-sig') as csvfile:
         lines = list(csv.reader(csvfile))
         header = lines[0]
+        import pdb; pdb.set_trace()
         for h in required_headers:
             if h not in header:
-                sys.exit('Error: CSV file is missing header {h}')
+                sys.exit(f'Error: CSV file is missing header {h}')
         for h in header:
             if h not in accepted_headers:
-                print('Warning! CSV file has unknown header {h}')
+                print(f'Warning! CSV file has unknown header {h}')
         objl = []
         for line in lines[1:]:
             vs = {header[i]:line[i] for i in range(len(header))}
