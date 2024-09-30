@@ -50,7 +50,6 @@ def read_csv(object_list_path):
     with open(object_list_path, 'r', encoding='utf-8-sig') as csvfile:
         lines = list(csv.reader(csvfile))
         header = lines[0]
-        import pdb; pdb.set_trace()
         for h in required_headers:
             if h not in header:
                 sys.exit(f'Error: CSV file is missing header {h}')
