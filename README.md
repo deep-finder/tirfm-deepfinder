@@ -417,7 +417,7 @@ Here are all the steps you should execute to train a new model:
 1. Detect all spots: `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytosis_data/`
 1. Generate detector segmentations: `edf_generate_segmentation --batch path/to/exocytosis_data/`
 1. Merge expert and detector segmentation: `edf_merge_detector_expert --batch path/to/exocytosis_data/`
-1. Structure the files: `edf_structure_training_dataset --dataset path/to/exocytosis_data/ --training path/to/dataset/`
+1. Structure the files: `edf_structure_training_dataset --input path/to/exocytosis_data/ --output path/to/dataset/`
 1. Train the model: `edf_train --dataset path/to/dataset/ --output path/to/model/`
 
 ## Virtual environments & package managers
