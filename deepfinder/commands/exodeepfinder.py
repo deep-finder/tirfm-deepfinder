@@ -6,6 +6,7 @@ import deepfinder.commands.segment
 import deepfinder.commands.generate_annotation
 import deepfinder.commands.generate_segmentation
 import deepfinder.commands.detect_spots
+import deepfinder.commands.detect_spots_with_atlas
 import deepfinder.commands.merge_detector_expert
 import deepfinder.commands.structure_training_dataset
 import deepfinder.commands.train
@@ -43,6 +44,7 @@ def main():
     #                     generate_annotation: {get_description(deepfinder.commands.generate_annotation.create_parser)}\n
     #                     generate_segmentation: {get_description(deepfinder.commands.generate_segmentation.create_parser)}\n
     #                     detect_spots: {get_description(deepfinder.commands.detect_spots.create_parser)}\n
+    #                     detect_spots_with_atlas: {get_description(deepfinder.commands.detect_spots_with_atlas.create_parser)}\n
     #                     merge_detector_expert: {get_description(deepfinder.commands.merge_detector_expert.create_parser)}\n
     #                     structure_training_dataset: {get_description(deepfinder.commands.structure_training_dataset.create_parser)}\n
     #                     train: {get_description(deepfinder.commands.train.create_parser)}\n''', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -75,6 +77,10 @@ def main():
     subparser = deepfinder.commands.detect_spots.create_parser(subparsers)
     deepfinder.commands.detect_spots.add_args(subparser)
     subparser.set_defaults(func=deepfinder.commands.detect_spots.main)
+
+    subparser = deepfinder.commands.detect_spots_with_atlas.create_parser(subparsers)
+    deepfinder.commands.detect_spots_with_atlas.add_args(subparser)
+    subparser.set_defaults(func=deepfinder.commands.detect_spots_with_atlas.main)
 
     subparser = deepfinder.commands.merge_detector_expert.create_parser(subparsers)
     deepfinder.commands.merge_detector_expert.add_args(subparser)

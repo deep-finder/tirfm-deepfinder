@@ -1,6 +1,7 @@
 tirfm_deepfinder.egg-info/
 exodeepfinder.egg-info/
 env/
+env_nogui/
 dist/
 build/
 .vscode/
