@@ -44,7 +44,8 @@ convert_tiff_to_h5              # convert tiff folders to a single h5 file
 segment                         # segment a movie
 generate_annotation             # generate an annotation file from a segmentation by clustering it
 generate_segmentation           # generate a segmentation from an annotation file
-detect_spots                    # detect bright spots in movies
+detect_spots_with_atlas         # detect bright spots in movies with the Atlas detector
+detect_spots                    # detect bright spots in movies (with any detector)
 merge_detector_expert           # merge the expert annotations with the detector segmentations for training
 structure_training_dataset      # structure dataset files for training
 train                           # train a new model
@@ -226,13 +227,15 @@ exocytosis_data/
 
 #### 2. Detect bright spots
 
-ExoDeepFinder can generate false positives by confusing bright spots with genuine exocytosis events. The strategy to reduce this type of false positive is to explicitly present these bright spots as counter-examples during the training. Hence,  the training requires bright spots to be annotated. You can use any suitable methods that will accurately detect counter-examples bright spots in your data, or use our spot detector [Atlas](https://gitlab.inria.fr/serpico/atlas). The Atlas installation instructions are detailed in the repository, but the most simple way of installing it is by using conda: `conda install bioimageit::atlas`.
+ExoDeepFinder can generate false positives by confusing bright spots with genuine exocytosis events. The strategy to reduce this type of false positive is to explicitly present these bright spots as counter-examples during the training. Hence,  the training requires bright spots to be annotated. You can use any suitable methods that will accurately detect counter-examples bright spots in your data, or use our spot detector [Atlas](https://gitlab.inria.fr/serpico/atlas). The Atlas installation instructions are detailed in the repository, but the most simple way of installing it is by using conda: `conda install bioimageit::atlas` (install it in your `exodeepfinder` conda environment if you have one, or create a dedicated environment otherwise).
 
-Once atlas (or the detector of your choice) is installed, you can detect spots in each frame using the `detect_spots` action in the GUI, or the `edf_detect_spots` command:
+Once atlas (or the detector of your choice) is installed, you can detect spots in each frame using the `detect_spots_with_atlas` action in the GUI, or the `edf_detect_spots_with_atlas` command:
 
-`edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytosis_data/`
+`edf_detect_spots_with_atlas --batch path/to/exocytosis_data/`
 
-where `path/to/atlas/` is the root path of atlas (containing the `build/` directory with the binaries inside if you followed the manual installation instructions).
+Atlas must by accessible when you run this command:
+- if you installed it with conda, the atlas environment must be activated (you might have to restart the GUI once your atlas environement is activated),
+- if you installed conda manually, `atlas` and `blobsref` binaries must be in your path, or you must provide the `--atlas_path` argument to give the root path of atlas (the `build/` directory with the binaries inside if you followed the manual installation instructions).
 
 This will generate `detector_segmentation.h5` files (the semgentations of spots) in the movie folders:
 
@@ -415,7 +418,7 @@ Here are all the steps you should execute to train a new model:
 1. Convert tiff frames to h5 file: `edf_convert_tiff_to_h5 --batch path/to/exocytosis_data/ --make_subfolder`
 1. Use [`napari-exodeepfinder`](https://github.com/deep-finder/napari-exodeepfinder) to annotation exocytosis events in the movies
 1. Detect all spots: `edf_detect_spots --detector_path path/to/atlas/ --batch path/to/exocytosis_data/`
-1. Generate detector segmentations: `edf_generate_segmentation --batch path/to/exocytosis_data/`
+1. Generate expert segmentations: `edf_generate_segmentation --batch path/to/exocytosis_data/`
 1. Merge expert and detector segmentation: `edf_merge_detector_expert --batch path/to/exocytosis_data/`
 1. Structure the files: `edf_structure_training_dataset --input path/to/exocytosis_data/ --output path/to/dataset/`
 1. Train the model: `edf_train --dataset path/to/dataset/ --output path/to/model/`

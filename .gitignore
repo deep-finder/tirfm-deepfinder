@@ -4,6 +4,7 @@ env/
 env_nogui/
 dist/
 build/
+.atlas/
 .vscode/
 __pycache__/
 blobs.txt

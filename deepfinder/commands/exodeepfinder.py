@@ -74,13 +74,13 @@ def main():
     deepfinder.commands.generate_segmentation.add_args(subparser)
     subparser.set_defaults(func=deepfinder.commands.generate_segmentation.main)
 
-    subparser = deepfinder.commands.detect_spots.create_parser(subparsers)
-    deepfinder.commands.detect_spots.add_args(subparser)
-    subparser.set_defaults(func=deepfinder.commands.detect_spots.main)
-
     subparser = deepfinder.commands.detect_spots_with_atlas.create_parser(subparsers)
     deepfinder.commands.detect_spots_with_atlas.add_args(subparser)
     subparser.set_defaults(func=deepfinder.commands.detect_spots_with_atlas.main)
+
+    subparser = deepfinder.commands.detect_spots.create_parser(subparsers)
+    deepfinder.commands.detect_spots.add_args(subparser)
+    subparser.set_defaults(func=deepfinder.commands.detect_spots.main)
 
     subparser = deepfinder.commands.merge_detector_expert.create_parser(subparsers)
     deepfinder.commands.merge_detector_expert.add_args(subparser)

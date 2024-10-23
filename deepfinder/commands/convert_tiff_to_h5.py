@@ -37,17 +37,26 @@ def convert_tiff_to_h5(tiff_path:Path, output_path:Path, make_subfolder:bool):
     vol = np.zeros((nframes, first_frame.shape[0], first_frame.shape[1]), dtype=first_frame.dtype)
     
     root_name = None
-
+    sorted_frames = []
     for frame in frames:
         img = skimage.io.imread(str(frame))
 
         slice_idx = re.findall('[0-9]+', frame.name)  # get numbers from fname
         slice_idx = int(slice_idx[-1])  # last number in fname is slice idx
+        
         if root_name is None:
             root_name = re.sub(r'\d+(?!.*\d)', '', frame.name)
         if root_name != re.sub(r'\d+(?!.*\d)', '', frame.name):
-            raise Exception(f'Warning, two or more tiff frames have different name formatting ("{root_name}" and "{frame.name}").\nPlease make sure all frames are formatted in the same way, with the last number in the file name being the frame number.')
+            raise Exception(f'Warning, two or more tiff frames have different name formatting (the reference name without index is "{root_name}", but the frame "{frame.name}" has a different base name).\nPlease make sure all frames are formatted in the same way, with the last number in the file name being the frame number.')
+        sorted_frames.append((slice_idx, img))
+    
+    sorted_frames = sorted(sorted_frames, key=lambda v: v[0])
+    last_index = 0
+    for slice_idx, img in sorted_frames:
+        if slice_idx != last_index + 1:
+            raise Exception(f'Warning, the frame {last_index + 1} is missing! Frames must be indexed from 1 to FRAME_NUMBER, frames indices must be consecutive.')
         vol[slice_idx-1,:,:] = img
+        last_index = slice_idx
 
     print(f'Saving image file "{output_path.resolve()}"...')
     write_h5array(vol, output_path)
