@@ -1,3 +1,4 @@
+from importlib.resources import files
 from deepfinder.commands import utils
 utils.run_with_python_on_windows(__file__)
 from pathlib import Path
@@ -18,6 +19,8 @@ def segment(image_path, weights_path, output_path, visualization=False, patch_si
             weights_path = utils.get_bundle_path() / 'net_weights_FINAL.h5'
         if not weights_path.exists():
             weights_path = Path('examples/analyze/in/net_weights_FINAL.h5')
+        if not weights_path.exists():
+            weights_path = files('examples.analyze.in').joinpath('net_weights_FINAL.h5')
     if not weights_path.exists():
         raise Exception(f'Model weights {weights_path} not found.')
     

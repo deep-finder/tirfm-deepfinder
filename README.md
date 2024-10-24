@@ -148,7 +148,7 @@ The `--patch-size` argument corresponds to the size of the input patch for the n
 
 To detect exocytosis events, you can either use the pretrained segmentation model (available in `examples/analyze/in/net_weights_FINAL.h5`), or you can annotate your exocytosis movies and train your own model (see the training section bellow).
 
-You can omit the model weights path (`--model_weights`) if you use the release (downloaded from [here](https://github.com/deep-finder/tirfm-deepfinder/releases/)) or if you cloned the repository since the default example weights will be found automatically. Otherwise (for example if you installed with `pip install exodeepfinder`), the default weights can also be downloaded manually [here](https://github.com/deep-finder/tirfm-deepfinder/raw/master/examples/analyze/in/net_weights_FINAL.h5).
+In most case you can omit the model weights path (`--model_weights`) since the default example weights will be found automatically. Otherwise, the default weights can be downloaded manually [here](https://github.com/deep-finder/tirfm-deepfinder/raw/master/examples/analyze/in/net_weights_FINAL.h5).
 
 This will generate a segmentation named `path/to/movie_semgmentation.h5` with the pretrained weigths in `examples/analyze/in/net_weights_FINAL.h5` and patches of size 160. It will also generate visualization images.
 
