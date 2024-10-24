@@ -232,7 +232,7 @@ def merge_detector_expert_segmentation(detector_segmentation_path, expert_object
     
 
     # Fuse object lists and seg target
-    N = 9800 # % motl_normal is way too big (~70k) therefore subsample
+    N = min(9800, motl_normal.shape[1]) # % motl_normal is way too big (~70k) therefore subsample
     print(f'Sampling {N} detections among {motl_normal.shape[1]}...')
 
     idx_rnd = random.sample(range(motl_normal.shape[1]), N)
