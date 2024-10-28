@@ -35,6 +35,33 @@ You can also install wxPython manually (`sudo apt install libgtk-3-dev`, etc.) o
 
 Note that on Windows, the `python` command is often replaced by `py` and `pip` by `py -m pip`; so you migth need adapt the commands in this documentation depending on your system settings.
 
+### Optional: Atlas and napari-exodeepfinder
+
+You can install [the Atlas detector](https://gitlab.inria.fr/serpico/atlas) to detect bright spots required to create a training dataset. 
+
+If you installed ExoDeepFinder in a conda environment, the simplest way to install atlas is by using conda: activate your environment (for example `conda activate exodeepfinder`) and install atlas by running `conda install bioimageit::atlas`.
+You can also download atlas from [the release page](https://gitlab.inria.fr/serpico/atlas/-/releases). Note that on mac, you will need to use `wget` or `curl` to download it, since the app is not signed to pass the Apple security checks:
+ - Go to `https://gitlab.inria.fr/serpico/atlas/-/releases`
+ - Choose the archive corresponding to your platform in "Assets > Other", right-click on it and choose "copy link",
+ - Open your terminal and use `wget` or `curl` to download the archive: `wget "URL_YOU_JUST_COPIED" -O atlas.zip` or `curl -L "URL_YOU_JUST_COPIED" -o atlas.zip` (replace "URL_YOU_JUST_COPIED" with the link you just copied ; it should look like https://gitlab.inria.fr/serpico/atlas/-/package_files/123861/download).
+
+You can also follow the manual installation instructions in the repository. Note that `atlas` must be accessible or runnable when the GUI is launched.
+
+In addition, you can install [the `napari-exodeepfinder` Plugin](https://github.com/deep-finder/napari-exodeepfinder), useful to annotate exocytosis events and create a training dataset. 
+You can install ExoDeepFinder in a conda environment or [install it directly in Napari](https://napari.org/dev/plugins/start_using_plugins/finding_and_installing_plugins.html).
+
+To install it in a dedicated conda environment:
+
+1. Create a conda environment with python 3.10: `conda create -n napari-exodeepfinder python=3.10`
+1. Activate the environment: `conda activate napari-exodeepfinder`
+1. Install napari: `pip install napari-exodeepfinder`
+
+To [install it in Napari](https://napari.org/dev/plugins/start_using_plugins/finding_and_installing_plugins.html):
+
+1. Open Napari
+1. From the “Plugins” menu, select “Install/Uninstall Plugins…”
+1. Search for napari-exodeepfinder and click Install ; or just enter "napari-exodeepfinder" in the install field at the bottom or the dialog.
+
 ## Usage
 
 Here are all ExoDeepFinder commands (described later):
