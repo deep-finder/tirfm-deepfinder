@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-
+import platform
 
 a = Analysis(
     ['deepfinder/commands/exodeepfinder.py'],
@@ -33,6 +33,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['icons/ExoDeepFinder.icns' if platform.system() == 'Darwin' else 'icons/ExoDeepFinder.ico'],
 )
 coll = COLLECT(
     exe,
@@ -46,6 +47,6 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='exodeepfinder.app',
-    icon=None,
+    icon='icons/ExoDeepFinder.icns',
     bundle_identifier=None,
 )
