@@ -42,8 +42,10 @@ You can install [the Atlas detector](https://gitlab.inria.fr/serpico/atlas) to d
 If you installed ExoDeepFinder in a conda environment, the simplest way to install atlas is by using conda: activate your environment (for example `conda activate exodeepfinder`) and install atlas by running `conda install bioimageit::atlas`.
 You can also download atlas from [the release page](https://gitlab.inria.fr/serpico/atlas/-/releases). Note that on mac, you will need to use `wget` or `curl` to download it, since the app is not signed to pass the Apple security checks:
  - Go to `https://gitlab.inria.fr/serpico/atlas/-/releases`
- - Choose the archive corresponding to your platform in "Assets > Other", right-click on it and choose "copy link",
- - Open your terminal and use `wget` or `curl` to download the archive: `wget "URL_YOU_JUST_COPIED" -O atlas.zip` or `curl -L "URL_YOU_JUST_COPIED" -o atlas.zip` (replace "URL_YOU_JUST_COPIED" with the link you just copied ; it should look like https://gitlab.inria.fr/serpico/atlas/-/package_files/123861/download).
+ - Choose the archive corresponding to your platform in "Assets > Other", right-click on it and choose "copy link"
+ - Open your terminal and use `wget` or `curl` to download the archive: `wget "URL_YOU_JUST_COPIED" -O atlas.zip` or `curl -L "URL_YOU_JUST_COPIED" -o atlas.zip` (replace "URL_YOU_JUST_COPIED" with the link you just copied ; it should look like https://gitlab.inria.fr/serpico/atlas/-/package_files/123861/download)
+ - Unzip the archive: `unzip atlas.zip`
+ - You can now use Atlas by specifying its path: `/path/to/atlas/bin/atlas --help` (this should work if you give the correct path ; you can give this path to ExoDeepFinder).
 
 You can also follow the manual installation instructions in the repository. Note that `atlas` must be accessible or runnable when the GUI is launched.
 
