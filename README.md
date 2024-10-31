@@ -486,4 +486,4 @@ The [Numpy documentation](https://numpy.org/install/#pip--conda) explains the ma
 
 To install ExoDeepFinder for development, clone the repository (`git clone git@github.com:deep-finder/tirfm-deepfinder.git`), create and activate a virtual environment (see section above), and install it with `pip install -e ./tirfm-deepfinder/[GUI]`.
 
-To generate the release binaries, install PyInstaller with `pip install pyinstaller` in your virtual environment; and package ExoDeepFinder with `pyinstaller exodeepfinder.spec`. You must run this command on the destination platform (run on Windows for a Windows release, on Mac for a Mac release, and Linux for a Linux release).
+To generate the release binaries, install PyInstaller with `pip install pyinstaller==6.11.0` in your virtual environment; and package ExoDeepFinder with `pyinstaller exodeepfinder.spec`. You must run this command on the destination platform (run on Windows for a Windows release, on Mac for a Mac release, and Linux for a Linux release).
