@@ -19,6 +19,8 @@ from . import losses
 from .utils import core
 from .utils import common as cm
 
+import psutil
+import tensorflow as tf
 
 
 class TargetBuilder(core.DeepFinder):
@@ -279,6 +281,14 @@ class Train(core.DeepFinder):
                                                      class_weight=self.class_weight,
                                                      sample_weight=sample_weight)
 
+                gpus = tf.config.list_physical_devices('GPU')             
+                for gpu in gpus:
+                    gpuNameRoot = gpu.name.split(':')[0] + ':'
+                    memory_info = tf.config.experimental.get_memory_info(gpu.name.replace(gpuNameRoot, ''))
+                    print(f'Memory info of GPU {gpu.name}: current: {memory_info["current"]/1e9:.2f}, peak: {memory_info["peak"]/1e9:.2f}')
+                virtual_memory = psutil.virtual_memory()
+                print(f'Memory info of CPU: total:{virtual_memory[0]/1e9:.2f}Gb, available: {virtual_memory[1]/1e9:.2f}Gb, percent: {virtual_memory[2]}%')
+                
                 self.display('epoch %d/%d - it %d/%d - loss: %0.3f - acc: %0.3f' % (e + 1, self.epochs, it + 1, self.steps_per_epoch, loss_train[0], loss_train[1]))
                 list_loss_train.append(loss_train[0])
                 list_acc_train.append(loss_train[1])

@@ -2,6 +2,8 @@ import json
 from deepfinder.commands import utils
 utils.run_with_python_on_windows(__file__)
 from pathlib import Path
+import psutil
+import tensorflow as tf
 
 def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns_epochs, ns_steps_per_epoch):
     from deepfinder.training import Train
@@ -12,6 +14,14 @@ def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns
 
     last_weights_path = None
     for patch_size, random_shift, batch_size, n_epochs, n_steps_per_epoch in zip(patch_sizes, random_shifts, batch_sizes, ns_epochs, ns_steps_per_epoch):
+        
+        gpus = tf.config.list_physical_devices('GPU')             
+        for gpu in gpus:
+            gpuNameRoot = gpu.name.split(':')[0] + ':'
+            memory_info = tf.config.experimental.get_memory_info(gpu.name.replace(gpuNameRoot, ''))
+            print(f'Memory info of GPU {gpu.name}: current: {memory_info["current"]/1e9:.2f}, peak: {memory_info["peak"]/1e9:.2f}')
+        virtual_memory = psutil.virtual_memory()
+        print(f'Memory info of CPU: total:{virtual_memory[0]/1e9:.2f}Gb, available: {virtual_memory[1]/1e9:.2f}Gb, percent: {virtual_memory[2]}%')
         
         print(f'Launch training with: patch_size: {patch_size}, random_shift: {random_shift}, batch_size: {batch_size}, n_epochs: {n_epochs}, n_steps_per_epoch: {n_steps_per_epoch}')
         # Input parameters:
