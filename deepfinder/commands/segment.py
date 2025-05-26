@@ -28,7 +28,7 @@ def segment(image_path, weights_path, output_path, visualization=False, patch_si
     data = cm.read_array(str(image_path))
 
     # Initialize segmentation task:
-    Nclass       = 3  # including background class
+    Nclass       = 2  # including background class
     seg  = Segment(Ncl=Nclass, path_weights=str(weights_path), patch_size=patch_size)
 
     # Segment tomogram:

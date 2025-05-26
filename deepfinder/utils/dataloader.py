@@ -32,10 +32,14 @@ class Dataloader:
     def load_content(self, path):
         for fname in os.listdir(path):
             # if fname does not start with '.' (invisible temporary files) and end with '_objl.xml'
-            if fname[0] is not '.' and fname.endswith('_objl.xml'):
-                fprefix = fname[:-9]  # remove '_objl.xml'
+            # if fname[0] is not '.' and fname.endswith('_objl.xml'):
+            if fname[0] is not '.' and fname.endswith('_objl_exocytosis_events.xml'):
+                # fprefix = fname[:-9]  # remove '_objl.xml'
+                fprefix = fname[:-len('_objl_exocytosis_events.xml')]  # remove '_objl.xml'
+                
                 fname_tomo = fprefix + self.ext
-                fname_target = fprefix + '_target' + self.ext
+                # fname_target = fprefix + '_target' + self.ext
+                fname_target = fprefix + '_target_exocytosis_events' + self.ext
 
                 fname = os.path.join(path, fname)
                 fname_tomo = os.path.join(path, fname_tomo)

@@ -25,7 +25,7 @@ def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns
         
         print(f'Launch training with: patch_size: {patch_size}, random_shift: {random_shift}, batch_size: {batch_size}, n_epochs: {n_epochs}, n_steps_per_epoch: {n_steps_per_epoch}')
         # Input parameters:
-        Nclass = 3
+        Nclass = 2
         dim_in = patch_size  # patch size
 
         # Initialize training task:
