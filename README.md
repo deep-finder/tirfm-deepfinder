@@ -16,6 +16,15 @@ The following software are required for GPU support:
 
 ## Installation guide
 
+### BioImageIT installation
+
+[BioImageIT](https://bioimageit.readthedocs.io/en/latest/index.html) integrates ExoDeepFinder and make it easy to install and use. Useful tools like `Atlas` and `napari-deepfinder` are also integrated in BioImageIT.
+1. Install [BioImageIT](https://bioimageit.readthedocs.io/en/latest/download.html)
+1. Download the [ExoDeepFinder sources](https://github.com/deep-finder/tirfm-deepfinder/archive/refs/heads/master.zip) and extract them
+1. Open the wokflows in the `workflows` folder in BioImageIT by going to the "Workflows" tab and choosing "Open workflow" and selecting each of the three workflow folders (which contain `graph.pygraph` files)
+
+### Standalone installation
+
 [ExoDeepFinder binaries are available](https://github.com/deep-finder/tirfm-deepfinder/releases/tag/v0.2.3) for Windows, Linux and Mac, so there is no need to install anything (except the Tensorflow requirements described above for GPU support) if you just want to use the Graphical User Interface (GUI).
 
 > **_Note:_** ExoDeepFinder depends on Tensorflow which is only GPU-accelerated on Linux. There is currently no official GPU support for MacOS and native Windows, so the CPU will be used on those platform, but you can still use it (it will just be slower, yet the training might be very slow and is not well supported). On Windows, WSL2 can be used to run tensorflow code with GPU; see the [install instructions](https://www.tensorflow.org/install/pip?hl=fr#windows-wsl2) for more information.
@@ -64,7 +73,7 @@ To [install it in Napari](https://napari.org/dev/plugins/start_using_plugins/fin
 1. From the “Plugins” menu, select “Install/Uninstall Plugins…”
 1. Search for napari-exodeepfinder and click Install ; or just enter "napari-exodeepfinder" in the install field at the bottom or the dialog.
 
-## Usage
+## Standalone Usage
 
 Here are all ExoDeepFinder commands (described later):
 
@@ -451,6 +460,41 @@ Here are all the steps you should execute to train a new model:
 1. Merge expert and detector segmentation: `edf_merge_detector_expert --batch path/to/exocytosis_data/`
 1. Structure the files: `edf_structure_training_dataset --input path/to/exocytosis_data/ --output path/to/dataset/`
 1. Train the model: `edf_train --dataset path/to/dataset/ --output path/to/model/`
+
+## Usage in BioImageIT
+
+You should have opened the 3 ExoDeepFinder workflows in BioImageIT by following the BioImageIT installation instructions above.
+
+It is best to read the `Standalone Usage` section to understand each process step in ExoDeepFinder; and then use BioImageIT to easily chain and execute those steps.
+
+### Convert movies to h5 format 
+
+Use the "ExoDeepFinder Convert" workflow to convert a batch of folders of tiff frames to single movie files in the .h5 format:
+1. Click on the "List files" node and choose the input folder to process with the "Folder path" option in the inputs section of the "Properties" tab.
+1. Go to the "Execute" tab, and choose "Run unexecuted nodes" to execute the workflow.
+
+The results will be stored in the workflow data folder, in the folder `dataset/` (it should be something like `path/to/ExoDeepFinder Convert/Data/dataset/`).
+
+### Exocytosis events detection
+
+Use the "ExoDeepFinder Detection" workflow to detect exocytosis events:
+1. Click on the "List files" node and sets its "Folder path" parameter (in the inputs section of the "Properties" tab) to the `dataset/` folder you obtained with the "ExoDeepFinder Convert" workflow.
+1. Click on the "Segment" node, and choose the model weights and the patch size you want to use (See section `Standalone Usage > Exocytosis events detection > 2. Segment movies` for more details about this step).
+1. Click on the "Generate annotation" node, and an adequat cluster size (See section `Standalone Usage > Exocytosis events detection > 3. Generate annotations`).
+1. Go to the "Execute" tab, and choose "Run unexecuted nodes" to execute the workflow.
+
+The results will be stored in the workflow data folder, in the folder `dataset/` (it should be something like `path/to/ExoDeepFinder Detection/Data/dataset/`).
+
+### Train an ExoDeepFinder model
+
+Use the "Exocytosis Training" workflow to train an ExoDeepFinder model:
+1. Click on the "List files" node and sets its "Folder path" parameter (in the inputs section of the "Properties" tab) to the `dataset/` folder you obtained with the "ExoDeepFinder Convert" workflow.
+1. Annotate the converted movies in Napari by clicking on the preview thumbnails, annotated the movies with `napari-exodeepfinder` and saving them beside the movied with the name `expert_annotation.xml` (make sure you use the .xml format).
+1. Click on the "List files" node and choose the input folder to process with the "Folder path" option in the inputs section of the "Properties" tab.
+1. Set the parameters of the "Detect spots", "Structure training dataset" and "Train" nodes.
+1. Go to the "Execute" tab, and choose "Run unexecuted nodes" to execute the workflow and train the model.
+
+The resulting model will be stored in the workflow data folder, in the folder `model/` (it should be something like `path/to/ExoDeepFinder Training/Data/model/`).
 
 ## Virtual environments & package managers
 

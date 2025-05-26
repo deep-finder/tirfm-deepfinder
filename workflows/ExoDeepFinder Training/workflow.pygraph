@@ -1,0 +1,1216 @@
+{
+    "name": "root",
+    "category": "",
+    "vars": [],
+    "nodes": [
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "merge_detector_expert",
+            "owningGraphName": "root",
+            "name": "Merge detector expert",
+            "uuid": "0c728d75-d5fa-416b-a553-d3b4af313005",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Merge detector expert_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "32eb1abf-99a7-4d68-8ec1-ad01c8fb8948",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Concat DataFrames",
+                            "outPinId": 1,
+                            "rhsNodeName": "Merge Detector Expert",
+                            "inPinId": 1,
+                            "lhsNodeUid": "8e9e6255-84c2-4c8c-8da4-c96f9edf1d9a",
+                            "rhsNodeUid": "0c728d75-d5fa-416b-a553-d3b4af313005"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "c0c22769-9cf7-46ef-9d04-15509ddc1116",
+                                "destinationUUID": "32eb1abf-99a7-4d68-8ec1-ad01c8fb8948",
+                                "sourceName": "Concat DataFrames_Data frame",
+                                "destinationName": "Merge detector expert_in",
+                                "uuid": "b3f05a1a-2e3e-4cae-b1d5-fea55bc633fc",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Merge detector expert_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "74290246-b779-44c1-967a-a7d82bfdbb3a",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Merge Detector Expert",
+                            "outPinId": 1,
+                            "rhsNodeName": "Structure Training Dataset",
+                            "inPinId": 1,
+                            "lhsNodeUid": "0c728d75-d5fa-416b-a553-d3b4af313005",
+                            "rhsNodeUid": "a390494c-2afe-4e7e-8ca5-c876ba30f424"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "74290246-b779-44c1-967a-a7d82bfdbb3a",
+                                "destinationUUID": "05730ed3-64d1-4731-a2d1-b8f659b36003",
+                                "sourceName": "Merge detector expert_out",
+                                "destinationName": "Structure training dataset_in",
+                                "uuid": "15119616-59f4-4f75-a1da-b618145171d6",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Merge detector expert"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Merge detector expert</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": 111.41170213186271,
+            "y": -56.52133292436688,
+            "executed": true,
+            "parameters": {
+                "movie_folder": {
+                    "type": "columnName",
+                    "columnName": "Symlink: output",
+                    "value": null,
+                    "dataType": "path",
+                    "auto": true
+                },
+                "detector_segmentation": {
+                    "type": "value",
+                    "columnName": "Detect spots: output",
+                    "value": "detector_segmentation.h5",
+                    "dataType": "path",
+                    "auto": false
+                },
+                "expert_segmentation": {
+                    "type": "value",
+                    "columnName": "Generate segmentation: output_segmentation",
+                    "value": "expert_segmentation.h5",
+                    "dataType": "path",
+                    "auto": false
+                },
+                "expert_annotation": {
+                    "type": "value",
+                    "columnName": "Generate segmentation: output_annotation",
+                    "value": "expert_annotation.xml",
+                    "dataType": "path",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "detect_spots",
+            "owningGraphName": "root",
+            "name": "Detect spots",
+            "uuid": "5a5d32f9-b8b1-4f56-becd-1c27d3965388",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Detect spots_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "65b85b7b-25d9-4ead-898a-b6dcd4f9e0ff",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Symlink",
+                            "outPinId": 1,
+                            "rhsNodeName": "Detect Spots",
+                            "inPinId": 1,
+                            "lhsNodeUid": "af9ed561-33da-445b-b5e4-78b11ac7ce85",
+                            "rhsNodeUid": "5a5d32f9-b8b1-4f56-becd-1c27d3965388"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "f0174028-1441-427a-a77a-9d5f0a3323e5",
+                                "destinationUUID": "65b85b7b-25d9-4ead-898a-b6dcd4f9e0ff",
+                                "sourceName": "Symlink_out",
+                                "destinationName": "Detect spots_in",
+                                "uuid": "b605cda6-8aad-4520-9e6c-6debdec2f95e",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Detect spots_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "f0bc8d20-075a-425f-8352-be4f1ee6377f",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Detect Spots",
+                            "outPinId": 1,
+                            "rhsNodeName": "Concat DataFrames",
+                            "inPinId": 1,
+                            "lhsNodeUid": "5a5d32f9-b8b1-4f56-becd-1c27d3965388",
+                            "rhsNodeUid": "8e9e6255-84c2-4c8c-8da4-c96f9edf1d9a"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "f0bc8d20-075a-425f-8352-be4f1ee6377f",
+                                "destinationUUID": "fb7c12a0-e039-4faa-b0ce-e1bb5d9c6386",
+                                "sourceName": "Detect spots_out",
+                                "destinationName": "Concat DataFrames_in",
+                                "uuid": "0f740399-243b-4dfa-9c07-3312b56fbcc7",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Detect spots"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Detect spots</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -101.42938821737123,
+            "y": -85.58686216762031,
+            "executed": true,
+            "parameters": {
+                "movie_folder": {
+                    "type": "columnName",
+                    "columnName": "Symlink: output",
+                    "value": null,
+                    "dataType": "path",
+                    "auto": true
+                },
+                "tiff": {
+                    "type": "value",
+                    "columnName": "Symlink: output",
+                    "value": "tiff/",
+                    "dataType": "path",
+                    "auto": false
+                },
+                "atlas_args": {
+                    "type": "value",
+                    "columnName": "Symlink: output",
+                    "value": "-rad 21 -pval 0.001 -arealim 3",
+                    "dataType": "string",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "generate_segmentation",
+            "owningGraphName": "root",
+            "name": "Generate segmentation",
+            "uuid": "d714c744-9d9a-478e-96a3-f36b7517958d",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Generate segmentation_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "b5c28569-32d4-44e2-b4a8-16aa13861c3f",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Symlink",
+                            "outPinId": 1,
+                            "rhsNodeName": "Generate Segmentation",
+                            "inPinId": 1,
+                            "lhsNodeUid": "af9ed561-33da-445b-b5e4-78b11ac7ce85",
+                            "rhsNodeUid": "d714c744-9d9a-478e-96a3-f36b7517958d"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "f0174028-1441-427a-a77a-9d5f0a3323e5",
+                                "destinationUUID": "b5c28569-32d4-44e2-b4a8-16aa13861c3f",
+                                "sourceName": "Symlink_out",
+                                "destinationName": "Generate segmentation_in",
+                                "uuid": "7b527fa1-78a8-4677-b38e-eae3cf0f2302",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Generate segmentation_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "c24f0554-248d-44eb-9fa5-2426953575f4",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Generate Segmentation",
+                            "outPinId": 1,
+                            "rhsNodeName": "Concat DataFrames",
+                            "inPinId": 1,
+                            "lhsNodeUid": "d714c744-9d9a-478e-96a3-f36b7517958d",
+                            "rhsNodeUid": "8e9e6255-84c2-4c8c-8da4-c96f9edf1d9a"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "c24f0554-248d-44eb-9fa5-2426953575f4",
+                                "destinationUUID": "fb7c12a0-e039-4faa-b0ce-e1bb5d9c6386",
+                                "sourceName": "Generate segmentation_out",
+                                "destinationName": "Concat DataFrames_in",
+                                "uuid": "183bb83f-5ee2-4a54-a74f-d80b75e19bc4",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Generate segmentation"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Generate segmentation</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -119.95307850102087,
+            "y": -23.485544920446095,
+            "executed": true,
+            "parameters": {
+                "movie_folder": {
+                    "type": "columnName",
+                    "columnName": "Symlink: output",
+                    "value": null,
+                    "dataType": "path",
+                    "auto": true
+                },
+                "movie": {
+                    "type": "value",
+                    "columnName": "Symlink: output",
+                    "value": "movie.h5",
+                    "dataType": "path",
+                    "auto": false
+                },
+                "annotation": {
+                    "type": "value",
+                    "columnName": "Symlink: output",
+                    "value": "expert_annotation.xml",
+                    "dataType": "path",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "ConcatDataFrames",
+            "owningGraphName": "root",
+            "name": "Concat DataFrames",
+            "uuid": "8e9e6255-84c2-4c8c-8da4-c96f9edf1d9a",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Concat DataFrames_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "fb7c12a0-e039-4faa-b0ce-e1bb5d9c6386",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Generate Segmentation",
+                            "outPinId": 1,
+                            "rhsNodeName": "Concat DataFrames",
+                            "inPinId": 1,
+                            "lhsNodeUid": "d714c744-9d9a-478e-96a3-f36b7517958d",
+                            "rhsNodeUid": "8e9e6255-84c2-4c8c-8da4-c96f9edf1d9a"
+                        },
+                        {
+                            "lhsNodeName": "Detect Spots",
+                            "outPinId": 1,
+                            "rhsNodeName": "Concat DataFrames",
+                            "inPinId": 1,
+                            "lhsNodeUid": "5a5d32f9-b8b1-4f56-becd-1c27d3965388",
+                            "rhsNodeUid": "8e9e6255-84c2-4c8c-8da4-c96f9edf1d9a"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        8,
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "c24f0554-248d-44eb-9fa5-2426953575f4",
+                                "destinationUUID": "fb7c12a0-e039-4faa-b0ce-e1bb5d9c6386",
+                                "sourceName": "Generate segmentation_out",
+                                "destinationName": "Concat DataFrames_in",
+                                "uuid": "183bb83f-5ee2-4a54-a74f-d80b75e19bc4",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "Data frame",
+                    "package": "PyFlowBase",
+                    "fullName": "Concat DataFrames_Data frame",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "c0c22769-9cf7-46ef-9d04-15509ddc1116",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Concat DataFrames",
+                            "outPinId": 1,
+                            "rhsNodeName": "Merge Detector Expert",
+                            "inPinId": 1,
+                            "lhsNodeUid": "8e9e6255-84c2-4c8c-8da4-c96f9edf1d9a",
+                            "rhsNodeUid": "0c728d75-d5fa-416b-a553-d3b4af313005"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Data frame",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "c0c22769-9cf7-46ef-9d04-15509ddc1116",
+                                "destinationUUID": "32eb1abf-99a7-4d68-8ec1-ad01c8fb8948",
+                                "sourceName": "Concat DataFrames_Data frame",
+                                "destinationName": "Merge detector expert_in",
+                                "uuid": "b3f05a1a-2e3e-4cae-b1d5-fea55bc633fc",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Concat DataFrames"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Concat DataFrames</p></body></html>",
+                "exposeInputsToCompound": true,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -2.4697455232262016,
+            "y": -55.733340917456694,
+            "executed": true
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "ListFiles",
+            "owningGraphName": "root",
+            "name": "List files",
+            "uuid": "0a74a6ea-79b5-4607-a67f-c350dc4c3d5d",
+            "inputs": [
+                {
+                    "name": "Column name",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Column name",
+                    "dataType": "StringPin",
+                    "direction": 0,
+                    "value": "\"movies\"",
+                    "uuid": "00a3713a-4db9-4d57-882b-1497cff16915",
+                    "linkedTo": [],
+                    "pinIndex": 3,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Column name",
+                        "wires": {}
+                    }
+                },
+                {
+                    "name": "Folder path",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Folder path",
+                    "dataType": "StringPin",
+                    "direction": 0,
+                    "value": "",
+                    "uuid": "e51f01a7-8aea-43db-ad91-09e44d09f813",
+                    "linkedTo": [],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Folder path",
+                        "wires": {}
+                    }
+                },
+                {
+                    "name": "Filter",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Filter",
+                    "dataType": "StringPin",
+                    "direction": 0,
+                    "value": "\"TIRF*\"",
+                    "uuid": "616529c5-ec56-48b2-b57e-7dea02fab034",
+                    "linkedTo": [],
+                    "pinIndex": 2,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Filter",
+                        "wires": {}
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "Data frame",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Data frame",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "81d528e8-2114-4906-92eb-fd3d8f4c5a08",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "List files",
+                            "outPinId": 1,
+                            "rhsNodeName": "Symlink",
+                            "inPinId": 1,
+                            "lhsNodeUid": "0a74a6ea-79b5-4607-a67f-c350dc4c3d5d",
+                            "rhsNodeUid": "af9ed561-33da-445b-b5e4-78b11ac7ce85"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Data frame",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "81d528e8-2114-4906-92eb-fd3d8f4c5a08",
+                                "destinationUUID": "649add8f-e5ea-4db5-8230-94dd82ad5aa4",
+                                "sourceName": "List files_Data frame",
+                                "destinationName": "Symlink_in",
+                                "uuid": "11205dcd-afbf-46a2-9b7b-af1bb0435810",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "List files"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">List files</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -379.3348133918145,
+            "y": -62.28226151427718,
+            "executed": true
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "structure_training_dataset",
+            "owningGraphName": "root",
+            "name": "Structure training dataset",
+            "uuid": "a390494c-2afe-4e7e-8ca5-c876ba30f424",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Structure training dataset_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "05730ed3-64d1-4731-a2d1-b8f659b36003",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Merge Detector Expert",
+                            "outPinId": 1,
+                            "rhsNodeName": "Structure Training Dataset",
+                            "inPinId": 1,
+                            "lhsNodeUid": "0c728d75-d5fa-416b-a553-d3b4af313005",
+                            "rhsNodeUid": "a390494c-2afe-4e7e-8ca5-c876ba30f424"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "74290246-b779-44c1-967a-a7d82bfdbb3a",
+                                "destinationUUID": "05730ed3-64d1-4731-a2d1-b8f659b36003",
+                                "sourceName": "Merge detector expert_out",
+                                "destinationName": "Structure training dataset_in",
+                                "uuid": "15119616-59f4-4f75-a1da-b618145171d6",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Structure training dataset_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "69992a5a-4016-4f94-ab43-a7f499cc4240",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Structure Training Dataset",
+                            "outPinId": 1,
+                            "rhsNodeName": "Train",
+                            "inPinId": 1,
+                            "lhsNodeUid": "a390494c-2afe-4e7e-8ca5-c876ba30f424",
+                            "rhsNodeUid": "79667a2f-794f-40ca-99bc-8e8d7a00ea1f"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "69992a5a-4016-4f94-ab43-a7f499cc4240",
+                                "destinationUUID": "ba4ce72a-6167-4aac-be60-9488b8e23e9d",
+                                "sourceName": "Structure training dataset_out",
+                                "destinationName": "Train_in",
+                                "uuid": "a6a7fcbf-3e4d-482f-8ce9-10740b52976b",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Structure training dataset"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Structure training dataset</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": 227.04067099508973,
+            "y": -56.345399927610636,
+            "executed": true,
+            "parameters": {
+                "movies_folder": {
+                    "type": "value",
+                    "columnName": "Merge detector expert: merged_annotation",
+                    "value": "[workflow_folder]/dataset",
+                    "dataType": "path",
+                    "auto": true
+                },
+                "split": {
+                    "type": "value",
+                    "columnName": "Merge detector expert: merged_annotation",
+                    "value": 70,
+                    "dataType": "float",
+                    "auto": false
+                },
+                "movie": {
+                    "type": "value",
+                    "columnName": "Merge detector expert: merged_annotation",
+                    "value": "movie.h5",
+                    "dataType": "path",
+                    "auto": false
+                },
+                "merged_segmentation": {
+                    "type": "value",
+                    "columnName": "Merge detector expert: merged_annotation",
+                    "value": "merged_segmentation.h5",
+                    "dataType": "path",
+                    "auto": false
+                },
+                "merged_annotation": {
+                    "type": "value",
+                    "columnName": "Merge detector expert: merged_annotation",
+                    "value": "merged_annotation.xml",
+                    "dataType": "path",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "train",
+            "owningGraphName": "root",
+            "name": "Train",
+            "uuid": "79667a2f-794f-40ca-99bc-8e8d7a00ea1f",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Train_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "ba4ce72a-6167-4aac-be60-9488b8e23e9d",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Structure Training Dataset",
+                            "outPinId": 1,
+                            "rhsNodeName": "Train",
+                            "inPinId": 1,
+                            "lhsNodeUid": "a390494c-2afe-4e7e-8ca5-c876ba30f424",
+                            "rhsNodeUid": "79667a2f-794f-40ca-99bc-8e8d7a00ea1f"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "69992a5a-4016-4f94-ab43-a7f499cc4240",
+                                "destinationUUID": "ba4ce72a-6167-4aac-be60-9488b8e23e9d",
+                                "sourceName": "Structure training dataset_out",
+                                "destinationName": "Train_in",
+                                "uuid": "a6a7fcbf-3e4d-482f-8ce9-10740b52976b",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Train_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "0c3cec67-9eea-4b34-9c18-3c67c7340b5a",
+                    "linkedTo": [],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {}
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Train"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Train</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": 357.9107519056481,
+            "y": -56.34864873972456,
+            "executed": true,
+            "parameters": {
+                "dataset": {
+                    "type": "value",
+                    "columnName": "Structure training dataset: output",
+                    "value": "[workflow_folder]/train_valid",
+                    "dataType": "path",
+                    "auto": true
+                },
+                "patch_sizes": {
+                    "type": "value",
+                    "columnName": "Structure training dataset: output",
+                    "value": "[8, 16, 32, 48]",
+                    "dataType": "string",
+                    "auto": false
+                },
+                "batch_sizes": {
+                    "type": "value",
+                    "columnName": "Structure training dataset: output",
+                    "value": "[256, 128, 32, 10]",
+                    "dataType": "string",
+                    "auto": false
+                },
+                "random_shifts": {
+                    "type": "value",
+                    "columnName": "Structure training dataset: output",
+                    "value": "[4, 8, 16, 32]",
+                    "dataType": "string",
+                    "auto": false
+                },
+                "n_epochs": {
+                    "type": "value",
+                    "columnName": "Structure training dataset: output",
+                    "value": "100",
+                    "dataType": "string",
+                    "auto": false
+                },
+                "n_steps": {
+                    "type": "value",
+                    "columnName": "Structure training dataset: output",
+                    "value": "100",
+                    "dataType": "string",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "symlink",
+            "owningGraphName": "root",
+            "name": "Symlink",
+            "uuid": "af9ed561-33da-445b-b5e4-78b11ac7ce85",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Symlink_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "649add8f-e5ea-4db5-8230-94dd82ad5aa4",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "List files",
+                            "outPinId": 1,
+                            "rhsNodeName": "Symlink",
+                            "inPinId": 1,
+                            "lhsNodeUid": "0a74a6ea-79b5-4607-a67f-c350dc4c3d5d",
+                            "rhsNodeUid": "af9ed561-33da-445b-b5e4-78b11ac7ce85"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "81d528e8-2114-4906-92eb-fd3d8f4c5a08",
+                                "destinationUUID": "649add8f-e5ea-4db5-8230-94dd82ad5aa4",
+                                "sourceName": "List files_Data frame",
+                                "destinationName": "Symlink_in",
+                                "uuid": "11205dcd-afbf-46a2-9b7b-af1bb0435810",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Symlink_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "f0174028-1441-427a-a77a-9d5f0a3323e5",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Symlink",
+                            "outPinId": 1,
+                            "rhsNodeName": "Generate Segmentation",
+                            "inPinId": 1,
+                            "lhsNodeUid": "af9ed561-33da-445b-b5e4-78b11ac7ce85",
+                            "rhsNodeUid": "d714c744-9d9a-478e-96a3-f36b7517958d"
+                        },
+                        {
+                            "lhsNodeName": "Symlink",
+                            "outPinId": 1,
+                            "rhsNodeName": "Detect Spots",
+                            "inPinId": 1,
+                            "lhsNodeUid": "af9ed561-33da-445b-b5e4-78b11ac7ce85",
+                            "rhsNodeUid": "5a5d32f9-b8b1-4f56-becd-1c27d3965388"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "f0174028-1441-427a-a77a-9d5f0a3323e5",
+                                "destinationUUID": "65b85b7b-25d9-4ead-898a-b6dcd4f9e0ff",
+                                "sourceName": "Symlink_out",
+                                "destinationName": "Detect spots_in",
+                                "uuid": "b605cda6-8aad-4520-9e6c-6debdec2f95e",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Symlink"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Symlink</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -222.60479469247963,
+            "y": -65.27440250021807,
+            "executed": true,
+            "parameters": {
+                "movie_folder": {
+                    "type": "columnName",
+                    "columnName": "movies",
+                    "value": null,
+                    "dataType": "path",
+                    "auto": false
+                },
+                "movie": {
+                    "type": "value",
+                    "columnName": "movies",
+                    "value": "movie.h5",
+                    "dataType": "path",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        }
+    ],
+    "depth": 1,
+    "isRoot": true,
+    "parentGraphName": "None",
+    "fileVersion": "3.0.0",
+    "activeGraph": "root"
+}

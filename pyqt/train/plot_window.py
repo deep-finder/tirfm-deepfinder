@@ -47,7 +47,7 @@ class TrainMetricsPlotWindow:
 
 
     def update_plots(self, filename):
-        history = core.read_history(filename)
+        history:any = core.read_history(filename) #type: ignore
 
         Ncl = history['val_f1'].shape[2]
         epochs = len(history['val_loss'])

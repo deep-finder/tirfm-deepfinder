@@ -25,11 +25,11 @@ def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns
         trainer.batch_size       = batch_size
         trainer.epochs           = n_epochs
         trainer.steps_per_epoch  = n_steps_per_epoch
-        trainer.Nvalid           = 10 # steps per validation
+        trainer.steps_per_valid  = 10 # steps per validation
         trainer.flag_direct_read     = False
         trainer.flag_batch_bootstrap = True
         trainer.Lrnd             = random_shift # random shifts when sampling patches (data augmentation)
-        trainer.class_weights = None # keras syntax: class_weights={0:1., 1:10.} every instance of class 1 is treated as 10 instances of class 0
+        # trainer.class_weights = None # keras syntax: class_weights={0:1., 1:10.} every instance of class 1 is treated as 10 instances of class 0
 
         Path(trainer.path_out).parent.mkdir(exist_ok=True, parents=True)
 

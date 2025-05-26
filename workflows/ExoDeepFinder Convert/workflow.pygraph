@@ -1,0 +1,112 @@
+{
+    "name": "root",
+    "category": "",
+    "vars": [],
+    "nodes": [
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "convert_tiff_to_h5",
+            "owningGraphName": "root",
+            "name": "Convert tiff to h5",
+            "uuid": "4db4ca03-02c4-4a06-82d2-7ab72410497c",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Convert tiff to h5_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "7c4d11b6-98b2-4f00-a809-0cad7d405267",
+                    "linkedTo": [],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {}
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Convert tiff to h5_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "53fd3d86-aa86-43f8-a932-e64efaea41ff",
+                    "linkedTo": [],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {}
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Convert tiff to h5"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Convert tiff to h5</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -98.39669162209404,
+            "y": -72.7694756939774,
+            "executed": true,
+            "parameters": {
+                "inputs": {
+                    "tiff": {
+                        "type": "value",
+                        "columnName": "Convert tiff to h5_path",
+                        "value": "/Users/amasson/Documents/Exocytose/dataset_tiff_mini_raw3/TIRF 200213 VAMP7 Nocodazole_Cell1avant",
+                        "defaultValue": null,
+                        "dataType": "path",
+                        "advanced": null,
+                        "auto": true
+                    }
+                },
+                "outputs": {
+                    "output": {
+                        "value": "[workflow_folder]/dataset/{tiff.name}/movie.h5",
+                        "defaultValue": "[workflow_folder]/dataset/{tiff.name}/movie.h5",
+                        "dataType": "Path",
+                        "extension": null,
+                        "editable": null,
+                        "help": "Output path to the h5 file."
+                    }
+                }
+            },
+            "outputDataFramePath": "output_data_frame.csv"
+        }
+    ],
+    "depth": 1,
+    "isRoot": true,
+    "parentGraphName": "None",
+    "fileVersion": "3.0.0",
+    "activeGraph": "root"
+}

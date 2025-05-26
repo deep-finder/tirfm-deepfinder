@@ -9,3 +9,6 @@ build/
 __pycache__/
 blobs.txt
 .DS_Store
+workflows/*/Data
+workflows/*/Metadata
+workflows/*/Thumbnails

@@ -199,7 +199,7 @@ def save_history(history, filename):
 def read_history(filename):
     history = {'acc': None, 'loss': None, 'val_acc': None, 'val_loss': None, 'val_f1': None, 'val_precision': None, 'val_recall': None}
 
-    h5file = h5py.File(filename, 'r')
+    h5file: any = h5py.File(filename, 'r') # type: ignore
     # train and val loss & accuracy:
     history['acc']      = h5file['acc'][:]
     history['loss']     = h5file['loss'][:]

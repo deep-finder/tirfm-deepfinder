@@ -121,11 +121,11 @@ class TestTrainerWithDataloaderWithDummyData(unittest.TestCase):
         trainer.batch_size = 1
         trainer.epochs = 1
         trainer.steps_per_epoch = 1
-        trainer.Nvalid = 1  # steps per validation
+        trainer.steps_per_valid = 1  # steps per validation
         trainer.flag_direct_read = False
         trainer.flag_batch_bootstrap = True
         trainer.Lrnd = 13  # random shifts when sampling patches (data augmentation)
-        trainer.class_weights = None  # keras syntax: class_weights={0:1., 1:10.} every instance of class 1 is treated as 10 instances of class 0
+        # trainer.class_weights = None  # keras syntax: class_weights={0:1., 1:10.} every instance of class 1 is treated as 10 instances of class 0
 
         # Finally, launch the training procedure:
         trainer.launch(path_data, path_target, objl_train, objl_valid)

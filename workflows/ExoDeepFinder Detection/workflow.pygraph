@@ -1,0 +1,578 @@
+{
+    "name": "root",
+    "category": "",
+    "vars": [],
+    "nodes": [
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "convert_tiff_to_h5",
+            "owningGraphName": "root",
+            "name": "Convert tiff to h5",
+            "uuid": "e852baf2-3ee0-467b-92ac-9c98f31023ab",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Convert tiff to h5_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "f3ccfc2d-1d65-412b-bf48-e1e4223147d2",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "List files",
+                            "outPinId": 1,
+                            "rhsNodeName": "Convert Tiff To H5",
+                            "inPinId": 1,
+                            "lhsNodeUid": "997d8224-4bfb-45be-995a-51e8bd5dcdcd",
+                            "rhsNodeUid": "e852baf2-3ee0-467b-92ac-9c98f31023ab"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "b1869602-589c-4f00-8c0a-d1403bc0e1fe",
+                                "destinationUUID": "f3ccfc2d-1d65-412b-bf48-e1e4223147d2",
+                                "sourceName": "List files_Data frame",
+                                "destinationName": "Convert tiff to h5_in",
+                                "uuid": "29cbb7f5-d975-4354-a6df-d35033f14c03",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Convert tiff to h5_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "1635d4f5-33c9-4f7c-9e61-4a1674e6efda",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Convert Tiff To H5",
+                            "outPinId": 1,
+                            "rhsNodeName": "Segment",
+                            "inPinId": 1,
+                            "lhsNodeUid": "e852baf2-3ee0-467b-92ac-9c98f31023ab",
+                            "rhsNodeUid": "1b9b44d6-f35a-4846-8a3c-e2328ac02c91"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "1635d4f5-33c9-4f7c-9e61-4a1674e6efda",
+                                "destinationUUID": "8b028d26-90c9-4427-a66d-d65440bc0e19",
+                                "sourceName": "Convert tiff to h5_out",
+                                "destinationName": "Segment_in",
+                                "uuid": "6c52f187-42e5-4d94-b177-3facf2ed7a05",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Convert tiff to h5"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Convert tiff to h5</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -96.30023640661943,
+            "y": -65.82742316784874,
+            "executed": true,
+            "parameters": {
+                "tiff": {
+                    "type": "columnName",
+                    "columnName": "dataset_tiff_mini",
+                    "value": null,
+                    "dataType": "path",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "generate_annotation",
+            "owningGraphName": "root",
+            "name": "Generate annotation",
+            "uuid": "e9dec0c2-380c-4271-ad84-9193e9ceb79b",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Generate annotation_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "32756a17-6694-4aef-9ca0-4ea12cc187b7",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Segment",
+                            "outPinId": 1,
+                            "rhsNodeName": "Generate Annotation",
+                            "inPinId": 1,
+                            "lhsNodeUid": "1b9b44d6-f35a-4846-8a3c-e2328ac02c91",
+                            "rhsNodeUid": "e9dec0c2-380c-4271-ad84-9193e9ceb79b"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "b37e6bef-97b2-44bf-a2da-181aa15433f5",
+                                "destinationUUID": "32756a17-6694-4aef-9ca0-4ea12cc187b7",
+                                "sourceName": "Segment_out",
+                                "destinationName": "Generate annotation_in",
+                                "uuid": "4d40edbe-2dbf-4556-9564-438cc17c010a",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Generate annotation_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "d033b6cd-cc83-498e-8424-0f9e85640aa2",
+                    "linkedTo": [],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {}
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Generate annotation"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Generate annotation</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": 63.971631205673745,
+            "y": -65.27186761229311,
+            "executed": true,
+            "parameters": {
+                "segmentation": {
+                    "type": "columnName",
+                    "columnName": "Segment: segmentation",
+                    "value": null,
+                    "dataType": "path",
+                    "auto": false
+                },
+                "cluster_radius": {
+                    "type": "value",
+                    "columnName": "Segment: segmentation",
+                    "value": 5,
+                    "dataType": "integer",
+                    "auto": false
+                },
+                "keep_labels_unchanged": {
+                    "type": "value",
+                    "columnName": "Segment: segmentation",
+                    "value": false,
+                    "dataType": "boolean",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "segment",
+            "owningGraphName": "root",
+            "name": "Segment",
+            "uuid": "1b9b44d6-f35a-4846-8a3c-e2328ac02c91",
+            "inputs": [
+                {
+                    "name": "in",
+                    "package": "PyFlowBase",
+                    "fullName": "Segment_in",
+                    "dataType": "AnyPin",
+                    "direction": 0,
+                    "value": null,
+                    "uuid": "8b028d26-90c9-4427-a66d-d65440bc0e19",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Convert Tiff To H5",
+                            "outPinId": 1,
+                            "rhsNodeName": "Segment",
+                            "inPinId": 1,
+                            "lhsNodeUid": "e852baf2-3ee0-467b-92ac-9c98f31023ab",
+                            "rhsNodeUid": "1b9b44d6-f35a-4846-8a3c-e2328ac02c91"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        16,
+                        256,
+                        512
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "in",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "1635d4f5-33c9-4f7c-9e61-4a1674e6efda",
+                                "destinationUUID": "8b028d26-90c9-4427-a66d-d65440bc0e19",
+                                "sourceName": "Convert tiff to h5_out",
+                                "destinationName": "Segment_in",
+                                "uuid": "6c52f187-42e5-4d94-b177-3facf2ed7a05",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "out",
+                    "package": "PyFlowBase",
+                    "fullName": "Segment_out",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "b37e6bef-97b2-44bf-a2da-181aa15433f5",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "Segment",
+                            "outPinId": 1,
+                            "rhsNodeName": "Generate Annotation",
+                            "inPinId": 1,
+                            "lhsNodeUid": "1b9b44d6-f35a-4846-8a3c-e2328ac02c91",
+                            "rhsNodeUid": "e9dec0c2-380c-4271-ad84-9193e9ceb79b"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "out",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "b37e6bef-97b2-44bf-a2da-181aa15433f5",
+                                "destinationUUID": "32756a17-6694-4aef-9ca0-4ea12cc187b7",
+                                "sourceName": "Segment_out",
+                                "destinationName": "Generate annotation_in",
+                                "uuid": "4d40edbe-2dbf-4556-9564-438cc17c010a",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "Segment"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Segment</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -8.149284768941197,
+            "y": -65.82742316784874,
+            "executed": true,
+            "parameters": {
+                "movie": {
+                    "type": "columnName",
+                    "columnName": "Convert tiff to h5: output",
+                    "value": null,
+                    "dataType": "path",
+                    "auto": true
+                },
+                "model_weights": {
+                    "type": "value",
+                    "columnName": "Convert tiff to h5: output",
+                    "value": "",
+                    "dataType": "path",
+                    "auto": false
+                },
+                "patch_size": {
+                    "type": "value",
+                    "columnName": "Convert tiff to h5: output",
+                    "value": 160,
+                    "dataType": "integer",
+                    "auto": false
+                },
+                "visualization": {
+                    "type": "value",
+                    "columnName": "Convert tiff to h5: output",
+                    "value": false,
+                    "dataType": "boolean",
+                    "auto": false
+                }
+            },
+            "folderDataFramePath": null,
+            "outputDataFramePath": "output_data_frame.csv"
+        },
+        {
+            "package": "PyFlowBase",
+            "lib": "BiitLib",
+            "type": "ListFiles",
+            "owningGraphName": "root",
+            "name": "List files",
+            "uuid": "997d8224-4bfb-45be-995a-51e8bd5dcdcd",
+            "inputs": [
+                {
+                    "name": "Filter",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Filter",
+                    "dataType": "StringPin",
+                    "direction": 0,
+                    "value": "\"*\"",
+                    "uuid": "f2c7b87b-c3c6-4158-824d-9d145f64bd4d",
+                    "linkedTo": [],
+                    "pinIndex": 2,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Filter",
+                        "wires": {}
+                    }
+                },
+                {
+                    "name": "Column name",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Column name",
+                    "dataType": "StringPin",
+                    "direction": 0,
+                    "value": "\"dataset_tiff_mini\"",
+                    "uuid": "58a5db5d-88c4-488a-a9a6-3048f4b63763",
+                    "linkedTo": [],
+                    "pinIndex": 3,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Column name",
+                        "wires": {}
+                    }
+                },
+                {
+                    "name": "Folder path",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Folder path",
+                    "dataType": "StringPin",
+                    "direction": 0,
+                    "value": "",
+                    "uuid": "87e4bd17-f39b-49ff-9d5b-353712762c37",
+                    "linkedTo": [],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Folder path",
+                        "wires": {}
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "Data frame",
+                    "package": "PyFlowBase",
+                    "fullName": "List files_Data frame",
+                    "dataType": "AnyPin",
+                    "direction": 1,
+                    "value": null,
+                    "uuid": "b1869602-589c-4f00-8c0a-d1403bc0e1fe",
+                    "linkedTo": [
+                        {
+                            "lhsNodeName": "List files",
+                            "outPinId": 1,
+                            "rhsNodeName": "Convert Tiff To H5",
+                            "inPinId": 1,
+                            "lhsNodeUid": "997d8224-4bfb-45be-995a-51e8bd5dcdcd",
+                            "rhsNodeUid": "e852baf2-3ee0-467b-92ac-9c98f31023ab"
+                        }
+                    ],
+                    "pinIndex": 1,
+                    "options": [
+                        256
+                    ],
+                    "structure": 0,
+                    "alwaysList": false,
+                    "alwaysSingle": false,
+                    "alwaysDict": false,
+                    "wrapper": {
+                        "bLabelHidden": false,
+                        "displayName": "Data frame",
+                        "wires": {
+                            "1": {
+                                "sourceUUID": "b1869602-589c-4f00-8c0a-d1403bc0e1fe",
+                                "destinationUUID": "f3ccfc2d-1d65-412b-bf48-e1e4223147d2",
+                                "sourceName": "List files_Data frame",
+                                "destinationName": "Convert tiff to h5_in",
+                                "uuid": "29cbb7f5-d975-4354-a6df-d35033f14c03",
+                                "hOffsetL": "0.0",
+                                "hOffsetR": "0.0",
+                                "hOffsetLSShape": "0.0",
+                                "hOffsetRSShape": "0.0",
+                                "vOffset": "0.0",
+                                "vOffsetSShape": "0.0",
+                                "snapVToFirst": 1,
+                                "snapVToSecond": 0
+                            }
+                        }
+                    }
+                }
+            ],
+            "meta": {
+                "var": {},
+                "label": "List files"
+            },
+            "wrapper": {
+                "collapsed": false,
+                "headerHtml": "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Consolas'; font-size:6pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">List files</p></body></html>",
+                "exposeInputsToCompound": false,
+                "groups": {
+                    "input": {},
+                    "output": {}
+                }
+            },
+            "x": -235.36083287170538,
+            "y": -65.98492542573507,
+            "executed": true
+        }
+    ],
+    "depth": 1,
+    "isRoot": true,
+    "parentGraphName": "None",
+    "fileVersion": "3.0.0",
+    "activeGraph": "root"
+}
