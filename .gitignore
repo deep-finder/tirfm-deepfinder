@@ -12,3 +12,6 @@ blobs.txt
 workflows/*/Data
 workflows/*/Metadata
 workflows/*/Thumbnails
+# pixi environments
+.pixi
+*.egg-info

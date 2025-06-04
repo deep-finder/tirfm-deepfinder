@@ -3,14 +3,13 @@ from deepfinder.commands import utils
 utils.run_with_python_on_windows(__file__)
 from pathlib import Path
 
-def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns_epochs, ns_steps_per_epoch):
+def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns_epochs, ns_steps_per_epoch, weights_path = None):
     from deepfinder.training import Train
     from deepfinder.utils.dataloader import Dataloader
 
     # Load dataset:
     path_data, path_target, objl_train, objl_valid = Dataloader(ext='.h5')(dataset_path)
 
-    last_weights_path = None
     for patch_size, random_shift, batch_size, n_epochs, n_steps_per_epoch in zip(patch_sizes, random_shifts, batch_sizes, ns_epochs, ns_steps_per_epoch):
         
         print(f'Launch training with: patch_size: {patch_size}, random_shift: {random_shift}, batch_size: {batch_size}, n_epochs: {n_epochs}, n_steps_per_epoch: {n_steps_per_epoch}')
@@ -33,12 +32,12 @@ def train(dataset_path, output_path, patch_sizes, random_shifts, batch_sizes, ns
 
         Path(trainer.path_out).parent.mkdir(exist_ok=True, parents=True)
 
-        if last_weights_path is not None:
-            trainer.net.load_weights(f'{last_weights_path}net_weights_FINAL.h5')
+        if weights_path is not None:
+            trainer.net.load_weights(weights_path)
 
         # Finally, launch the training procedure:
         trainer.launch(path_data, path_target, objl_train, objl_valid)
-        last_weights_path = trainer.path_out
+        weights_path = f'{trainer.path_out}net_weights_FINAL.h5'
 
 utils.ignore_gooey_if_args()
 
@@ -52,6 +51,7 @@ def add_args(parser):
     parser.add_argument('-rs', '--random_shifts', help='Random shifts. Can be an integer or a list of the form [randomShiftsModel1, randomShiftsModel2, ...].', default='[4, 8, 16, 32]', type=str)
     parser.add_argument('-ne', '--n_epochs', help='Number of epochs. Can be an integer or a list of the form [nEpochsModel1, nEpochsModel2, ...].', default='100', type=str)
     parser.add_argument('-ns', '--n_steps', help='Number of steps per epochs. Can be an integer or a list of the form [nStepsModel1, nStepsModel2, ...].', default='100', type=str)
+    parser.add_argument('-wp', '--weights_path', help='Path to the weights to start from.', default=None, type=Path)
     parser.add_argument('-o', '--output', help='Path to the output folder where the model will be stored', widget='DirChooser')
 
 @utils.Gooey
@@ -67,7 +67,7 @@ def main(args=None):
     # Duplicate the last value of each list to exetend it so that it has one value for each training
     params = [p + [p[-1]]*(n_trainings-len(p)) for p in params]
     patch_sizes, random_shifts, batch_sizes, n_epochs, n_steps = params
-    train(args.dataset, args.output, patch_sizes, random_shifts, batch_sizes, n_epochs, n_steps)
+    train(args.dataset, args.output, patch_sizes, random_shifts, batch_sizes, n_epochs, n_steps, args.weights_path)
 
 if __name__ == '__main__':
     main()
