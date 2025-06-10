@@ -55,7 +55,7 @@ def cluster(segmentation_path, cluster_radius, output_path=None, keep_labels_unc
 
 utils.ignore_gooey_if_args()
 
-def create_parser(parser=None, command=Path(__file__).stem, prog='Detect spots', description='Detect spots and convert resulting segmentation to h5. The clustering groups and labels the voxels so that all voxels of the same event share the same label, and each event gets a different label. Only exocytose events (voxels of value 2) are considered, ones are ignored.'):
+def create_parser(parser=None, command=Path(__file__).stem, prog='Generate annotation', description='Cluster a segmentation to generate the corresponding annotations in .xml format. .'):
     return utils.create_parser(parser, command, prog, description)
 
 def add_args(parser):
