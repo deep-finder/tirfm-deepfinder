@@ -21,7 +21,7 @@
                     "uuid": "f3ccfc2d-1d65-412b-bf48-e1e4223147d2",
                     "linkedTo": [
                         {
-                            "lhsNodeName": "List files",
+                            "lhsNodeName": "List Files",
                             "outPinId": 1,
                             "rhsNodeName": "Convert Tiff To H5",
                             "inPinId": 1,
@@ -44,11 +44,11 @@
                         "displayName": "in",
                         "wires": {
                             "1": {
-                                "sourceUUID": "b1869602-589c-4f00-8c0a-d1403bc0e1fe",
+                                "sourceUUID": "4fad41cd-566d-486a-90a6-3abefcf34082",
                                 "destinationUUID": "f3ccfc2d-1d65-412b-bf48-e1e4223147d2",
-                                "sourceName": "List files_Data frame",
+                                "sourceName": "List files_out",
                                 "destinationName": "Convert tiff to h5_in",
-                                "uuid": "29cbb7f5-d975-4354-a6df-d35033f14c03",
+                                "uuid": "9f9946d8-3970-4b40-a40e-0b504b7d8480",
                                 "hOffsetL": "0.0",
                                 "hOffsetR": "0.0",
                                 "hOffsetLSShape": "0.0",
@@ -98,7 +98,7 @@
                                 "destinationUUID": "8b028d26-90c9-4427-a66d-d65440bc0e19",
                                 "sourceName": "Convert tiff to h5_out",
                                 "destinationName": "Segment_in",
-                                "uuid": "6c52f187-42e5-4d94-b177-3facf2ed7a05",
+                                "uuid": "7624e142-b016-46c6-9e79-477c1078bcbb",
                                 "hOffsetL": "0.0",
                                 "hOffsetR": "0.0",
                                 "hOffsetLSShape": "0.0",
@@ -129,15 +129,28 @@
             "y": -65.82742316784874,
             "executed": true,
             "parameters": {
-                "tiff": {
-                    "type": "columnName",
-                    "columnName": "dataset_tiff_mini",
-                    "value": null,
-                    "dataType": "path",
-                    "auto": false
+                "inputs": {
+                    "tiff": {
+                        "type": "columnName",
+                        "columnName": "path",
+                        "value": null,
+                        "defaultValue": null,
+                        "dataType": "path",
+                        "advanced": null,
+                        "auto": false
+                    }
+                },
+                "outputs": {
+                    "output": {
+                        "value": "[workflow_folder]/dataset/{tiff.name}/movie.h5",
+                        "defaultValue": "[workflow_folder]/dataset/{tiff.name}/movie.h5",
+                        "dataType": "Path",
+                        "extension": null,
+                        "editable": null,
+                        "help": "Output path to the h5 file."
+                    }
                 }
             },
-            "folderDataFramePath": null,
             "outputDataFramePath": "output_data_frame.csv"
         },
         {
@@ -185,7 +198,7 @@
                                 "destinationUUID": "32756a17-6694-4aef-9ca0-4ea12cc187b7",
                                 "sourceName": "Segment_out",
                                 "destinationName": "Generate annotation_in",
-                                "uuid": "4d40edbe-2dbf-4556-9564-438cc17c010a",
+                                "uuid": "ba2ba67a-6b08-43d3-8a51-0a886deb5a70",
                                 "hOffsetL": "0.0",
                                 "hOffsetR": "0.0",
                                 "hOffsetLSShape": "0.0",
@@ -241,29 +254,46 @@
             "y": -65.27186761229311,
             "executed": true,
             "parameters": {
-                "segmentation": {
-                    "type": "columnName",
-                    "columnName": "Segment: segmentation",
-                    "value": null,
-                    "dataType": "path",
-                    "auto": false
+                "inputs": {
+                    "segmentation": {
+                        "type": "columnName",
+                        "columnName": "Segment: segmentation",
+                        "value": null,
+                        "defaultValue": null,
+                        "dataType": "path",
+                        "advanced": null,
+                        "auto": false
+                    },
+                    "cluster_radius": {
+                        "type": "value",
+                        "columnName": "Segment: segmentation",
+                        "value": 5,
+                        "defaultValue": 5,
+                        "dataType": "integer",
+                        "advanced": null,
+                        "auto": false
+                    },
+                    "keep_labels_unchanged": {
+                        "type": "value",
+                        "columnName": "Segment: segmentation",
+                        "value": false,
+                        "defaultValue": false,
+                        "dataType": "boolean",
+                        "advanced": null,
+                        "auto": false
+                    }
                 },
-                "cluster_radius": {
-                    "type": "value",
-                    "columnName": "Segment: segmentation",
-                    "value": 5,
-                    "dataType": "integer",
-                    "auto": false
-                },
-                "keep_labels_unchanged": {
-                    "type": "value",
-                    "columnName": "Segment: segmentation",
-                    "value": false,
-                    "dataType": "boolean",
-                    "auto": false
+                "outputs": {
+                    "annotation": {
+                        "value": "[workflow_folder]/dataset/{segmentation.parent.name}/annotation.xml",
+                        "defaultValue": "[workflow_folder]/dataset/{segmentation.parent.name}/annotation.xml",
+                        "dataType": "Path",
+                        "extension": null,
+                        "editable": null,
+                        "help": "Output annotation file (in .xml format)."
+                    }
                 }
             },
-            "folderDataFramePath": null,
             "outputDataFramePath": "output_data_frame.csv"
         },
         {
@@ -311,7 +341,7 @@
                                 "destinationUUID": "8b028d26-90c9-4427-a66d-d65440bc0e19",
                                 "sourceName": "Convert tiff to h5_out",
                                 "destinationName": "Segment_in",
-                                "uuid": "6c52f187-42e5-4d94-b177-3facf2ed7a05",
+                                "uuid": "7624e142-b016-46c6-9e79-477c1078bcbb",
                                 "hOffsetL": "0.0",
                                 "hOffsetR": "0.0",
                                 "hOffsetLSShape": "0.0",
@@ -361,7 +391,7 @@
                                 "destinationUUID": "32756a17-6694-4aef-9ca0-4ea12cc187b7",
                                 "sourceName": "Segment_out",
                                 "destinationName": "Generate annotation_in",
-                                "uuid": "4d40edbe-2dbf-4556-9564-438cc17c010a",
+                                "uuid": "ba2ba67a-6b08-43d3-8a51-0a886deb5a70",
                                 "hOffsetL": "0.0",
                                 "hOffsetR": "0.0",
                                 "hOffsetLSShape": "0.0",
@@ -392,36 +422,55 @@
             "y": -65.82742316784874,
             "executed": true,
             "parameters": {
-                "movie": {
-                    "type": "columnName",
-                    "columnName": "Convert tiff to h5: output",
-                    "value": null,
-                    "dataType": "path",
-                    "auto": true
+                "inputs": {
+                    "movie": {
+                        "type": "columnName",
+                        "columnName": "Convert tiff to h5: output",
+                        "value": null,
+                        "defaultValue": null,
+                        "dataType": "path",
+                        "advanced": null,
+                        "auto": true
+                    },
+                    "model_weights": {
+                        "type": "value",
+                        "columnName": "Convert tiff to h5: output",
+                        "value": "/Users/amasson/Travail/tirfm-deepfinder/examples/analyze/in/net_weights_FINAL.h5",
+                        "defaultValue": null,
+                        "dataType": "path",
+                        "advanced": null,
+                        "auto": false
+                    },
+                    "patch_size": {
+                        "type": "value",
+                        "columnName": "Convert tiff to h5: output",
+                        "value": 160,
+                        "defaultValue": 160,
+                        "dataType": "integer",
+                        "advanced": null,
+                        "auto": false
+                    },
+                    "visualization": {
+                        "type": "value",
+                        "columnName": "Convert tiff to h5: output",
+                        "value": false,
+                        "defaultValue": false,
+                        "dataType": "boolean",
+                        "advanced": null,
+                        "auto": false
+                    }
                 },
-                "model_weights": {
-                    "type": "value",
-                    "columnName": "Convert tiff to h5: output",
-                    "value": "",
-                    "dataType": "path",
-                    "auto": false
-                },
-                "patch_size": {
-                    "type": "value",
-                    "columnName": "Convert tiff to h5: output",
-                    "value": 160,
-                    "dataType": "integer",
-                    "auto": false
-                },
-                "visualization": {
-                    "type": "value",
-                    "columnName": "Convert tiff to h5: output",
-                    "value": false,
-                    "dataType": "boolean",
-                    "auto": false
+                "outputs": {
+                    "segmentation": {
+                        "value": "[workflow_folder]/dataset/{movie.parent.name}/segmentation.h5",
+                        "defaultValue": "[workflow_folder]/dataset/{movie.parent.name}/segmentation.h5",
+                        "dataType": "Path",
+                        "extension": null,
+                        "editable": null,
+                        "help": "Output segmentation (in .h5 format)."
+                    }
                 }
             },
-            "folderDataFramePath": null,
             "outputDataFramePath": "output_data_frame.csv"
         },
         {
@@ -433,63 +482,19 @@
             "uuid": "997d8224-4bfb-45be-995a-51e8bd5dcdcd",
             "inputs": [
                 {
-                    "name": "Filter",
+                    "name": "in",
                     "package": "PyFlowBase",
-                    "fullName": "List files_Filter",
-                    "dataType": "StringPin",
+                    "fullName": "List files_in",
+                    "dataType": "AnyPin",
                     "direction": 0,
-                    "value": "\"*\"",
-                    "uuid": "f2c7b87b-c3c6-4158-824d-9d145f64bd4d",
-                    "linkedTo": [],
-                    "pinIndex": 2,
-                    "options": [
-                        256
-                    ],
-                    "structure": 0,
-                    "alwaysList": false,
-                    "alwaysSingle": false,
-                    "alwaysDict": false,
-                    "wrapper": {
-                        "bLabelHidden": false,
-                        "displayName": "Filter",
-                        "wires": {}
-                    }
-                },
-                {
-                    "name": "Column name",
-                    "package": "PyFlowBase",
-                    "fullName": "List files_Column name",
-                    "dataType": "StringPin",
-                    "direction": 0,
-                    "value": "\"dataset_tiff_mini\"",
-                    "uuid": "58a5db5d-88c4-488a-a9a6-3048f4b63763",
-                    "linkedTo": [],
-                    "pinIndex": 3,
-                    "options": [
-                        256
-                    ],
-                    "structure": 0,
-                    "alwaysList": false,
-                    "alwaysSingle": false,
-                    "alwaysDict": false,
-                    "wrapper": {
-                        "bLabelHidden": false,
-                        "displayName": "Column name",
-                        "wires": {}
-                    }
-                },
-                {
-                    "name": "Folder path",
-                    "package": "PyFlowBase",
-                    "fullName": "List files_Folder path",
-                    "dataType": "StringPin",
-                    "direction": 0,
-                    "value": "",
-                    "uuid": "87e4bd17-f39b-49ff-9d5b-353712762c37",
+                    "value": null,
+                    "uuid": "a35ddba8-ae04-4921-a88e-47d73625b71b",
                     "linkedTo": [],
                     "pinIndex": 1,
                     "options": [
-                        256
+                        16,
+                        256,
+                        512
                     ],
                     "structure": 0,
                     "alwaysList": false,
@@ -497,23 +502,23 @@
                     "alwaysDict": false,
                     "wrapper": {
                         "bLabelHidden": false,
-                        "displayName": "Folder path",
+                        "displayName": "in",
                         "wires": {}
                     }
                 }
             ],
             "outputs": [
                 {
-                    "name": "Data frame",
+                    "name": "out",
                     "package": "PyFlowBase",
-                    "fullName": "List files_Data frame",
+                    "fullName": "List files_out",
                     "dataType": "AnyPin",
                     "direction": 1,
                     "value": null,
-                    "uuid": "b1869602-589c-4f00-8c0a-d1403bc0e1fe",
+                    "uuid": "4fad41cd-566d-486a-90a6-3abefcf34082",
                     "linkedTo": [
                         {
-                            "lhsNodeName": "List files",
+                            "lhsNodeName": "List Files",
                             "outPinId": 1,
                             "rhsNodeName": "Convert Tiff To H5",
                             "inPinId": 1,
@@ -531,14 +536,14 @@
                     "alwaysDict": false,
                     "wrapper": {
                         "bLabelHidden": false,
-                        "displayName": "Data frame",
+                        "displayName": "out",
                         "wires": {
                             "1": {
-                                "sourceUUID": "b1869602-589c-4f00-8c0a-d1403bc0e1fe",
+                                "sourceUUID": "4fad41cd-566d-486a-90a6-3abefcf34082",
                                 "destinationUUID": "f3ccfc2d-1d65-412b-bf48-e1e4223147d2",
-                                "sourceName": "List files_Data frame",
+                                "sourceName": "List files_out",
                                 "destinationName": "Convert tiff to h5_in",
-                                "uuid": "29cbb7f5-d975-4354-a6df-d35033f14c03",
+                                "uuid": "9f9946d8-3970-4b40-a40e-0b504b7d8480",
                                 "hOffsetL": "0.0",
                                 "hOffsetR": "0.0",
                                 "hOffsetLSShape": "0.0",
@@ -567,7 +572,37 @@
             },
             "x": -235.36083287170538,
             "y": -65.98492542573507,
-            "executed": true
+            "executed": true,
+            "parameters": {
+                "inputs": {
+                    "folderPath": {
+                        "type": "value",
+                        "columnName": null,
+                        "value": "/Users/amasson/Documents/Exocytose/dataset_tiff_mini_raw3",
+                        "defaultValue": null,
+                        "dataType": "Path",
+                        "advanced": null
+                    },
+                    "filter": {
+                        "type": "value",
+                        "columnName": null,
+                        "value": "*",
+                        "defaultValue": "*",
+                        "dataType": "str",
+                        "advanced": null
+                    },
+                    "columnName": {
+                        "type": "value",
+                        "columnName": null,
+                        "value": "path",
+                        "defaultValue": "path",
+                        "dataType": "str",
+                        "advanced": null
+                    }
+                },
+                "outputs": {}
+            },
+            "outputDataFramePath": "output_data_frame.csv"
         }
     ],
     "depth": 1,
